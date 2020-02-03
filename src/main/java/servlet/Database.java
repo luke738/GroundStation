@@ -99,4 +99,11 @@ public class Database {
         }
         return false;
     }
+
+    public boolean checkClassCode(String classcode) {
+        //STILL NEED TO ADD FUNCTIONALITY
+        // return true;
+
+        return false;
+    }
 }
