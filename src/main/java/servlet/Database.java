@@ -82,8 +82,11 @@ public class Database {
         return -1;
     }
 
-    public Boolean createUser(String username, String passwordHash, String salt, String name) {
+    public Boolean createUser(String username, String passwordHash, String salt, String name, String classcode) {
         if (checkUser(username)) {
+            return false;
+        }
+        if(!checkClassCode(classcode)){
             return false;
         }
         try {
