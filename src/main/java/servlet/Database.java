@@ -26,7 +26,7 @@ public class Database {
 
     public Boolean checkUser(String username) {
         try {
-            ps = conn.prepareStatement("SELECT u.userID FROM user u WHERE username=?");
+            ps = conn.prepareStatement("SELECT u.userID FROM UserInfo u WHERE username=?");
             ps.setString(1, username);
             rs = ps.executeQuery();
             if (!rs.next()) {
@@ -46,7 +46,7 @@ public class Database {
         try {
             if (checkUser(username)) {
                 int userID = getUserID(username);
-                ps = conn.prepareStatement("SELECT u.pw, u.salt FROM user u WHERE username=? AND userID =?");
+                ps = conn.prepareStatement("SELECT u.pw, u.salt FROM UserInfo u WHERE username=? AND userID =?");
                 ps.setString(1, username);
                 ps.setInt(2, userID);
                 rs = ps.executeQuery();
@@ -68,7 +68,7 @@ public class Database {
 
     public int getUserID(String username) {
         try {
-            ps = conn.prepareStatement("SELECT u.userID FROM user u WHERE username=?");
+            ps = conn.prepareStatement("SELECT u.userID FROM UserInfo u WHERE username=?");
             ps.setString(1, username);
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -82,15 +82,16 @@ public class Database {
         return -1;
     }
 
-    public Boolean createUser(String username, String passwordHash, String salt) {
+    public Boolean createUser(String username, String passwordHash, String salt, String name) {
         if (checkUser(username)) {
             return false;
         }
         try {
-            ps = conn.prepareStatement("INSERT INTO user(username, pw, salt) VALUES(?,?,?)");
+            ps = conn.prepareStatement("INSERT INTO UserInfo(username, pw, salt, name) VALUES(?,?,?,?)");
             ps.setString(1, username);
             ps.setString(2, passwordHash);
             ps.setString(3, salt);
+            ps.setString(4, name);
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -100,9 +101,20 @@ public class Database {
         return false;
     }
 
-    public boolean checkClassCode(String classcode) {
-        //STILL NEED TO ADD FUNCTIONALITY
-        // return true;
+    public Boolean checkClassCode(String classcode) {
+        try {
+            ps = conn.prepareStatement("SELECT a.userID FROM Administrators a WHERE classcode=?");
+            ps.setString(1, classcode);
+            rs = ps.executeQuery();
+            if (!rs.next()) {
+                return false;
+            }
+            return true;
+
+        } catch (SQLException e) {
+            System.out.println("SQLException in function \"validate\"");
+            e.printStackTrace();
+        }
 
         return false;
     }

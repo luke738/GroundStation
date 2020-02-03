@@ -90,7 +90,7 @@ public class LoginServlet  {
                     if (db.checkClassCode(classcode) && !db.checkUser(username))
                     {
                         String salt = PasswordHashing.getRandomSalt();
-                        db.createUser(username, PasswordHashing.hashPassword(password, salt), salt);
+                        db.createUser(username, PasswordHashing.hashPassword(password, salt), salt, name);
 
                         int userIDstore = db.getUserID(username);
                         session.setAttribute("hello", "Hello " + username);
