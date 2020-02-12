@@ -1,6 +1,8 @@
 package connector;
 
+import com.google.gson.JsonElement;
+
 public interface DataListener
 {
-    public void dataReceived(String data);
+    public void dataReceived(JsonElement data);
 }

@@ -1,5 +1,8 @@
 package socket;
 
+import com.google.gson.JsonElement;
+import connector.DataListener;
+
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.awt.event.ActionEvent;
@@ -10,7 +13,8 @@ import java.util.Collections;
 import java.util.List;
 
 @ServerEndpoint(value = "/UHFData", configurator = GetHttpSessionConfigurator.class)
-public class UHFDataSocket implements ActionListener {
+public class UHFDataSocket implements DataListener
+{
     private static List<Session> clients = Collections.synchronizedList(new ArrayList<Session>());
 
     @OnOpen
@@ -38,12 +42,13 @@ public class UHFDataSocket implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) //Got an event from the gs desktop
+    public void dataReceived(JsonElement data)
     {
+        //Send data to their sql
         for(Session s : clients) {
             try
             {
-                s.getBasicRemote().sendText(e.getActionCommand());
+                s.getBasicRemote().sendText(data.toString());
             }
             catch (IOException ioe)
             {

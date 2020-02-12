@@ -21,7 +21,7 @@ public class LoginServlet  {
         HttpSession session = request.getSession();
         PrintWriter respWriter = response.getWriter();
         Gson gson = new Gson();
-        String reqBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())); //Java 8 magic to collect all lines from a BufferedReadder, in this case the request.
+        String reqBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())); //Java 8 magic to collect all lines from a BufferedReader, in this case the request.
         //telling whether it is a login or a signup
         String logOrsign = request.getParameter("signOrLog");
 
