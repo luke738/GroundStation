@@ -1,14 +1,9 @@
 package connector;
 
 import com.google.gson.JsonElement;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import info.Connection;
 
-import javax.websocket.Session;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class UHFDataConnector implements DataListener{
@@ -33,7 +28,7 @@ public class UHFDataConnector implements DataListener{
         return single;
     }
 
-    private Boolean validate() {
+    private Boolean validate(JsonElement data) {
         return true;
     }
 
