@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="CSS/dashboard-s.css">
-
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-    <title>Dashboard</title>
+    <title>Dashboard S-band</title>
 </head>
 <body>
 
@@ -15,23 +14,63 @@
     <div id = "buttonwrap" class="container-fluid">
         <ul class="nav navbar-nav">
             <!-- <li class="active"><a href="#">Home</a></li> -->
-            <li><a class = "tab" href="#">Dashboard S-band</a></li>
-            <li><a class = "tab" href="#">Dashboard UHF</a></li>
-            <li><a class = "tab" href="#">Class Logistics</a></li>
+            <li><a style="color: white" href="#">Dashboard S-band</a></li>
+            <li><a style="color: white" href="#">Dashboard UHF</a></li>
+            <li><a style="color: white" href="#">Class Logistics</a></li>
         </ul>
     </div>
 </nav>
 
 
-<h2>Dashboard</h2>
-
+<h2>Dashboard S-band</h2>
 
 <div class="clearfix">
-    <div class="box" style="background-color:#bbb">service 2</div>
-    <div class="box" style="background-color:#ccc">service 3</div>
-    <div class="box" style="background-color:#ccc">service 1 </div>
+    <div class="box" style="background-color:#bbb">
+        <div class="flex-container">
+            <div id = "sharp">1</div>
+            <div>2</div>
+        </div>
+    </div>
+    <div class="flex-container">
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+    </div>
+</div>
+
+<div class="box" style="background-color:#ccc">
+    <div class="flex-container-horizontal">
+        <form action="#">
+            <label for="angle">Desired Rotation Angle: </label>
+            <input type="text" id="angle" name="angle">
+            <!--  <button type="button" class="btn btn-primary">Set</button> -->
+            <button type="button" class="btn btn-success">Park</button>
+
+            <br>
+            Current Azimuth and Elevation coordinates
+            <br>
+
+            <label for="azimuth">Azimuth:
+                <input type="text" id="azimuth" name="azimuth">
+            </label>
+
+            <br>
+            <!-- <button type="button" class="btn btn-primary">Set</button> -->
+            <!-- <input type="text" id="angle" name="angle"> -->
+            <label for="elevation">Elevation:
+                <input type="text" id="elevation" name="elevation">
+            </label>
+            <br>
+            <input type="submit" value="Submit Values">
+        </form>
+    </div>
 
 </div>
+</div>
+
+</div>
+
+
 
 </body>
 </html>

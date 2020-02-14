@@ -3,6 +3,34 @@ li {
     color: white;
 }
 
+#angle {
+    width: 15%;
+}
+
+#sharp {
+    width: inherit;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-container-horizontal {
+    display: flex;
+}
+
+.flex-container > div {
+    background-color: #f1f1f1;
+    width: 80%;
+    margin: 10px;
+    height: 50%;
+    text-align: center;
+    line-height: 75px;
+    font-size: 30px;
+
+}
+
 .tab {
     color: white;
 }
@@ -26,19 +54,14 @@ body {
 
 #service2 {
     background-color: #C4C4C4;
-    /*float:left;*/
 }
 
 #service1 {
     background-color: #C4C4C4;
-    /*float:left;*/
-
 }
 
 #service3 {
     background-color: #C4C4C4;
-    /*float:left;*/
-
 }
 
 * {
@@ -47,7 +70,7 @@ body {
 
 .box {
     float: left;
-    width: 40%;
+    width: 50%;
     height: 300px;
     margin:10px;
 
