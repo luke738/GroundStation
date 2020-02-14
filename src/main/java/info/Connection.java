@@ -86,8 +86,17 @@ public class Connection
     }
 
     private void sendEvent(JsonElement data) {
-        for(DataListener d : listeners) {
+        List<DataListener> dead = new ArrayList<>();
+        for (DataListener d : listeners)
+        {
+            if(d==null) {
+                dead.add(d);
+                continue;
+            }
             d.dataReceived(data);
+        }
+        for (DataListener d : dead) {
+            listeners.remove(d);
         }
     }
 }
