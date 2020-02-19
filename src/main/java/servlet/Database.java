@@ -1,6 +1,9 @@
 package servlet;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import java.sql.*;
+import java.util.zip.Adler32;
 
 public class Database {
     private Connection conn;
@@ -23,7 +26,7 @@ public class Database {
         }
 
     }
-
+    // ie if user naeme is taken
     public Boolean checkUser(String username) {
         try {
             ps = conn.prepareStatement("SELECT u.userID FROM UserInfo u WHERE username=?");
@@ -94,8 +97,41 @@ public class Database {
         }
         return -1;
     }
+    //returns AdminID if exists; returns -1 if not an admin
+    public int isAdministrator(String username){
+        try{
+            int userID = getUserID(username);
+            int AdminID = -1;
+            ps = conn.prepareStatement("SELECT a.AdminID FROM Administrators a WHERE userID=? ");
+            ps.setInt(1,userID);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                AdminID = rs.getInt(AdminID);
+            }
+            return AdminID;
+        } catch (SQLException e) {
+            System.out.println("SQLException in function \"validate\"");
+            e.printStackTrace();
+        }
+    }
 
-    public Boolean createUser(String username, String passwordHash, String salt, String name, String classcode) {
+    public Boolean addAdministrator(String username){
+        try {
+            int userID = getUserID(username);
+            if(isAdministrator(username)!=-1) {
+                ps = conn.prepareStatement("INSERT INTO Administrators(userID) VALUES(?)");
+                ps.setInt(1, userID);
+                ps.executeUpdate();
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException in function \"validate\"");
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+        public Boolean createUser(String username, String passwordHash, String salt, String name, String classcode) {
         if (checkUser(username)) {
             return false;
         }
@@ -125,6 +161,7 @@ public class Database {
             ps.setString(2, salt);
             ps.setInt(3, userID);
             ps.setString(4, username);
+            ps.executeUpdate();
             return true;
         } catch (SQLException e) {
             System.out.println("SQLException in function \"validate\" fixuser");
@@ -133,26 +170,6 @@ public class Database {
         return false;
     }
 
- /*   public Boolean checkPasswordCode(String pcode, String username){
-       try {
-           int userID = getUserID(username);
-           ps = conn.prepareStatement("SELECT u.userID FROM UserInfo u WHERE pcode=? and username=?");
-           ps.setString(1, pcode);
-           ps.setString(2, username);
-           rs = ps.executeQuery();
-           //no password code with this user
-           if (!rs.next()) {
-               return false;
-           }
-
-       }
-       catch (SQLException e) {
-           System.out.println("SQLException in function \"validate\" in checkpasswodcode");
-           e.printStackTrace();
-       }
-        return true;
-    }
-    */
 
 
     public Boolean checkClassCode(String classcode) {
@@ -171,5 +188,40 @@ public class Database {
         }
 
         return false;
+    }
+    public Boolean addClassCode(String username, String classcode){
+        try {
+            int userID = getUserID(username);
+            int adminID = isAdministrator(username);
+            if(isAdministrator(username) != -1) {
+                ps = conn.prepareStatement("SELECT a.classcode, a.AdminID FROM Administrators a WHERE userID=?");
+                ps.setInt(1, userID);
+                rs = ps.executeQuery();
+                if(rs.next()){
+                    deleteClassCode(adminID);
+                }
+                ps = conn.prepareStatement("UPDATE Administrators SET classcode = ? WHERE AdminID=?");
+                ps.setString(1,classcode);
+                ps.setInt(2,adminID);
+                ps.executeUpdate();
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException in function \"validate\"");
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void deleteClassCode(int adminID) {
+        try{
+            ps = conn.prepareStatement("UPDATE Administrators SET classcode = ? WHERE AdminID=? ");
+            ps.setString(1, "");
+            ps.setInt(2,adminID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("SQLException in function \"validate\"");
+            e.printStackTrace();
+        }
     }
 }
