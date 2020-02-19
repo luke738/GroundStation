@@ -7,10 +7,9 @@ import connector.DataListener;
 import connector.UHFDataConnector;
 import info.Message;
 
+import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,14 +31,21 @@ public class UHFDataSocket implements DataListener
     @OnOpen
     public void open(Session session, EndpointConfig endpoint)
     {
-        clients.add(session);
+        if(!endpoint.getUserProperties().get("httpSession").equals(0))
+        {
+            HttpSession httpSession = (HttpSession) endpoint.getUserProperties().get("httpSession");
+            if(httpSession.getAttribute("loggedIn")!=null && (Boolean) httpSession.getAttribute("loggedIn"))
+            {
+                clients.add(session);
+            }
+        }
     }
 
     @OnMessage
     public void onMessage(String message, Session session)
     {
         JsonElement data = parser.parse(message);
-        //TODO: check session to see if user has edit access
+        //TODO: check HttpSession to see if user has edit access
         if(data.getAsJsonObject().get("type").getAsString().equalsIgnoreCase("transmitState")) {
             connector.setTransmitState(data.getAsJsonObject().getAsString().equalsIgnoreCase("true"));
         }
@@ -59,6 +65,7 @@ public class UHFDataSocket implements DataListener
     public void close(Session session)
     {
         clients.remove(session);
+        connector.removeDataListener(this);
     }
 
     @OnError

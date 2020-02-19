@@ -12,7 +12,7 @@ import java.util.List;
 
 public class UHFDataConnector implements DataListener{
     private List<DataListener> listeners = new ArrayList<DataListener>();
-    Connection desktopConn;
+    private Connection desktopConn;
 
 
     private static UHFDataConnector single = null;
@@ -64,33 +64,22 @@ public class UHFDataConnector implements DataListener{
         listeners.add(d);
     }
 
+    public void removeDataListener(DataListener d) {
+        listeners.remove(d);
+    }
+
     private void sendEvent(JsonElement data) {
-        List<DataListener> dead = new ArrayList<>();
         if(validateRecieve(data))
         {
             for (DataListener d : listeners)
             {
-                if(d==null) {
-                    dead.add(d);
-                    continue;
-                }
                 d.dataReceived(data);
-            }
-            for (DataListener d : dead) {
-                listeners.remove(d);
             }
         }
         else {
             for (DataListener d : listeners)
             {
-                if(d==null) {
-                    dead.add(d);
-                    continue;
-                }
                 d.dataReceived(new Gson().toJsonTree(new Message("invalid")));
-            }
-            for (DataListener d : dead) {
-                listeners.remove(d);
             }
         }
     }
