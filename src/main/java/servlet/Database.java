@@ -41,6 +41,19 @@ public class Database {
 
         return false;
     }
+    public Boolean changePassword(String username, String password){
+        String [] pINfo = getPasswordInfo(username);
+        String salt = "";
+        String hashedpass = "";
+        if (pINfo.length != 0) {
+            salt = pINfo[0];
+            hashedpass = pINfo[1];
+            fixUser(username, hashedpass, salt);
+            return true;
+        }
+        return false;
+
+    }
 
     public String[] getPasswordInfo(String username) {
         try {
