@@ -110,7 +110,7 @@ public class Database {
             System.out.println("SQLException in function \"validate\"");
             e.printStackTrace();
         }
-        return -1; 
+        return -1;
     }
 
     public Boolean addAdministrator(String username){
