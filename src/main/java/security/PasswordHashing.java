@@ -1,4 +1,5 @@
 package security;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
@@ -7,11 +8,18 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.Base64;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+
 public class PasswordHashing {
     private static final SecureRandom RAND = new SecureRandom();
     private static final int ITERATIONS = 65536;
     private static final int KEY_LENGTH = 512;
     private static final String ALGORITHM = "PBKDF2WithHmacSHA512";
+
+    public static String tempPasswordCreator() {
+        String tempPassword = randomAlphanumeric(10);
+        return tempPassword;
+    }
 
     public static String hashPassword(String password, String salt) {
         char[] chars = password.toCharArray();

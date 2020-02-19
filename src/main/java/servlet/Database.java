@@ -104,6 +104,44 @@ public class Database {
         return false;
     }
 
+    public Boolean fixUser(String username, String passwordHash, String salt){
+        try {
+            int userID = getUserID(username);
+            ps = conn.prepareStatement("UPDATE UserInfo SET passwordHash = ? AND salt = ? WHERE userID = ? AND username = ?");
+            ps.setString(1, passwordHash);
+            ps.setString(2, salt);
+            ps.setInt(3, userID);
+            ps.setString(4, username);
+            return true;
+        } catch (SQLException e) {
+            System.out.println("SQLException in function \"validate\" fixuser");
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+ /*   public Boolean checkPasswordCode(String pcode, String username){
+       try {
+           int userID = getUserID(username);
+           ps = conn.prepareStatement("SELECT u.userID FROM UserInfo u WHERE pcode=? and username=?");
+           ps.setString(1, pcode);
+           ps.setString(2, username);
+           rs = ps.executeQuery();
+           //no password code with this user
+           if (!rs.next()) {
+               return false;
+           }
+
+       }
+       catch (SQLException e) {
+           System.out.println("SQLException in function \"validate\" in checkpasswodcode");
+           e.printStackTrace();
+       }
+        return true;
+    }
+    */
+
+
     public Boolean checkClassCode(String classcode) {
         try {
             ps = conn.prepareStatement("SELECT a.userID FROM Administrators a WHERE classcode=?");

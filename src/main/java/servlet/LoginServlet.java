@@ -3,8 +3,9 @@ package servlet;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import security.PasswordHashing;
 import info.Message;
+import security.PasswordHashing;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +25,8 @@ public class LoginServlet  {
         String reqBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())); //Java 8 magic to collect all lines from a BufferedReader, in this case the request.
         //telling whether it is a login or a signup
         String logOrsign = request.getParameter("signOrLog");
-
-        String username, password;
+        String username;
+        String password = "";
         //only for sign up
         String name ="";
         String classcode = "";
@@ -47,6 +48,7 @@ public class LoginServlet  {
             classcode = signupinfo.get("classcode").getAsString();
             name = signupinfo.get("name").getAsString();
         }
+
 
 
         try{
@@ -115,6 +117,7 @@ public class LoginServlet  {
                         return;
                     }
                     break;
+
                 case "verify":
                     if(session.getAttribute("userID") != null && Integer.parseInt(password) == (int)session.getAttribute("userID")) {
                         respWriter.println(gson.toJson(new Message("Verified")));
