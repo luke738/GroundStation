@@ -1,9 +1,6 @@
 package servlet;
 
-import org.apache.commons.lang3.ObjectUtils;
-
 import java.sql.*;
-import java.util.zip.Adler32;
 
 public class Database {
     private Connection conn;
@@ -113,6 +110,7 @@ public class Database {
             System.out.println("SQLException in function \"validate\"");
             e.printStackTrace();
         }
+        return -1; 
     }
 
     public Boolean addAdministrator(String username){
