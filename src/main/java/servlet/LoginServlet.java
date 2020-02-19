@@ -68,6 +68,7 @@ public class LoginServlet  {
                             //set attributes
                             session.setAttribute("hello", "Hello " + username);
                             session.setAttribute("userID", userIDstore);
+                            session.setAttribute("loggedIn",true);
                             respWriter.println(gson.toJson(new Message("LoggedIn", userIDstore)));
                         }
                         // Wrong password
@@ -97,6 +98,7 @@ public class LoginServlet  {
                         int userIDstore = db.getUserID(username);
                         session.setAttribute("hello", "Hello " + username);
                         session.setAttribute("userID", userIDstore);
+                        session.setAttribute("loggedIn",true);
                         //NEED TO CHANGE FOR VERIFICATION VIA ADMINISTRATOR EVENTUALLY
                         respWriter.println(gson.toJson(new Message("Created", userIDstore)));
                     }
