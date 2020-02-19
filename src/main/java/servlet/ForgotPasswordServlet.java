@@ -51,8 +51,11 @@ public class ForgotPasswordServlet extends HttpServlet {
         Database db = new Database();
         String tempPassword ="";
         String message = "";
+        //signal for if the user email exists in db
         Boolean allClear = false;
+
         try {
+            //check if user
             if(!db.checkUser(recipient)) {
                 allClear = true;
                 tempPassword = PasswordHashing.tempPasswordCreator();
@@ -70,7 +73,7 @@ public class ForgotPasswordServlet extends HttpServlet {
         content += "\nNote: for security reason, "
                 + "you must change your password after logging in.";
 
-
+        //send email
         try {
             if(allClear) {
                 EmailUtility.sendEmail(host, port, email, name, pass, recipient, subject, content);
