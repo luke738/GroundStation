@@ -85,18 +85,14 @@ public class Connection
         listeners.add(d);
     }
 
+    public void removeDataListener(DataListener d) {
+        listeners.remove(d);
+    }
+
     private void sendEvent(JsonElement data) {
-        List<DataListener> dead = new ArrayList<>();
         for (DataListener d : listeners)
         {
-            if(d==null) {
-                dead.add(d);
-                continue;
-            }
             d.dataReceived(data);
-        }
-        for (DataListener d : dead) {
-            listeners.remove(d);
         }
     }
 }
