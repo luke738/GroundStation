@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 @WebServlet(name = "SchedulingServlet")
 public class SchedulingServlet extends HttpServlet {
+    public static int inControlUser = -1;
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         PrintWriter respWriter = response.getWriter();
@@ -35,6 +36,7 @@ public class SchedulingServlet extends HttpServlet {
                         db.scheduleTimeSlot(username, time, dated);
                         //update session attributes for the calendar
                         respWriter.println(gson.toJson(new Message("Time Slot scheduled!")));
+                        //Could send an email to the user
                     }
 
                     else
@@ -49,7 +51,11 @@ public class SchedulingServlet extends HttpServlet {
                     //if not an admin
                     db.unscheduleTimeSlot(username, time, dated);
                     respWriter.println(gson.toJson(new Message("Time Slot unscheduled!")));
+                    //could send an email to the user describing unscheduling
+
                     //if an admin
+
+                    //could send email to the user relaying admin unscheduled
                     break;
 
 
