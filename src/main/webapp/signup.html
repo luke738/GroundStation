@@ -10,7 +10,7 @@
 
 <div id="header"> <h1> USC SERC Lab  </h1></div>
 
-<form id = "loginBox" action="#" method="post">
+<form id = "loginBox" onsubmit="return sendData()">
     <h2>Sign up for an account</h2>
 
     <p>
@@ -44,3 +44,35 @@
 
 </body>
 </html>
+
+<script>
+    function sendData(){
+        var name = document.querySelector('#name');
+        var email = document.querySelector('#email');
+        var password = document.querySelector('#password');
+        var classcode = document.querySelector('#classcode');
+
+        // Converting JSON data to string
+        var data = JSON.stringify({ header: email.value, body: {
+            "email": email.value,
+            "password": pw.value,
+                "classcode": classcode.value}
+        });
+        console.log(data);
+
+        // Creating a XHR object
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/Login?signOrLog=verify", true);
+
+        // Sending data with the request
+        xhr.send(data);
+
+        console.log("RESP: " + xhttp.response);
+        var response = JSON.parse(xhttp.response); //Could check and see if request was successful
+        if(response.header != "Verified") {
+            window.location = "/signup.html";
+        } else {
+            window.location = "/dashboard_s_band.html";
+        }
+    }
+</script>
