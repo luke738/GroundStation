@@ -28,7 +28,15 @@ public class MotorConnector implements DataListener{
 
     public MotorConnector getInstance(MotorConnectorType type) {
         if(!instances.containsKey(type))
-            instances.put(type, new MotorConnector(type));
+        {
+            synchronized (MotorConnector.class)
+            {
+                if(!instances.containsKey(type))
+                {
+                    instances.put(type, new MotorConnector(type));
+                }
+            }
+        }
         return instances.get(type);
     }
 

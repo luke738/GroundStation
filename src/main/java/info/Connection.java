@@ -6,7 +6,6 @@ import connector.DataListener;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class Connection
         parser = new JsonParser();
     }
 
-    public void initialize(Socket _s) throws IOException
+    public synchronized void initialize(Socket _s) throws IOException
     {
         s = _s;
         br = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -53,13 +52,13 @@ public class Connection
         t.start();
     }
 
-    public void send(JsonElement json)
+    public synchronized void send(JsonElement json)
     {
         pw.println(json.toString());
         pw.flush();
     }
 
-    public void close()
+    public synchronized void close()
     {
         try
         {
