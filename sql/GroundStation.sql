@@ -23,12 +23,12 @@ DROP TABLE IF EXISTS `Administrators`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `Administrators` (
-  `AdminID` int(11) NOT NULL,
+  `AdminID` int(11) NOT NULL AUTO_INCREMENT,
   `classcode` varchar(100) NOT NULL,
   `userID` int(11) DEFAULT NULL,
   PRIMARY KEY (`AdminID`),
-  KEY `userID` (`userID`),
-  CONSTRAINT `administrators_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `userinfo` (`userID`)
+  KEY `fk1_idx` (`userID`),
+  CONSTRAINT `fk1` FOREIGN KEY (`userID`) REFERENCES `userinfo` (`userID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -110,13 +110,13 @@ DROP TABLE IF EXISTS `UserInfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `UserInfo` (
-  `userID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `pw` varchar(100) NOT NULL,
   `salt` varchar(100) NOT NULL,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,6 +125,7 @@ CREATE TABLE `UserInfo` (
 
 LOCK TABLES `UserInfo` WRITE;
 /*!40000 ALTER TABLE `UserInfo` DISABLE KEYS */;
+INSERT INTO `UserInfo` VALUES (1,'memcclun','pw','salt','Mackenzie');
 /*!40000 ALTER TABLE `UserInfo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -137,4 +138,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-23 17:15:52
+-- Dump completed on 2020-02-23 17:31:34
