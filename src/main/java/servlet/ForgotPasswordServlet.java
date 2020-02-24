@@ -48,6 +48,7 @@ public class ForgotPasswordServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String recipient = request.getParameter("email");
+        System.out.println("recipient " + recipient);
         Database db = new Database();
         String tempPassword ="";
         String message = "";
@@ -87,6 +88,4 @@ public class ForgotPasswordServlet extends HttpServlet {
             request.getRequestDispatcher("message.jsp").forward(request, response);
         }
     }
-
-
 }

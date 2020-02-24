@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>,
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="css/login.css">
@@ -10,7 +10,7 @@
 
 <div id="header"> <h1> USC SERC Lab  </h1></div>
 
-<form id = "loginBox" action="#" method="post">
+<form id = "loginBox" method="post" action="LoginServlet">
     <h2>Log in to your account</h2>
     <p>
         <!-- TODO: Add a label -->
@@ -20,7 +20,7 @@
     <p>
         <!-- TODO: Add a label -->
         <input id="password" name="password" type="password" placeholder="Password">
-        <div align="right"> <a href="">Forgot password?</a> </div>
+        <div class = "right"> <a href="/reset_password.jsp">Forgot password?</a> </div>
     </p>
 
     <p>
@@ -34,3 +34,37 @@
 
 </body>
 </html>
+
+<script>
+    function sendJSON(){
+
+        var email = document.querySelector('#email');
+        var pw = document.querySelector('#password');
+
+        // Creating a XHR object
+        var xhr = new XMLHttpRequest();
+        var url = "submit.php";
+
+        // open a connection
+        xhr.open("POST", url, true);
+
+        // Set the request header i.e. which type of content you are sending
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        // Create a state change callback
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+
+                // Print received data from server
+                result.innerHTML = this.responseText;
+
+            }
+        };
+
+        // Converting JSON data to string
+        var data = JSON.stringify({ "pw": pw.value, "email": email.value });
+
+        // Sending data with the request
+        xhr.send(data);
+    }
+</script>

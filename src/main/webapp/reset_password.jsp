@@ -5,12 +5,6 @@
   Time: 6:58 PM
   To change this template use File | Settings | File Templates.
 --%>
-/**
-* A JSP to reset passwords
-* @author www.codejava.net
-*
-*/
-
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1"%>
 <!--The line below is commented out as it throws errors; but it needs to be fixed-->
@@ -34,18 +28,13 @@
             Please enter your login email, we'll send a new random password to your inbox:
         </p>
 
-        <form id="resetForm" action="reset_password" method="post">
-            <table>
-                <tr>
-                    <td>Email:</td>
-                    <td><input type="text" name="email" id="email" size="20"></td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center">
-                        <button type="submit">Send me new password</button>
-                    </td>
-                </tr>
-            </table>
+        <form id="resetForm" action="ForgotPasswordServlet" method="post">
+
+            <div>Email:</div>
+            <input type="text" name="email" id="email" size="20">
+            <%--<button type="submit">Send me new password</button>--%>
+            <input type = "submit">
+
         </form>
     </div>
     <!--The line below is commented out as it throws errors; but it needs to be fixed-->
@@ -74,3 +63,4 @@
 
 </body>
 </html>
+
