@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/dashboard-uhf.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Dashboard uhf-band</title>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<!--    <a class="navbar-brand" href="#">Navbar</a>-->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="dashboard_s_band.html">Dashboard S-band </a>
+                <a class="nav-item nav-link" href="dashboard_uhf_band.html">Dashboard UHF</a>
+                <a class="nav-item nav-link active" href="class_logistics.html">Class Logistics<span class="sr-only">(current)</span></a>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container">
+        <h2>Class Logistics</h2>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col">
+                <form class="form-inline">
+                    <div class="form-group mb-2">
+                        <label for="class_filter" class="">Sort by: </label>
+                        <select class="form-control" id="class_filter">
+                            <option>First name</option>
+                            <option>Last name</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2">Apply filter</button>
+                </form>
+                <p>Showing - <span id="current_filter">First Name</span></p>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <!--    table of students        -->
+            <div class="col">
+
+                <div class="row">
+                    <h5>Example table that needs to be outputed after query</h5>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Handle</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>@twitter</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <!--     section to edit class sections       -->
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Course Manager Widget</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Manage Course Logistics</h5>
+                        <p class="card-text">Add class code</p>
+
+                        <form >
+                            <div class="form-group">
+                                <label for="add_class_code" class="sr-only">Add class code</label>
+                                <input type="text" class="form-control" id="add_class_code" value="12AV34">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary mb-2">Add code</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<script>
+
+
+</script>
+
+</body>
+
+</html>
