@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS `Scheduling`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `Scheduling` (
   `schedID` int(11) NOT NULL,
-  `date` varchar(45) NOT NULL,
+  `dated` varchar(45) NOT NULL,
   `8` int(11) DEFAULT NULL,
   `9` int(11) DEFAULT NULL,
   `10` int(11) DEFAULT NULL,
@@ -138,4 +138,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-23 17:31:34
+-- Dump completed on 2020-02-23 18:03:49

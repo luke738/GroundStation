@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/dashboard-uhf.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Dashboard uhf-band</title>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<!--    <a class="navbar-brand" href="#">Navbar</a>-->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="dashboard_s_band.html">Dashboard S-band </a>
+                <a class="nav-item nav-link active" href="dashboard_uhf_band.html">Dashboard UHF<span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="class_logistics.html">Class Logistics</a>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2"></div>
+        </div>
+        <h2>Dashboard S-band</h2>
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <span>Type: </span>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" id="transmit_btn" class="btn btn-secondary active" onclick="toggleTransmit()">
+                        Transmit
+                    </button>
+                    <button type="button" id="recieve_btn" class="btn btn-secondary" onclick="toggleRecieve()">
+                        Recieve
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="card bg-dark text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Console</h5>
+                        <div class="card text-dark">
+                            <div class="card-body">
+                                <div id="console_view"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body" id="data_entry_box">
+                        <h5 class="card-title">Enter data here:</h5>
+                        <div class="card text-black">
+                            <div class="card-body">
+                                <div class="form">
+                                    <div class="form-group">
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Video 1</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Video 2</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">video 3</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h5 class="card-header">Antenna Data:</h5>
+                <div class="card-body bg-light">
+                    <div class="row">
+                        <div class="col-6">
+
+                                <h5>Set Antenna Angle:</h5>
+                                Current Angle:  <span id="curr_ag" class="text-primary">150</span> degrees
+
+                                <div class="form-row">
+                                    <div class="col">
+                                        <input type="range" id="antAngleSlider" class="custom-range" min="0" max="180">
+                                        <p class="card-text">
+                                            Set angle to: <span id="set_angle" class="text-primary"></span> degrees
+                                        </p>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Set Angle</button>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form">
+                                <h5>Set Azimuth & Elevation:</h5>
+                                <p class="card-text">
+                                    Current Azimuth: <span id="curr_ax" class="text-primary">10</span>
+                                    Current Elevation: <span id="curr_el" class="text-primary">20</span>
+                                </p>
+
+                                <div class="form-row">
+                                    <div class="col-4">
+                                        <label for="azimuth">Azimuth</label>
+                                        <input type="number" class="form-control" id="azimuth" placeholder="10">
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="elevation">Elevation</label>
+                                        <input type="number" class="form-control" id="elevation" placeholder="10">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Set Azimuth & Elevation</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    var slider = document.getElementById("antAngleSlider");
+    var output = document.getElementById("set_angle");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+      output.innerHTML = this.value;
+    }
+
+    function toggleTransmit() {
+      var x = document.getElementById("data_entry_box");
+      var state = document.getElementById("transmit_btn");
+      var other = document.getElementById("recieve_btn");
+      state.classList.add("active");
+      other.classList.toggle("active");
+
+
+       x.style.display = "block";
+
+    }
+
+    function toggleRecieve() {
+      var x = document.getElementById("data_entry_box");
+      var other = document.getElementById("transmit_btn");
+      var state = document.getElementById("recieve_btn");
+      state.classList.add("active");
+      other.classList.toggle("active");
+
+      x.style.display = "none";
+
+    }
+
+</script>
+
+</body>
+
+</html>

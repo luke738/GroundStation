@@ -65,10 +65,16 @@ public class LoginServlet  {
                         if ((PasswordHashing.hashPassword(password, pInfo[0])).equals(pInfo[1]))
                         {
                             int userIDstore = db.getUserID(username);
+                            boolean AdminStatus = false;
+                            if (db.isAdministrator(username)!=-1){
+                                AdminStatus = true;
+                            }
+
                             //set attributes
                             session.setAttribute("hello", "Hello " + username);
                             session.setAttribute("userID", userIDstore);
                             session.setAttribute("loggedIn",true);
+                            session.setAttribute("isAdmin",AdminStatus);
                             respWriter.println(gson.toJson(new Message("LoggedIn", userIDstore)));
                         }
                         // Wrong password

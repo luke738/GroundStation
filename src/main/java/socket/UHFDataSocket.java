@@ -1,19 +1,18 @@
 package socket;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import connector.DataListener;
 import connector.UHFDataConnector;
 import info.Message;
+import servlet.SchedulingServlet;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @ServerEndpoint(value = "/UHFData", configurator = GetHttpSessionConfigurator.class)
 public class UHFDataSocket implements DataListener
@@ -22,6 +21,8 @@ public class UHFDataSocket implements DataListener
     private UHFDataConnector connector = UHFDataConnector.getInstance();
     private JsonParser parser = new JsonParser();
     private Gson gson = new Gson();
+
+    private static Pattern pattern = Pattern.compile("^(?:0x)?[0-9a-fA-F]+$");
 
     public UHFDataSocket()
     {
@@ -34,6 +35,7 @@ public class UHFDataSocket implements DataListener
         if(!endpoint.getUserProperties().get("httpSession").equals(0))
         {
             HttpSession httpSession = (HttpSession) endpoint.getUserProperties().get("httpSession");
+            session.getUserProperties().put("httpSession", httpSession);
             if(httpSession.getAttribute("loggedIn")!=null && (Boolean) httpSession.getAttribute("loggedIn"))
             {
                 clients.add(session);
@@ -45,19 +47,96 @@ public class UHFDataSocket implements DataListener
     public void onMessage(String message, Session session)
     {
         JsonElement data = parser.parse(message);
-        //TODO: check HttpSession to see if user has edit access
-        if(data.getAsJsonObject().get("type").getAsString().equalsIgnoreCase("transmitState")) {
-            connector.setTransmitState(data.getAsJsonObject().getAsString().equalsIgnoreCase("true"));
-        }
-        else {
-            Boolean success = connector.sendData(data);
-            try
+        HttpSession httpSession = (HttpSession)session.getUserProperties().get("httpSession");
+        int userID = (int) httpSession.getAttribute("userID");
+        Boolean isAdmin = (Boolean) httpSession.getAttribute("isAdmin");
+        if(userID != SchedulingServlet.inControlUser) {
+            if(isAdmin && !data.getAsJsonObject().has("admin_override")) {
+                try
+                {
+                    session.getBasicRemote().sendText(gson.toJson(new Message("failure","no_control_admin")));
+                }
+                catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+                return;
+            }
+            else if(!isAdmin)
             {
-                session.getBasicRemote().sendText(gson.toJson(new Message(success ? "success" : "failure")));
+                try
+                {
+                    session.getBasicRemote().sendText(gson.toJson(new Message("failure", "no_control_user")));
+                }
+                catch (IOException ioe)
+                {
+                    ioe.printStackTrace();
+                }
+                return;
             }
-            catch (IOException ioe) {
-                ioe.printStackTrace();
+        }
+        String body = "send_failure";
+        Boolean valid = false;
+        switch (data.getAsJsonObject().get("header").getAsString()) {
+            case "set_transmit": {
+                if(!data.getAsJsonObject().has("body")) {
+                    valid = false;
+                    body = "invalid_transmit";
+                    break;
+                }
+                connector.setTransmitState(data.getAsJsonObject().get("body").getAsString().equalsIgnoreCase("true"));
+                try
+                {
+                    session.getBasicRemote().sendText(gson.toJson(new Message("success")));
+                }
+                catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+                return;
             }
+            case "data_tx": {
+                if(!data.getAsJsonObject().has("body")) {
+                    valid = false;
+                    body = "no_data";
+                }
+                else {
+                    String dataBody = data.getAsJsonObject().get("body").getAsString();
+                    Matcher matcher = pattern.matcher(dataBody);
+                    if(matcher.matches()) {
+                        data.getAsJsonObject().add("userID", new JsonPrimitive(session.getId()));
+                        valid = true;
+                        body = "";
+                    }
+                    else {
+                        valid = false;
+                        body = "invalid_data";
+                    }
+                }
+            }
+            break;
+            case "shutdown": {
+                if(data.getAsJsonObject().has("body")) {
+                    valid = false;
+                    body = "shutdown_body";
+                }
+                else {
+                    data.getAsJsonObject().add("userID", new JsonPrimitive(session.getId()));
+                    valid = true;
+                    body = "";
+                }
+            }
+            break;
+            default: {
+                valid = false;
+                body = "unknown_type";
+            }
+        }
+        Boolean success =  valid ? connector.sendData(data) : false;
+        try
+        {
+            session.getBasicRemote().sendText(gson.toJson(new Message(success ? "success" : "failure", body)));
+        }
+        catch (IOException ioe) {
+            ioe.printStackTrace();
         }
     }
 
@@ -77,7 +156,61 @@ public class UHFDataSocket implements DataListener
     @Override
     public void dataReceived(JsonElement data)
     {
-        //Send data to their sql
+        if(data.getAsJsonObject().get("header").getAsString().equalsIgnoreCase("data_rx"))
+        {
+            //Send data to their sql
+        }
+        else if(data.getAsJsonObject().get("header").getAsString().equalsIgnoreCase("shutdown_delay")) {
+            TimerTask task = new TimerTask()
+            {
+                @Override
+                public void run()
+                {
+                    JsonObject shutdown = new JsonObject();
+                    shutdown.add("header", new JsonPrimitive("shutdown"));
+                    connector.sendData(shutdown);
+                }
+            };
+            Timer t = new Timer();
+            long wait = 60;
+            if(data.getAsJsonObject().has("body"))
+                wait = data.getAsJsonObject().get("body").getAsLong();
+            t.schedule(task, wait);
+            Session user = null;
+            for(Session s : clients) {
+                if(s.getId().equals(data.getAsJsonObject().get("userID").getAsString())) {
+                    user = s;
+                    break;
+                }
+            }
+            try
+            {
+                if(user != null) user.getBasicRemote().sendText(data.toString());
+            }
+            catch (IOException ioe)
+            {
+                ioe.printStackTrace();
+            }
+            return;
+        }
+        else if(data.getAsJsonObject().get("header").getAsString().equalsIgnoreCase("data_tx_ack")) {
+            Session user = null;
+            for(Session s : clients) {
+                if(s.getId().equals(data.getAsJsonObject().get("userID").getAsString())) {
+                    user = s;
+                    break;
+                }
+            }
+            try
+            {
+                if(user != null) user.getBasicRemote().sendText(data.toString());
+            }
+            catch (IOException ioe)
+            {
+                ioe.printStackTrace();
+            }
+            return;
+        }
         for(Session s : clients) {
             try
             {
