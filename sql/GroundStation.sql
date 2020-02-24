@@ -42,6 +42,33 @@ LOCK TABLES `Administrators` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `Scheduling`
+--
+
+DROP TABLE IF EXISTS `Scheduling`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `Scheduling` (
+  `schedID` int(11) NOT NULL,
+  `date` varchar(45) NOT NULL,
+  `time` varchar(45) NOT NULL,
+  `userID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`schedID`),
+  KEY `userID_idx` (`userID`),
+  CONSTRAINT `userID` FOREIGN KEY (`userID`) REFERENCES `userinfo` (`userID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Scheduling`
+--
+
+LOCK TABLES `Scheduling` WRITE;
+/*!40000 ALTER TABLE `Scheduling` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Scheduling` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `UserInfo`
 --
 
@@ -76,4 +103,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-02 18:12:17
+-- Dump completed on 2020-02-23 16:51:04

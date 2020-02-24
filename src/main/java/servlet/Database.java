@@ -222,4 +222,38 @@ public class Database {
             e.printStackTrace();
         }
     }
+
+    public boolean TimeSlotAvail(){
+
+    }
+
+    public void unscheduleTimeSlot(String username){
+
+    }
+
+    public void ADMINunscheduleTimeSlot(String username){
+        if(isAdministrator(username)!= -1) {
+            try {
+                //unschedule user
+                unscheduleTimeSlot(username);
+
+                //update user
+
+                // update cal
+
+                //send email
+
+            } catch(SQLException e){
+                System.out.println("SQLException in function \"validate\"");
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void scheduleTimeSlot(String username){
+
+    }
+
+    public void
 }
