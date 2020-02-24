@@ -4,6 +4,7 @@ import com.google.gson.*;
 import connector.DataListener;
 import connector.UHFDataConnector;
 import info.Message;
+import servlet.SchedulingServlet;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
@@ -46,14 +47,40 @@ public class UHFDataSocket implements DataListener
     public void onMessage(String message, Session session)
     {
         JsonElement data = parser.parse(message);
-        //TODO: check HttpSession to see if user has edit access
-        String body = "";
+        HttpSession httpSession = (HttpSession)session.getUserProperties().get("httpSession");
+        int userID = (int) httpSession.getAttribute("userID");
+        Boolean isAdmin = (Boolean) httpSession.getAttribute("isAdmin");
+        if(userID != SchedulingServlet.inControlUser) {
+            if(isAdmin && !data.getAsJsonObject().has("admin_override")) {
+                try
+                {
+                    session.getBasicRemote().sendText(gson.toJson(new Message("failure","no_control_admin")));
+                }
+                catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+                return;
+            }
+            else if(!isAdmin)
+            {
+                try
+                {
+                    session.getBasicRemote().sendText(gson.toJson(new Message("failure", "no_control_user")));
+                }
+                catch (IOException ioe)
+                {
+                    ioe.printStackTrace();
+                }
+                return;
+            }
+        }
+        String body = "send_failure";
         Boolean valid = false;
         switch (data.getAsJsonObject().get("header").getAsString()) {
             case "set_transmit": {
                 if(!data.getAsJsonObject().has("body")) {
                     valid = false;
-                    body = "Invalid transmit state.";
+                    body = "invalid_transmit";
                     break;
                 }
                 connector.setTransmitState(data.getAsJsonObject().get("body").getAsString().equalsIgnoreCase("true"));
@@ -69,7 +96,7 @@ public class UHFDataSocket implements DataListener
             case "data_tx": {
                 if(!data.getAsJsonObject().has("body")) {
                     valid = false;
-                    body = "Must provide data for transmit.";
+                    body = "no_data";
                 }
                 else {
                     String dataBody = data.getAsJsonObject().get("body").getAsString();
@@ -77,10 +104,11 @@ public class UHFDataSocket implements DataListener
                     if(matcher.matches()) {
                         data.getAsJsonObject().add("userID", new JsonPrimitive(session.getId()));
                         valid = true;
+                        body = "";
                     }
                     else {
                         valid = false;
-                        body = "Data must be a valid hexadecimal string.";
+                        body = "invalid_data";
                     }
                 }
             }
@@ -88,17 +116,18 @@ public class UHFDataSocket implements DataListener
             case "shutdown": {
                 if(data.getAsJsonObject().has("body")) {
                     valid = false;
-                    body = "Must not provide body field with shutdown message type.";
+                    body = "shutdown_body";
                 }
                 else {
                     data.getAsJsonObject().add("userID", new JsonPrimitive(session.getId()));
                     valid = true;
+                    body = "";
                 }
             }
             break;
             default: {
                 valid = false;
-                body = "Unknown message type.";
+                body = "unknown_type";
             }
         }
         Boolean success =  valid ? connector.sendData(data) : false;

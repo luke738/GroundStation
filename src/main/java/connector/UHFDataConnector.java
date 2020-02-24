@@ -11,8 +11,8 @@ import java.util.*;
 
 public class UHFDataConnector implements DataListener{
     private List<DataListener> listeners = Collections.synchronizedList(new ArrayList<>());
+    private Connection pythonConn;
     private Connection desktopConn;
-
 
     private static final UHFDataConnector single = new UHFDataConnector();
     private UHFDataConnector() {
@@ -22,7 +22,9 @@ public class UHFDataConnector implements DataListener{
     private void initialize() {
         //TODO: Connect to desktop program
         //Initialize desktopConn
-        desktopConn.addDataListener(this);
+        //TODO: Connect to python script
+        //Initialize pythonConn
+        pythonConn.addDataListener(this);
     }
 
     public static UHFDataConnector getInstance(){
@@ -33,13 +35,13 @@ public class UHFDataConnector implements DataListener{
         JsonElement message = new JsonObject();
         message.getAsJsonObject().add("header", new JsonPrimitive("set_transmit"));
         message.getAsJsonObject().add("body", new JsonPrimitive(state));
-        desktopConn.send(message);
+        pythonConn.send(message);
     }
 
     public Boolean sendData(JsonElement data) {
         if(validateSend(data))
         {
-            desktopConn.send(data);
+            pythonConn.send(data);
             return true;
         }
         else
