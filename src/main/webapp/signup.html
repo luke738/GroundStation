@@ -34,7 +34,8 @@
     </p>
 
     <p>
-        <input  id="submit" type="submit" value="Sign Up">
+        <input id="submit" type="button" value="Sign Up" onclick="sendData();"/>
+
     </p>
     <div id = "login" align="center">
         Already have an account? <a href="login.html">Log in</a>
@@ -49,27 +50,27 @@
     function sendData(){
         var name = document.querySelector('#name');
         var email = document.querySelector('#email');
-        var password = document.querySelector('#password');
+        var pw = document.querySelector('#password');
         var classcode = document.querySelector('#classcode');
 
         // Converting JSON data to string
         var data = JSON.stringify({ header: email.value, body: {
             "email": email.value,
-            "password": pw.value,
-                "classcode": classcode.value}
+            "password": password.value,
+                "classcode": classcode.value,
+            "name": name.value}
         });
+
         console.log(data);
 
-        // Creating a XHR object
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/Login?signOrLog=signup", true);
-
-        // Sending data with the request
+        xhr.open("POST", "/Login?signOrLog=signup", false);
         xhr.send(data);
 
-        console.log("RESP: " + xhttp.response);
-        var response = JSON.parse(xhttp.response); //Could check and see if request was successful
+        console.log("RESP: " + xhr.response);
+        var response = JSON.parse(xhr.response); //Could check and see if request was successful
         if(response.header != "Verified") {
+            console.log("stays at signup html");
             window.location = "/signup.html";
         } else {
             window.location = "/dashboard_s_band.html";

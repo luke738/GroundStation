@@ -61,6 +61,18 @@ input[type="submit"] {
     padding: .8em 0;
 }
 
+#submit {
+    border-radius: 2px;
+    border: none;
+    color: #000;
+    background: #A0E4A6;
+    cursor: pointer;
+    display: block;
+    font-size: 2em;
+    line-height: 1.5em;
+    padding: .8em 0;
+}
+
 input[type="submit"]:hover {
     background: #fff;
 }

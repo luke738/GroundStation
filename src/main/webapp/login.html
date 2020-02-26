@@ -1,4 +1,4 @@
-<!DOCTYPE html>,
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="css/login.css">
@@ -25,7 +25,7 @@
     </p>
 
     <p>
-        <input  id="submit" type="submit" value="Log In">
+        <input id="submit" type="button" value="Log In" onclick="sendData();"/>
     </p>
     <div id = "signup" align="center">
         Need an account? <a href="signup.html">Sign up</a>
@@ -47,13 +47,13 @@
 
         // Creating a XHR object
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/Login?signOrLog=login", true);
+        xhr.open("POST", "/Login?signOrLog=login", false);
 
         // Sending data with the request
         xhr.send(data);
 
-        console.log("RESP: " + xhttp.response);
-        var response = JSON.parse(xhttp.response); //Could check and see if request was successful
+        console.log("RESP: " + xhr.response);
+        var response = JSON.parse(xhr.response); //Could check and see if request was successful
         if(response.header != "Verified") {
             window.location = "/login.html";
         } else {

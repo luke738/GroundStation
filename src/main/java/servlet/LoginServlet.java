@@ -8,6 +8,7 @@ import security.PasswordHashing;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 
 @WebServlet(name = "LoginServlet", urlPatterns = "/Login")
-public class LoginServlet  {
+public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         PrintWriter respWriter = response.getWriter();
@@ -31,7 +32,6 @@ public class LoginServlet  {
         String name ="";
         String classcode = "";
 
-
         //getting message for if login (only username & password
         if(logOrsign.equals("login")) {
             Message reqMessage = gson.fromJson(reqBody, Message.class);
@@ -43,12 +43,11 @@ public class LoginServlet  {
             Message reqMessage = gson.fromJson(reqBody, Message.class);
             username = reqMessage.header;
             //Interact with the raw JSON to determine the type of the object via unique fields
-            JsonObject signupinfo = new JsonParser().parse( (String) reqMessage.body).getAsJsonObject();
+            JsonObject signupinfo = new JsonParser().parse( (String) reqMessage.body.toString()).getAsJsonObject();
             password = signupinfo.get("password").getAsString();
             classcode = signupinfo.get("classcode").getAsString();
             name = signupinfo.get("name").getAsString();
         }
-
 
 
         try{
