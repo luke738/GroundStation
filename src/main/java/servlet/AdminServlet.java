@@ -21,12 +21,10 @@ public class AdminServlet extends HttpServlet {
         PrintWriter respWriter = response.getWriter();
         Gson gson = new Gson();
         String reqBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())); //Java 8 magic to collect all lines from a BufferedReader, in this case the request.
-        //change password, add admin, add classcode
+        //change password, add admin, add/delete classcode
         String admin_actions = request.getParameter("actions");
         String user_email ="";
         String password = "";
-        //only for sign up
-        String name ="";
         String classcode = "";
         String salted = "";
         String hashed_pw = "";
@@ -43,7 +41,6 @@ public class AdminServlet extends HttpServlet {
             salted = PasswordHashing.getRandomSalt();
             hashed_pw = PasswordHashing.hashPassword(password, salted);
             password = "";
-            //only need new password
         }
         //getting message for if add admin (proposed admin email)
         else if(admin_actions.equals("add_admin"))  {
