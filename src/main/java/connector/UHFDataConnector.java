@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import info.Connection;
+import info.JavaConnection;
 import info.Message;
 
 import java.util.*;
@@ -12,7 +13,7 @@ import java.util.*;
 public class UHFDataConnector implements DataListener{
     private List<DataListener> listeners = Collections.synchronizedList(new ArrayList<>());
     private Connection pythonConn;
-    private Connection desktopConn;
+    private JavaConnection desktopConn;
 
     private static final UHFDataConnector single = new UHFDataConnector();
     private UHFDataConnector() {
@@ -32,10 +33,11 @@ public class UHFDataConnector implements DataListener{
     }
 
     public void setTransmitState(Boolean state) {
-        JsonElement message = new JsonObject();
-        message.getAsJsonObject().add("header", new JsonPrimitive("set_transmit"));
-        message.getAsJsonObject().add("body", new JsonPrimitive(state));
-        pythonConn.send(message);
+//        JsonElement message = new JsonObject();
+//        message.getAsJsonObject().add("header", new JsonPrimitive("set_transmit"));
+//        message.getAsJsonObject().add("body", new JsonPrimitive(state));
+//        pythonConn.send(message);
+        desktopConn.send(new Message("set_transmit",state));
     }
 
     public Boolean sendData(JsonElement data) {
