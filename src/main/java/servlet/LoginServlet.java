@@ -72,6 +72,7 @@ public class LoginServlet  {
 
                             //set attributes
                             session.setAttribute("hello", "Hello " + username);
+                            session.setAttribute("email", username);
                             session.setAttribute("userID", userIDstore);
                             session.setAttribute("loggedIn",true);
                             session.setAttribute("isAdmin",AdminStatus);
