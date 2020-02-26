@@ -33,11 +33,11 @@ public class UserServlet extends HttpServlet {
             Message reqMessage = gson.fromJson(reqBody, Message.class);
             //only need new password
             //GET PASSWORD FROM FRONT END
-            password ="";
+            password = request.getParameter("new_password");
             //generate salt and hashed pw
             salted = PasswordHashing.getRandomSalt();
             hashed_pw = PasswordHashing.hashPassword(password, salted);
-            password = "";
+            password ="";
         }
 
         try{

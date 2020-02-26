@@ -29,14 +29,12 @@ public class AdminServlet extends HttpServlet {
         String salted = "";
         String hashed_pw = "";
 
-
-
         //getting message for change password
         if(admin_actions.equals("change_password")) {
             Message reqMessage = gson.fromJson(reqBody, Message.class);
             //only need new password
             //GET PASSWORD FROM FRONT END
-            password ="";
+            password = request.getParameter("new_password");
             //generate salt and hashed pw
             salted = PasswordHashing.getRandomSalt();
             hashed_pw = PasswordHashing.hashPassword(password, salted);
@@ -47,21 +45,21 @@ public class AdminServlet extends HttpServlet {
             Message reqMessage = gson.fromJson(reqBody, Message.class);
             //only need proposed admin email
             //GET EMAIL FROM FRONT END
-            user_email = "";
+            user_email = request.getParameter("user_email");;
         }
         //getting message for delete class code ; need old class code
         else if(admin_actions.equals("delete_class_code"))  {
             Message reqMessage = gson.fromJson(reqBody, Message.class);
             //only need deleted class_code
             //GET CLASS CODE
-            classcode ="";
+            classcode = request.getParameter("old_class_code");;
         }
         //getting message for add class code ; need new class code
         else if(admin_actions.equals("add_class_code"))  {
             Message reqMessage = gson.fromJson(reqBody, Message.class);
             //only need new class_code
             //GET CLASS CODE
-            classcode ="";
+            classcode = request.getParameter("new_class_code");
         }
 
 
@@ -108,7 +106,7 @@ public class AdminServlet extends HttpServlet {
                         respWriter.close();
                         return;
                     }
-                //add classcode
+                //add class code
                 case "add_class_code":
                     db.addClassCode(session.getAttribute("email").toString(), classcode);
                     respWriter.println(gson.toJson(new Message("Added Class Code")));
