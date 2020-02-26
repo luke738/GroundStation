@@ -47,33 +47,6 @@ public class UHFDataSocket implements DataListener
     public void onMessage(String message, Session session)
     {
         JsonElement data = parser.parse(message);
-        HttpSession httpSession = (HttpSession)session.getUserProperties().get("httpSession");
-        int userID = (int) httpSession.getAttribute("userID");
-        Boolean isAdmin = (Boolean) httpSession.getAttribute("isAdmin");
-        if(userID != SchedulingServlet.inControlUser) {
-            if(isAdmin && !data.getAsJsonObject().has("admin_override")) {
-                try
-                {
-                    session.getBasicRemote().sendText(gson.toJson(new Message("failure","no_control_admin")));
-                }
-                catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
-                return;
-            }
-            else if(!isAdmin)
-            {
-                try
-                {
-                    session.getBasicRemote().sendText(gson.toJson(new Message("failure", "no_control_user")));
-                }
-                catch (IOException ioe)
-                {
-                    ioe.printStackTrace();
-                }
-                return;
-            }
-        }
         String body = "send_failure";
         Boolean valid = false;
         switch (data.getAsJsonObject().get("header").getAsString()) {
