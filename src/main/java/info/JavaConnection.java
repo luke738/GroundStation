@@ -1,13 +1,18 @@
 package info;
 
+import connector.DataListener;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JavaConnection
 {
+    private List<DataListener> listeners = new ArrayList<DataListener>();
     private Socket s;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;

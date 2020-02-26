@@ -3,30 +3,47 @@ package connector;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import info.Connection;
+import info.JavaConnection;
 import info.Message;
 
+import java.net.Socket;
 import java.util.*;
 
-public class MotorConnector implements DataListener{
+public class MotorConnector{
     public enum MotorConnectorType{
         UHF, SBAND
     }
     private static Map<MotorConnectorType, MotorConnector> instances = Collections.synchronizedMap(new TreeMap<>());
 
-    private List<DataListener> listeners = new ArrayList<DataListener>();
-    private Connection desktopConn;
+    private List<MessageListener> listeners = new ArrayList<>();
+    private JavaConnection desktopConn;
 
     private MotorConnector(MotorConnectorType type) {
-        //initialize() TODO: Uncomment
+        initialize();
     }
 
     private void initialize() {
-        //TODO: Connect to desktop program
         //Initialize desktopConn
-        desktopConn.addDataListener(this);
+        while(desktopConn == null)
+        {
+            try
+            {
+                //desktopConn = new JavaConnection(new Socket("10.182.13.99", 6789)); //TODO: Uncomment for deployment
+                desktopConn = new JavaConnection(new Socket("127.0.0.1",6789));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        Thread t = new Thread(() -> {
+            Message m = desktopConn.receive(Message.class);
+            sendEvent(m);
+        });
+        t.start();
     }
 
-    public MotorConnector getInstance(MotorConnectorType type) {
+    public static MotorConnector getInstance(MotorConnectorType type) {
         if(!instances.containsKey(type))
         {
             synchronized (MotorConnector.class)
@@ -40,49 +57,62 @@ public class MotorConnector implements DataListener{
         return instances.get(type);
     }
 
-    public Boolean sendData(JsonElement data) {
-        if(validateSend(data))
+    public static Map<MotorConnectorType, MotorConnector> getInstances() {
+        if(instances.size() != MotorConnectorType.values().length) {
+            for(MotorConnectorType type : MotorConnectorType.values()) {
+                if(!instances.containsKey(type))
+                {
+                    synchronized (MotorConnector.class)
+                    {
+                        if(!instances.containsKey(type))
+                        {
+                            instances.put(type, new MotorConnector(type));
+                        }
+                    }
+                }
+            }
+        }
+        return instances;
+    }
+
+    public Boolean sendData(Message m) {
+        if(validateSend(m))
         {
-            desktopConn.send(data);
+            desktopConn.send(m);
             return true;
         }
         else
             return false;
     }
 
-    private Boolean validateRecieve(JsonElement data) {
+    private Boolean validateRecieve(Message m) {
         return true;
     }
 
-    private Boolean validateSend(JsonElement data) {
+    private Boolean validateSend(Message m) {
         return true;
     }
 
-    public void addDataListener(DataListener d) {
-        listeners.add(d);
+    public void addMessageListener(MessageListener m) {
+        listeners.add(m);
     }
 
-    public void removeDataListener(DataListener d) {
-        listeners.remove(d);
+    public void removeMessageListener(MessageListener m) {
+        listeners.remove(m);
     }
 
-    @Override
-    public void dataReceived(JsonElement data) {
-        sendEvent(data);
-    }
-
-    private void sendEvent(JsonElement data) {
-        if(validateRecieve(data))
+    private void sendEvent(Message m) {
+        if(validateRecieve(m))
         {
-            for (DataListener d : listeners)
+            for (MessageListener ml : listeners)
             {
-                d.dataReceived(data);
+                ml.messageReceived(m);
             }
         }
         else {
-            for (DataListener d : listeners)
+            for (MessageListener ml : listeners)
             {
-                d.dataReceived(new Gson().toJsonTree(new Message("invalid")));
+                ml.messageReceived(new Message("invalid"));
             }
         }
     }
