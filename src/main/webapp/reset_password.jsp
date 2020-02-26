@@ -14,9 +14,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Reset Password</title>
-    <link rel="stylesheet" href="/css/style.css" >
-    <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
 </head>
 <body>
     <!--The line below is commented out as it throws errors; but it needs to be fixed-->
@@ -28,37 +25,48 @@
             Please enter your login email, we'll send a new random password to your inbox:
         </p>
 
-        <form id="resetForm" action="ForgotPasswordServlet" method="post">
+        <form id="resetForm" onsubmit="return sendEmail()">
 
             <div>Email:</div>
             <input type="text" name="email" id="email" size="20">
-            <%--<button type="submit">Send me new password</button>--%>
-            <input type = "submit">
+            <input type="button" value="Submit" onclick="sendEmail();"/>
 
         </form>
     </div>
     <!--The line below is commented out as it throws errors; but it needs to be fixed-->
     <!--jsp:directive.include file="footer.jsp" /-->
-<script type="text/javascript">
+<script>
+    function sendEmail() {
+        var email = document.querySelector('#email');
+        console.log(email.value);
 
-    $(document).ready(function() {
-        $("#resetForm").validate({
-            rules: {
-                email: {
-                    required: true,
-                    email: true
-                }
-            },
+        var data = JSON.stringify({ header: email.value, body: "" });
 
-            messages: {
-                email: {
-                    required: "Please enter email",
-                    email: "Please enter a valid email address"
-                }
-            }
-        });
+        // send email to backend POST method
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/ForgotPassword?email="+email.value,false);
+        xhr.send(data);
 
-    });
+    }
+
+    // $(document).ready(function() {
+    //     $("#resetForm").validate({
+    //         rules: {
+    //             email: {
+    //                 required: true,
+    //                 email: true
+    //             }
+    //         },
+    //
+    //         messages: {
+    //             email: {
+    //                 required: "Please enter email",
+    //                 email: "Please enter a valid email address"
+    //             }
+    //         }
+    //     });
+    //
+    // });
 </script>
 
 </body>
