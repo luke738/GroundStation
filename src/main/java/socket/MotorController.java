@@ -3,8 +3,8 @@ package socket;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import connector.DataListener;
-import connector.UHFDataConnector;
+import connector.MessageListener;
+import connector.MotorConnector;
 import info.Message;
 
 import javax.servlet.http.HttpSession;
@@ -14,18 +14,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @ServerEndpoint(value = "/MotorControl", configurator = GetHttpSessionConfigurator.class)
-public class MotorController implements DataListener
+public class MotorController implements MessageListener
 {
-    private static List<Session> clients = Collections.synchronizedList(new ArrayList<Session>());
-    private UHFDataConnector connector = UHFDataConnector.getInstance();
+    private static List<Session> clients = Collections.synchronizedList(new ArrayList<>());
+    private Map<MotorConnector.MotorConnectorType, MotorConnector> connectors = MotorConnector.getInstances();
     private JsonParser parser = new JsonParser();
     private Gson gson = new Gson();
 
     public MotorController()
     {
-        connector.addDataListener(this);
+        for(MotorConnector connector : connectors.values()) {
+            connector.addMessageListener(this);
+        }
     }
 
     @OnOpen
@@ -44,7 +47,7 @@ public class MotorController implements DataListener
     public void onMessage(String message, Session session){
         JsonElement data = parser.parse(message);
         //TODO: check HttpSession to see if user has edit access
-        Boolean success = connector.sendData(data);
+        Boolean success = false; //connector.sendData(data);
         try
         {
             session.getBasicRemote().sendText(gson.toJson(new Message(success ? "success" : "failure")));
@@ -58,7 +61,9 @@ public class MotorController implements DataListener
     public void close(Session session)
     {
         clients.remove(session);
-        connector.removeDataListener(this);
+        for(MotorConnector connector : connectors.values()) {
+            connector.removeMessageListener(this);
+        }
     }
 
     @OnError
@@ -68,13 +73,13 @@ public class MotorController implements DataListener
     }
 
     @Override
-    public void dataReceived(JsonElement data)
+    public void messageReceived(Message m)
     {
         //Send data to their sql?
         for(Session s : clients) {
             try
             {
-                s.getBasicRemote().sendText(data.toString());
+                s.getBasicRemote().sendText(gson.toJson(m));
             }
             catch (IOException ioe)
             {

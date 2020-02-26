@@ -5,25 +5,49 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import info.Connection;
+import info.JavaConnection;
 import info.Message;
 
+import java.net.Socket;
 import java.util.*;
 
 public class UHFDataConnector implements DataListener{
     private List<DataListener> listeners = Collections.synchronizedList(new ArrayList<>());
     private Connection pythonConn;
-    private Connection desktopConn;
+    private JavaConnection desktopConn;
 
     private static final UHFDataConnector single = new UHFDataConnector();
     private UHFDataConnector() {
-        //initialize(); TODO: Uncomment when initialize works
+        initialize();
     }
 
     private void initialize() {
-        //TODO: Connect to desktop program
         //Initialize desktopConn
-        //TODO: Connect to python script
+        while(desktopConn == null)
+        {
+            try
+            {
+                //desktopConn = new JavaConnection(new Socket("10.182.13.99", 6789)); //TODO: Uncomment for deployment
+                desktopConn = new JavaConnection(new Socket("127.0.0.1",6789));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
         //Initialize pythonConn
+        while(pythonConn == null)
+        {
+            try
+            {
+                //pythonConn = new Connection(new Socket("10.182.13.99", 2186)); //TODO: Uncomment for deployment
+                pythonConn = new Connection(new Socket("127.0.0.1", 2186));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
         pythonConn.addDataListener(this);
     }
 
@@ -32,10 +56,11 @@ public class UHFDataConnector implements DataListener{
     }
 
     public void setTransmitState(Boolean state) {
-        JsonElement message = new JsonObject();
-        message.getAsJsonObject().add("header", new JsonPrimitive("set_transmit"));
-        message.getAsJsonObject().add("body", new JsonPrimitive(state));
-        pythonConn.send(message);
+//        JsonElement message = new JsonObject();
+//        message.getAsJsonObject().add("header", new JsonPrimitive("set_transmit"));
+//        message.getAsJsonObject().add("body", new JsonPrimitive(state));
+//        pythonConn.send(message);
+        desktopConn.send(new Message("set_transmit",state));
     }
 
     public Boolean sendData(JsonElement data) {

@@ -71,6 +71,7 @@ public class LoginServlet extends HttpServlet {
 
                             //set attributes
                             session.setAttribute("hello", "Hello " + username);
+                            session.setAttribute("email", username);
                             session.setAttribute("userID", userIDstore);
                             session.setAttribute("loggedIn",true);
                             session.setAttribute("isAdmin",AdminStatus);
