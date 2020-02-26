@@ -1,8 +1,6 @@
 package servlet;
 
 import java.sql.*;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 public class Database {
     private Connection conn;
@@ -113,36 +111,6 @@ public class Database {
             e.printStackTrace();
         }
         return -1;
-    }
-    public int inControl(){
-
-        ZoneId zoneId = ZoneId.of( "America/Los_Angeles" );
-        ZonedDateTime zdt = ZonedDateTime.now( zoneId );
-
-        //get day
-        String day = (zdt.toLocalDate().toString());
-        int time = zdt.getHour();
-        // get time
-
-        try{
-            String tempTime = "s." + time;
-            ps = conn.prepareStatement("SELECT "+tempTime+"AS 'dbUSER' FROM Scheduling s WHERE dated =? ");
-            ps.setString(1, day);
-            rs = ps.executeQuery();
-            if(!rs.next()){
-                SchedulingServlet.inControlUser =-1;
-                return -1;
-            }
-            else {
-                SchedulingServlet.inControlUser = rs.getInt("dbUSER");
-                //fIX
-                return 0;
-            }
-        } catch (SQLException e) {
-            System.out.println("SQLException in function \"validate\"");
-            e.printStackTrace();
-        }
-        return 0;
     }
 
     public Boolean addAdministrator(String username){
@@ -255,68 +223,5 @@ public class Database {
         }
     }
 
-    public boolean TimeSlotAvail(String time, String day){
-        try{
-            String tempTime = "s." + time;
-            ps = conn.prepareStatement("SELECT "+tempTime+" FROM Scheduling s WHERE dated =? ");
-            ps.setString(1, day);
-            rs = ps.executeQuery();
-            if(!rs.next()){
-                return true;
-            }
-            return false;
-        } catch (SQLException e) {
-            System.out.println("SQLException in function \"validate\"");
-            e.printStackTrace();
-        }
-        return false;
-
-    }
-
-    public void unscheduleTimeSlot(String username, String time, String day){
-        try{
-            String tempTime = "s." + time;
-            ps = conn.prepareStatement("SELECT "+tempTime+"AS 'dbUSER' FROM Scheduling s WHERE dated =? ");
-            ps.setString(1, day);
-            rs = ps.executeQuery();
-            if(rs.next()){
-                int usID = getUserID(username);
-                if (usID== rs.getInt("dbUSER")){
-                    ps = conn.prepareStatement("UPDATE Scheduling SET "+ time + "=NULL WHERE dated =? ");
-                    ps.setString(1, day);
-                    ps.executeUpdate();
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("SQLException in function \"validate\"");
-            e.printStackTrace();
-        }
-
-    }
-
-    private int convertToMilitaryTime(String time){
-        return 0;
-    }
-
-    public void ADMINunscheduleTimeSlot(String username, String time, String day){
-        if(isAdministrator(username)!= -1) {
-            //try {
-                //unschedule user
-                unscheduleTimeSlot(username, time, day);
-
-                // update calendar front end
-
-                //send email wherever called
-
-
-           // } catch(SQLException e){
-                //System.out.println("SQLException in function \"validate\"");
-              //  e.printStackTrace();
-            //}
-        }
-
-    }
-
-    public void scheduleTimeSlot(String username, String time, String dated) {
-    }
+    
 }
