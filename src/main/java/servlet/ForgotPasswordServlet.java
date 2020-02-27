@@ -1,11 +1,7 @@
 package servlet;
 
 import info.EmailUtility;
-import info.Message;
 import security.PasswordHashing;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * A Java Servlet to handle requests to reset password for customer
@@ -25,6 +22,9 @@ import java.io.IOException;
 
 public class ForgotPasswordServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+public ForgotPasswordServlet(){
+    init();
+}
 
     private String host;
     private String port;
@@ -50,7 +50,7 @@ public class ForgotPasswordServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        PrintWriter respWriter  = response.getWriter();
         String recipient = request.getParameter("email");
         Database db = new Database();
         String tempPassword ="";
@@ -67,6 +67,9 @@ public class ForgotPasswordServlet extends HttpServlet {
                 String hashedpword = PasswordHashing.hashPassword(tempPassword, salty);
                 db.fixUser(recipient, hashedpword, salty);
             }
+            else {
+                respWriter.println("Not valid email address");
+            }
 
         } catch (Exception ex){
             ex.printStackTrace();
@@ -82,13 +85,16 @@ public class ForgotPasswordServlet extends HttpServlet {
             if(allClear) {
                 EmailUtility.sendEmail(host, port, email, name, pass, recipient, subject, content);
                 message = "Your password has been reset. Please check your e-mail.";
+                System.out.println("IM HERE");
+                //respWriter.println(message);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
             message = "There was an error: " + ex.getMessage();
-        } finally {
-            request.setAttribute("message", message);
-            request.getRequestDispatcher("message.jsp").forward(request, response);
-        }
+        } //finally {
+            //request.setAttribute("message", message);
+           // equest.getRequestDispatcher("message.jsp").forward(request, response);
+       // }
+        respWriter.println(message);
     }
 }
