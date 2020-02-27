@@ -66,6 +66,7 @@ public class Main
                     break;
                     case "uhf_transmit_toggle":
                     {
+                        jc.send(new Message("dummy_toggle"));
                     }
                     break;
                     default:

@@ -21,8 +21,8 @@ public class Connection
 
     public Connection(Socket _s) throws IOException
     {
-        initialize(_s);
         parser = new JsonParser();
+        initialize(_s);
     }
 
     public Connection(Socket _s, InputStream _is, OutputStream _os)

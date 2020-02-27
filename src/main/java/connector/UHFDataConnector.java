@@ -61,6 +61,8 @@ public class UHFDataConnector implements DataListener{
 //        message.getAsJsonObject().add("body", new JsonPrimitive(state));
 //        pythonConn.send(message);
         desktopConn.send(new Message("set_transmit",state));
+        Message resp = desktopConn.receive(Message.class); //TODO: Remove these debug lines
+        System.out.println(resp.header); //TODO: Above
     }
 
     public Boolean sendData(JsonElement data) {
