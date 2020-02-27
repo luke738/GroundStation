@@ -22,25 +22,6 @@ import java.io.PrintWriter;
 
 public class ForgotPasswordServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-public ForgotPasswordServlet(){
-    init();
-}
-
-    private String host;
-    private String port;
-    private String email;
-    private String name;
-    private String pass;
-
-    public void init() {
-        // reads SMTP server setting from web.xml file
-        ServletContext context = getServletContext();
-        host = context.getInitParameter("host");
-        port = context.getInitParameter("port");
-        email = context.getInitParameter("email");
-        name = context.getInitParameter("name");
-        pass = context.getInitParameter("pass");
-    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -57,6 +38,13 @@ public ForgotPasswordServlet(){
         String message = "";
         //signal for if the user email exists in db
         Boolean allClear = false;
+
+        ServletContext context = getServletContext();
+        String host = context.getInitParameter("host");
+        String port = context.getInitParameter("port");
+        String email = context.getInitParameter("email");
+        String name = context.getInitParameter("name");
+        String pass = context.getInitParameter("pass");
 
         try {
             //check if user
