@@ -24,6 +24,7 @@ public class EmailUtility {
         properties.put("mail.smtp.port", port);
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
+        System.out.println("HERE NOW");
 
         // creates a new session with an authenticator
         Authenticator auth = new Authenticator() {
@@ -36,7 +37,7 @@ public class EmailUtility {
 
         // creates a new e-mail message
         Message msg = new MimeMessage(session);
-
+        System.out.println("HEEEERRREEE");
         msg.setFrom(new InternetAddress(senderEmail, senderName));
         InternetAddress[] toAddresses = { new InternetAddress(recipientEmail) };
         msg.setRecipients(Message.RecipientType.TO, toAddresses);
