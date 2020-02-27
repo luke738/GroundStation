@@ -1,7 +1,11 @@
 package servlet;
 
 import info.EmailUtility;
+import info.Message;
 import security.PasswordHashing;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -17,7 +21,8 @@ import java.io.IOException;
  * @author www.codejava.net
  *
  */
-@WebServlet(name = "ForgotPasswordServlet")
+@WebServlet(name = "ForgotPasswordServlet", urlPatterns = "/ForgotPassword")
+
 public class ForgotPasswordServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -37,18 +42,16 @@ public class ForgotPasswordServlet extends HttpServlet {
         pass = context.getInitParameter("pass");
     }
 
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         String page = "reset_password.jsp";
         request.getRequestDispatcher(page).forward(request, response);
-
     }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         String recipient = request.getParameter("email");
-        System.out.println("recipient " + recipient);
         Database db = new Database();
         String tempPassword ="";
         String message = "";
