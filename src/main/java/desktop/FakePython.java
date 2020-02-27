@@ -1,8 +1,11 @@
 package desktop;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import connector.DataListener;
 import info.Connection;
+import info.Message;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -32,6 +35,7 @@ public class FakePython implements DataListener
     @Override
     public void dataReceived(JsonElement data)
     {
-        c.send(data);
+        Message m = new Message("info", data.toString());
+        c.send(new Gson().toJsonTree(m));
     }
 }
