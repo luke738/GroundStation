@@ -48,11 +48,13 @@ public class ForgotPasswordServlet extends HttpServlet {
 
         try {
             //check if user
-            if(!db.checkUser(recipient)) {
+            if(db.checkUser(recipient)) {
                 allClear = true;
+                System.out.println("HERE");
                 tempPassword = PasswordHashing.tempPasswordCreator();
                 String salty = PasswordHashing.getRandomSalt();
                 String hashedpword = PasswordHashing.hashPassword(tempPassword, salty);
+                System.out.println("HERE");
                 db.fixUser(recipient, hashedpword, salty);
             }
             else {
