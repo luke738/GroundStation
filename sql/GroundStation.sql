@@ -29,7 +29,7 @@ CREATE TABLE `Administrators` (
   PRIMARY KEY (`AdminID`),
   KEY `fk1_idx` (`userID`),
   CONSTRAINT `fk1` FOREIGN KEY (`userID`) REFERENCES `userinfo` (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,6 +38,7 @@ CREATE TABLE `Administrators` (
 
 LOCK TABLES `Administrators` WRITE;
 /*!40000 ALTER TABLE `Administrators` DISABLE KEYS */;
+INSERT INTO `Administrators` VALUES (1,'1',1);
 /*!40000 ALTER TABLE `Administrators` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -55,7 +56,7 @@ CREATE TABLE `UserInfo` (
   `salt` varchar(100) NOT NULL,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +65,7 @@ CREATE TABLE `UserInfo` (
 
 LOCK TABLES `UserInfo` WRITE;
 /*!40000 ALTER TABLE `UserInfo` DISABLE KEYS */;
-INSERT INTO `UserInfo` VALUES (1,'memcclun','pw','salt','Mackenzie'),(2,'memcclun','pw','salt','Mackenzie');
+INSERT INTO `UserInfo` VALUES (1,'memcclun@usc.edu','pw','salt','name');
 /*!40000 ALTER TABLE `UserInfo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -77,4 +78,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-25 20:05:17
+-- Dump completed on 2020-02-26 18:08:54

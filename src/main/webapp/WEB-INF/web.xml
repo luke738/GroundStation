@@ -26,7 +26,7 @@
     </context-param>
     <context-param>
         <param-name>pass</param-name>
-        <param-value>satsstans!</param-value>
+        <param-value>satsstans</param-value>
         <!-- add password-->
     </context-param>
 

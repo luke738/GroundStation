@@ -142,7 +142,7 @@ public class Database {
     public Boolean fixUser(String username, String passwordHash, String salt){
         try {
             int userID = getUserID(username);
-            ps = conn.prepareStatement("UPDATE UserInfo SET passwordHash = ? AND salt = ? WHERE userID = ? AND username = ?");
+            ps = conn.prepareStatement("UPDATE UserInfo SET pw = ? AND salt = ? WHERE userID = ? AND username = ?");
             ps.setString(1, passwordHash);
             ps.setString(2, salt);
             ps.setInt(3, userID);
