@@ -35,6 +35,7 @@ public class FakePython implements DataListener
     @Override
     public void dataReceived(JsonElement data)
     {
+        System.out.println(data.toString());
         Message m = new Message("info", data.toString());
         c.send(new Gson().toJsonTree(m));
     }
