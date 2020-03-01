@@ -54,6 +54,7 @@
                         <div class="card text-dark">
                             <div class="card-body">
                                 <div id="console_view"></div>
+
                             </div>
                         </div>
                     </div>
@@ -62,12 +63,14 @@
                         <h5 class="card-title">Enter data here:</h5>
                         <div class="card text-black">
                             <div class="card-body">
-                                <div class="form">
+                                <form class="form">
+
                                     <div class="form-group">
                                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </div>
+                                    <input id = "submitConsole" class="btn btn-primary" type="submit" value="Submit" onclick="sendData();"/>
+
+                                </form>
 
                             </div>
                         </div>
@@ -149,27 +152,39 @@
     </div>
 
 <script>
+    var socket = new WebSocket("ws://localhost:8080/UHFData");
+    var transmit = true;
     var slider = document.getElementById("antAngleSlider");
     var output = document.getElementById("set_angle");
     output.innerHTML = slider.value;
+
+    socket.addEventListener('open', function(event) {
+        socket.send("hello uhf data socket");
+    });
+
+    socket.addEventListener('message', function(event) {
+        console.log(event.data);
+        document.querySelector("#console_view").innerHTML = event.data; //not appending, new data each time
+    });
 
     slider.oninput = function() {
       output.innerHTML = this.value;
     }
 
     function toggleTransmit() {
+        transmit = true;
       var x = document.getElementById("data_entry_box");
       var state = document.getElementById("transmit_btn");
       var other = document.getElementById("recieve_btn");
       state.classList.add("active");
       other.classList.toggle("active");
 
-
        x.style.display = "block";
 
     }
 
     function toggleRecieve() {
+        transmit = false;
       var x = document.getElementById("data_entry_box");
       var other = document.getElementById("transmit_btn");
       var state = document.getElementById("recieve_btn");
@@ -181,8 +196,34 @@
     }
 
     function sendData() {
+            var command = document.querySelector('#exampleFormControlTextarea1');
+            // console.log(command.value);
+
+            var array = command.value.split(" ");
+
+            // Converting JSON data to string
+            var data = JSON.stringify({header: array[0], body: array[1], userID: 1});
+            // console.log(data);
+
+            // Creating a XHR object
+            // var xhr = new XMLHttpRequest();
+            // xhr.open("POST", "/UHFData", false);
+            // xhr.send(data);
+
+            if (transmit) {
+                socket.onopen = function (event) {
+                    socket.send(data);
+                }
+            }
+
+
+        // socket.close();
+
+        // console.log("RESP: " + xhr.response);
+        // var response = JSON.parse(xhr.response); //Could check and see if request was successful
 
     }
+
 
 </script>
 
