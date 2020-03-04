@@ -159,7 +159,7 @@
     output.innerHTML = slider.value;
 
     socket.addEventListener('open', function(event) {
-        socket.send("hello uhf data socket");
+        socket.send(JSON.stringify({header: "hello uhf data socket", body: ""}));
     });
 
     socket.addEventListener('message', function(event) {

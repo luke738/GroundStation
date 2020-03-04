@@ -45,6 +45,7 @@ public class UHFDataSocket implements DataListener
     @OnMessage
     public void onMessage(String message, Session session)
     {
+        System.out.println(message);
         JsonElement data = parser.parse(message);
         String body = "send_failure";
         Boolean valid = false;

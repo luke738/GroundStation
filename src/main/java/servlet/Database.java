@@ -91,11 +91,11 @@ public class Database {
             ps.setInt(1,userID);
             rs = ps.executeQuery();
             if(rs.next()){
-                AdminID = rs.getInt(AdminID);
+                AdminID = rs.getInt("AdminID");
             }
             return AdminID;
         } catch (SQLException e) {
-            System.out.println("SQLException in function \"validate\"");
+            System.out.println("SQLException in function \"VALIDATE\"");
             e.printStackTrace();
         }
         return -1;

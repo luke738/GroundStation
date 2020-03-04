@@ -55,10 +55,12 @@
         console.log("RESP: " + xhr.response);
 
         var response = JSON.parse(xhr.response); //Could check and see if request was successful
-        if(response.header != "Verified") {
+        console.log(response);
+        if(response.header != "LoggedIn") {
             window.location = "/login.html";
         } else {
-            console.log(sessionStorage.getItem(userID));
+            sessionStorage.setItem("userID", response.body);
+            console.log(sessionStorage.getItem("userID"));
             window.location = "/dashboard_s_band.html";
 
         }
