@@ -69,10 +69,11 @@
 
         console.log("RESP: " + xhr.response);
         var response = JSON.parse(xhr.response); //Could check and see if request was successful
-        if(response.header != "Verified") {
+        if(response.header != "Created") {
             console.log("stays at signup html");
             window.location = "/signup.html";
         } else {
+            sessionStorage.setItem("userID",response.body);
             window.location = "/dashboard_s_band.html";
         }
     }

@@ -43,6 +43,7 @@ public class Connection
             try
             {
                 String datastr = br.readLine();
+                System.out.println(datastr);
                 JsonElement data = parser.parse(datastr);
                 sendEvent(data);
             } catch (IOException ioe) {
