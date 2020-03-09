@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "UserServlet")
+@WebServlet(name = "UserServlet", urlPatterns = "/User")
 public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -30,10 +30,11 @@ public class UserServlet extends HttpServlet {
 
         //getting message for change password
         if(change_password.equals("True")) {
-            Message reqMessage = gson.fromJson(reqBody, Message.class);
+
             //only need new password
             //GET PASSWORD FROM FRONT END
             password = request.getParameter("new_password");
+
             //generate salt and hashed pw
             salted = PasswordHashing.getRandomSalt();
             hashed_pw = PasswordHashing.hashPassword(password, salted);
@@ -43,6 +44,7 @@ public class UserServlet extends HttpServlet {
         try{
             Database db = new Database();
             db.fixUser(session.getAttribute("email").toString(), hashed_pw, salted);
+            respWriter.println(gson.toJson(new Message("Password changed successfully")));
 
         } catch(Exception e) { //Handle exceptions
             e.printStackTrace();

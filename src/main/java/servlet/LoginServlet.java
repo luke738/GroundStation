@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -69,13 +72,21 @@ public class LoginServlet extends HttpServlet {
                                 AdminStatus = true;
                             }
 
+                            Map<String,String> userToFrontend = new HashMap<>();
+
                             //set attributes
                             session.setAttribute("hello", "Hello " + username);
                             session.setAttribute("email", username);
                             session.setAttribute("userID", userIDstore);
                             session.setAttribute("loggedIn",true);
                             session.setAttribute("isAdmin",AdminStatus);
-                            respWriter.println(gson.toJson(new Message("LoggedIn", userIDstore)));
+
+                            userToFrontend.put("email", username);
+                            userToFrontend.put("userID", userIDstore+"");
+                            userToFrontend.put("loggedIn", "true");
+                            userToFrontend.put("isAdmin", Boolean.toString(AdminStatus));
+
+                            respWriter.println(gson.toJson(new Message("LoggedIn", userToFrontend)));
                         }
                         // Wrong password
                         else

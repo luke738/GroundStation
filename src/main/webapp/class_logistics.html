@@ -11,7 +11,6 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-<!--    <a class="navbar-brand" href="#">Navbar</a>-->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -28,57 +27,34 @@
     <div class="container-fluid">
         <div class="row"> <div class="col-2"></div></div>
         <h2>Class Logistics</h2>
-        <div class="row">
-            <div class="col-3"></div>
-            <div class="col">
-                <form class="form-inline">
-                    <div class="form-group mb-2">
-                        <label for="class_filter" class="">Sort by: </label>
-                        <select class="form-control" id="class_filter">
-                            <option>First name</option>
-                            <option>Last name</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary mb-2">Apply filter</button>
-                </form>
-                <p>Showing - <span id="current_filter">First Name</span></p>
-            </div>
-        </div>
-
+        <br>
         <div class="row">
             <!--    table of students        -->
 
             <div class="col">
 
                 <div class="row">
-                    <h5>Example table that needs to be outputed after query</h5>
+
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Privileges</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <th scope="row">1</th>
                             <td>Mark</td>
                             <td>Otto</td>
                             <td>@mdo</td>
                         </tr>
                         <tr>
-                            <th scope="row">2</th>
                             <td>Jacob</td>
                             <td>Thornton</td>
                             <td>@fat</td>
                         </tr>
                         <tr>
-                            <th scope="row">3</th>
                             <td>Larry</td>
                             <td>the Bird</td>
                             <td>@twitter</td>
@@ -96,13 +72,15 @@
                         <h5 class="card-title">Manage Course Logistics</h5>
                         <p class="card-text">Add class code</p>
 
-                        <form >
+                        <form id = "classcodeBox" onsubmit="return sendData()">
                             <div class="form-group">
                                 <label for="add_class_code" class="sr-only">Add class code</label>
                                 <input type="text" class="form-control" id="add_class_code" value="12AV34">
+
                             </div>
 
-                            <button type="submit" class="btn btn-primary mb-2">Add code</button>
+                            <input id="submitClasscode" type="button" class="btn btn-primary" value="Add Code" onclick="sendData();"/>
+
                         </form>
 
                     </div>
@@ -110,10 +88,56 @@
             </div>
 
         </div>
+        <div class="btn pull-right">
+            <form onsubmit="addStudent()">
+                <input class="btn btn-primary" id="addStudent" type="button" value="Add Student" onclick="addStudent();"/>
+
+            </form>
+            <form onsubmit="removeStudent()">
+                <input class="btn btn-danger" id="removeStudent" type="button" value="Remove Student" onclick="removeStudent();"/>
+
+            </form>
+        </div>
     </div>
 
 <script>
 
+    function sendData() {
+        var email = document.querySelector('#email');
+        var pw = document.querySelector('#password');
+
+        // Converting JSON data to string
+        var data = JSON.stringify({ header: email.value, body: pw.value });
+        console.log(data);
+
+        // Creating a XHR object
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/Login?signOrLog=login", false);
+
+        // Sending data with the request
+        xhr.send(data);
+
+        console.log("RESP: " + xhr.response);
+
+        var response = JSON.parse(xhr.response); //Could check and see if request was successful
+        console.log(response);
+        if(response.header != "LoggedIn") {
+            window.location = "/login.html";
+        } else {
+            sessionStorage.setItem("userID", response.body);
+            console.log(sessionStorage.getItem("userID"));
+            window.location = "/dashboard_s_band.html";
+
+        }
+    }
+
+    function addStudent() {
+
+    }
+
+    function removeStudent() {
+
+    }
 
 </script>
 

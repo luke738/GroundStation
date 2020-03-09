@@ -60,9 +60,12 @@
             window.location = "/login.html";
         } else {
             sessionStorage.setItem("userID", response.body);
-            console.log(sessionStorage.getItem("userID"));
-            window.location = "/dashboard_s_band.html";
 
+            if (response.body.isAdmin == "true") {
+                window.location = "/dashboard_s_band.html";
+            } else {
+                window.location = "/user_dashboards_band.html";
+            }
         }
     }
 </script>
