@@ -1,6 +1,7 @@
 package servlet;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Database {
     private Connection conn;
@@ -211,5 +212,28 @@ public class Database {
         }
     }
 
+    public ArrayList<String[]> grabClass(String classcode) {
+        ArrayList <String[]> wholeClass = new ArrayList<>();
+
+        try {
+            ps = conn.prepareStatement("SELECT * FROM userinfo WHERE classcode=?;");
+            ps.setString(1, classcode);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String email = rs.getString("username");
+                String status = rs.getString("classcode");
+
+                String[] user = {name,email,status};
+                wholeClass.add(user);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SQLException in function \"grabClass\"");
+            e.printStackTrace();
+        }
+        return wholeClass;
+    }
 
 }
