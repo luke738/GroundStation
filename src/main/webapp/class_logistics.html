@@ -70,16 +70,37 @@
                     <div class="card-header">Course Manager Widget</div>
                     <div class="card-body">
                         <h5 class="card-title">Manage Course Logistics</h5>
-                        <p class="card-text">Add class code</p>
 
                         <form id = "classcodeBox" onsubmit="return sendData()">
                             <div class="form-group">
-                                <label for="add_class_code" class="sr-only">Add class code</label>
-                                <input type="text" class="form-control" id="add_class_code" value="12AV34">
-
+                                <!--<p>Add Class Code</p>-->
+                                <!--<input id="add_classcode" name="add_classcode" type="text" placeholder="1234">-->
+                                <input id="classcode" name="classcode" type="text" placeholder="1234">
+                                <input id="add_class_code" type="button" class="btn btn-primary" value="Add Class Code" onclick="sendData(this.id);"/>
                             </div>
 
-                            <input id="submitClasscode" type="button" class="btn btn-primary" value="Add Code" onclick="sendData();"/>
+                            <div class="form-group">
+                                <!--<p>Change password </p>-->
+                                <!--<input id="new_password" name="new_password" type="text" placeholder="New Password">-->
+                                <input id="newpw" name="newpw" type="text" placeholder="1234">
+                                <input id="change_password" type="button" class="btn btn-primary" value="New Password" onclick="sendData(this.id);"/>
+                            </div>
+
+                            <div class="form-group">
+                                <!--<p>Add Admin </p>-->
+                                <!--<input id="add_admin" name="add_admin" type="text" placeholder="Add Admin">-->
+                                <input id="addadmin" name="addadmin" type="text" placeholder="example@email.com">
+                                <input id="add_admin" type="button" class="btn btn-primary" value="Add Admin" onclick="sendData(this.id);"/>
+                            </div>
+
+                            <div class="form-group">
+                                <!--<p>Delete Class Code </p>-->
+                                <input id="deleteclasscode" name="deleteclasscode" type="text" placeholder="delete class code">
+                                <input id="delete_class_code" type="button" class="btn btn-primary" value="Delete Class Code" onclick="sendData(this.id);"/>
+                                <!--<input id="delete_classcode" name="delete_classcode" type="text" placeholder="Delete Class Code">-->
+                            </div>
+
+                            <!--<input id="submitAdminInfo" type="button" class="btn btn-primary" value="Add Code" onclick="sendData();"/>-->
 
                         </form>
 
@@ -89,46 +110,52 @@
 
         </div>
         <div class="btn pull-right">
-            <form onsubmit="addStudent()">
+            <!--<form onsubmit="addStudent()">-->
                 <input class="btn btn-primary" id="addStudent" type="button" value="Add Student" onclick="addStudent();"/>
 
-            </form>
-            <form onsubmit="removeStudent()">
+            <!--</form>-->
+            <!--<form onsubmit="removeStudent()">-->
                 <input class="btn btn-danger" id="removeStudent" type="button" value="Remove Student" onclick="removeStudent();"/>
 
-            </form>
+            <!--</form>-->
         </div>
     </div>
 
 <script>
 
-    function sendData() {
-        var email = document.querySelector('#email');
-        var pw = document.querySelector('#password');
+    function sendData(clicked_id) {
+        var action = clicked_id;
 
-        // Converting JSON data to string
-        var data = JSON.stringify({ header: email.value, body: pw.value });
-        console.log(data);
+        var new_password = document.querySelector('#newpw');
+        var classcode = document.querySelector('#classcode');
+        var addadmin = document.querySelector('#addadmin');
+        var deleteclasscode = document.querySelector('#deleteclasscode');
 
-        // Creating a XHR object
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/Login?signOrLog=login", false);
+        var value = null;
+        var data = {};
 
-        // Sending data with the request
+        if (action === "change_password") {
+            value = "new_password="+new_password.value;
+
+        } else if (action === "add_admin") {
+            value = "user_email="+addadmin;
+
+        } else if (action === "delete_class_code") {
+            value = "old_class_code="+deleteclasscode;
+
+        } else if (action === "add_class_code") {
+            value = "new_class_code="+classcode;
+        }
+
+        xhr.open("POST", "/Admin?actions="+action+"&"+value, false);
         xhr.send(data);
 
         console.log("RESP: " + xhr.response);
 
         var response = JSON.parse(xhr.response); //Could check and see if request was successful
         console.log(response);
-        if(response.header != "LoggedIn") {
-            window.location = "/login.html";
-        } else {
-            sessionStorage.setItem("userID", response.body);
-            console.log(sessionStorage.getItem("userID"));
-            window.location = "/dashboard_s_band.html";
 
-        }
     }
 
     function addStudent() {

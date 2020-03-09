@@ -31,7 +31,7 @@ public class AdminServlet extends HttpServlet {
 
         //getting message for change password
         if(admin_actions.equals("change_password")) {
-            Message reqMessage = gson.fromJson(reqBody, Message.class);
+//            Message reqMessage = gson.fromJson(reqBody, Message.class);
             //only need new password
             //GET PASSWORD FROM FRONT END
             password = request.getParameter("new_password");
@@ -42,21 +42,21 @@ public class AdminServlet extends HttpServlet {
         }
         //getting message for if add admin (proposed admin email)
         else if(admin_actions.equals("add_admin"))  {
-            Message reqMessage = gson.fromJson(reqBody, Message.class);
+//            Message reqMessage = gson.fromJson(reqBody, Message.class);
             //only need proposed admin email
             //GET EMAIL FROM FRONT END
             user_email = request.getParameter("user_email");;
         }
         //getting message for delete class code ; need old class code
         else if(admin_actions.equals("delete_class_code"))  {
-            Message reqMessage = gson.fromJson(reqBody, Message.class);
+//            Message reqMessage = gson.fromJson(reqBody, Message.class);
             //only need deleted class_code
             //GET CLASS CODE
             classcode = request.getParameter("old_class_code");;
         }
         //getting message for add class code ; need new class code
         else if(admin_actions.equals("add_class_code"))  {
-            Message reqMessage = gson.fromJson(reqBody, Message.class);
+//            Message reqMessage = gson.fromJson(reqBody, Message.class);
             //only need new class_code
             //GET CLASS CODE
             classcode = request.getParameter("new_class_code");

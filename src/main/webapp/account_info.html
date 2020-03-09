@@ -49,8 +49,6 @@
         xhr.send(data);
 
         var response = JSON.parse(xhr.response); //Could check and see if request was successful
-        console.log("RESP: " + xhr.response);
-        console.log("RESP: " + response.header);
 
         document.querySelector('#onsuccess').innerHTML = response.header;
 
