@@ -125,11 +125,12 @@ public class Database {
             return false;
         }
         try {
-            ps = conn.prepareStatement("INSERT INTO UserInfo(username, pw, salt, name) VALUES(?,?,?,?)");
+            ps = conn.prepareStatement("INSERT INTO UserInfo(username, pw, salt, name, classcode) VALUES(?,?,?,?,?)");
             ps.setString(1, username);
             ps.setString(2, passwordHash);
             ps.setString(3, salt);
             ps.setString(4, name);
+            ps.setString(5, classcode);
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
