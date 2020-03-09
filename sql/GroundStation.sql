@@ -55,8 +55,9 @@ CREATE TABLE `UserInfo` (
   `pw` varchar(100) NOT NULL,
   `salt` varchar(100) NOT NULL,
   `name` varchar(100) NOT NULL,
+  `classcode` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,7 +66,7 @@ CREATE TABLE `UserInfo` (
 
 LOCK TABLES `UserInfo` WRITE;
 /*!40000 ALTER TABLE `UserInfo` DISABLE KEYS */;
-INSERT INTO `UserInfo` VALUES (1,'memcclun@usc.edu','2AoR1ZBoFGMhQ/JGnG/21QaGIbZU4NwjxLmT8/eBS3EZr+YBdYemGauO5CQf4ErRXvFcgMT7myFVJiZ1UDzOGA==','cO3MmhDNrVpyDM07Kzz57e+K1rhmitQohvO8jH9eH80pjP58vRmSJHvqlIGFm6unhTQK0boq3L0d4F4y+U+h8e','name');
+INSERT INTO `UserInfo` VALUES (1,'memcclun@usc.edu','bDxjciUtN5+7x3jG808/ZB5aivoo0+XeWktGQsL5IiOuo7R+qq1drsZ2g1m169HyJ0jJj6WFNc6a/pRNEU+LgQ==','iECFBOEVC7OhIDaAmH7ufB3hBHh15uAtUFhrnAupzSaE6qUtuKTiT52i0paV37stfh8QJIF8CqVvDkVEsCyF3R','name','1');
 /*!40000 ALTER TABLE `UserInfo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -78,4 +79,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-26 18:21:54
+-- Dump completed on 2020-03-08 17:47:30
