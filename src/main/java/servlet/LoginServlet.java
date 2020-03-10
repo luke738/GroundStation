@@ -72,6 +72,8 @@ public class LoginServlet extends HttpServlet {
                                 AdminStatus = true;
                             }
 
+                            classcode = db.getUserClassCode(username);
+
                             Map<String,String> userToFrontend = new HashMap<>();
 
                             //set attributes
@@ -84,6 +86,7 @@ public class LoginServlet extends HttpServlet {
                             userToFrontend.put("email", username);
                             userToFrontend.put("userID", userIDstore+"");
                             userToFrontend.put("loggedIn", "true");
+                            userToFrontend.put("classcode", classcode);
                             userToFrontend.put("isAdmin", Boolean.toString(AdminStatus));
 
                             respWriter.println(gson.toJson(new Message("LoggedIn", userToFrontend)));

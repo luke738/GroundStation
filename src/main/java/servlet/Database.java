@@ -216,25 +216,44 @@ public class Database {
     public ArrayList<String[]> grabClass(String classcode) {
         ArrayList <String[]> wholeClass = new ArrayList<>();
 
-        try {
-            ps = conn.prepareStatement("SELECT * FROM userinfo WHERE classcode=?;");
-            ps.setString(1, classcode);
-            rs = ps.executeQuery();
+        PreparedStatement ps1;
+        ResultSet rs1;
 
-            while (rs.next()) {
-                String name = rs.getString("name");
-                String email = rs.getString("username");
-                String status = rs.getString("classcode");
+        try {
+            ps1 = conn.prepareStatement("SELECT * FROM userinfo WHERE classcode=?;");
+            ps1.setString(1, classcode);
+            rs1 = ps1.executeQuery();
+
+            while (rs1.next()) {
+                String name = rs1.getString("name");
+                String email = rs1.getString("username");
+                String status = "" + (isAdministrator(email));
 
                 String[] user = {name,email,status};
                 wholeClass.add(user);
             }
 
         } catch (SQLException e) {
-            System.out.println("SQLException in function \"grabClass\"");
+            System.out.println("SQLException in function \"validate\"");
             e.printStackTrace();
         }
         return wholeClass;
+    }
+
+    public String getUserClassCode(String username) {
+        try {
+            ps = conn.prepareStatement("SELECT u.classcode FROM UserInfo u WHERE username=?");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("classcode");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SQLException in function \"validate\"");
+            e.printStackTrace();
+        }
+        return "";
     }
 
 }

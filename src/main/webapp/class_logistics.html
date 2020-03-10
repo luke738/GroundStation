@@ -35,7 +35,7 @@
 
                 <div class="row">
 
-                    <table class="table table-striped">
+                    <table id = "table" class="table table-striped">
                         <thead>
                         <tr>
                             <th scope="col">Name</th>
@@ -43,23 +43,7 @@
                             <th scope="col">Privileges</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        </tbody>
+
                     </table>
                 </div>
 
@@ -84,6 +68,7 @@
                                 <!--<input id="new_password" name="new_password" type="text" placeholder="New Password">-->
                                 <input id="newpw" name="newpw" type="text" placeholder="1234">
                                 <input id="change_password" type="button" class="btn btn-primary" value="New Password" onclick="sendData(this.id);"/>
+                                <p id = "onsuccess"></p>
                             </div>
 
                             <div class="form-group">
@@ -123,20 +108,58 @@
 
 <script>
 
+    var classcode = sessionStorage.getItem("classcode");
+    var xhr = new XMLHttpRequest();
+    var data = {};
+    xhr.open("POST", "/Admin?actions=grab_class&class_code="+classcode, false);
+    xhr.send(data);
+
+    var wholeclass = JSON.parse(xhr.response); //Could check and see if request was successful
+    console.log(wholeclass);
+
+    let students = [];
+    //build the students array so that we can populate the students table
+    var i;
+    for (i = 0; i < wholeclass.body.length; i++) {
+        var admin = "admin";
+        if (wholeclass.body[i][2] === -1) {
+            admin = "not admin";
+        }
+        var element = {name:wholeclass.body[i][0], username:wholeclass.body[i][1], status:admin};
+        students.push(element);
+    }
+
+    console.log(students);
+
+    function generateTable(table, data) {
+        for (let element of data) {
+            let row = table.insertRow();
+            for (key in element) {
+                let cell = row.insertCell();
+                let text = document.createTextNode(element[key]);
+                cell.appendChild(text);
+            }
+        }
+    }
+
+
+    let table = document.querySelector("#table");
+    generateTable(table, students);
+
     function sendData(clicked_id) {
         var action = clicked_id;
 
-        var new_password = document.querySelector('#newpw');
-        var classcode = document.querySelector('#classcode');
-        var addadmin = document.querySelector('#addadmin');
-        var deleteclasscode = document.querySelector('#deleteclasscode');
+        var new_password = document.querySelector('#newpw').value;
+        var classcode = document.querySelector('#classcode').value;
+        var addadmin = document.querySelector('#addadmin').value;
+        var deleteclasscode = document.querySelector('#deleteclasscode').value;
 
         var xhr = new XMLHttpRequest();
         var value = null;
         var data = {};
 
         if (action === "change_password") {
-            value = "new_password="+new_password.value;
+            value = "new_password="+new_password;
 
         } else if (action === "add_admin") {
             value = "user_email="+addadmin;
@@ -154,7 +177,11 @@
         console.log("RESP: " + xhr.response);
 
         var response = JSON.parse(xhr.response); //Could check and see if request was successful
-        console.log(response);
+
+        //show password changed successfully message
+        if (action === "change_password") {
+            document.querySelector('#onsuccess').innerHTML = response.header;
+        }
 
     }
 
@@ -165,6 +192,7 @@
     function removeStudent() {
 
     }
+
 
 </script>
 

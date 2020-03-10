@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @WebServlet(name = "AdminServlet", urlPatterns = "/Admin")
@@ -60,8 +63,9 @@ public class AdminServlet extends HttpServlet {
             //only need new class_code
             //GET CLASS CODE
             classcode = request.getParameter("new_class_code");
+        } else if (admin_actions.equals("grab_class")) {
+            classcode = request.getParameter("class_code");
         }
-
 
 
         try{
@@ -113,6 +117,13 @@ public class AdminServlet extends HttpServlet {
                 //change password
                 case "change_password":
                     db.fixUser(session.getAttribute("email").toString(), hashed_pw, salted);
+                    respWriter.println(gson.toJson(new Message("Password changed successfully")));
+
+                    //grab entire class
+                case "grab_class":
+                    ArrayList<String[]> wholeclass = db.grabClass(classcode);
+                    respWriter.println(gson.toJson(new Message("class code "+classcode, wholeclass)));
+
             }
         } catch(Exception e) { //Handle exceptions
             e.printStackTrace();

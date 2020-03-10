@@ -60,6 +60,7 @@
             window.location = "/login.html";
         } else {
             sessionStorage.setItem("userID", response.body);
+            sessionStorage.setItem("classcode", response.body.classcode);
 
             if (response.body.isAdmin == "true") {
                 window.location = "/dashboard_s_band.html";
