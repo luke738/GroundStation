@@ -83,18 +83,18 @@ function downloadFile() {
     xhr.open("POST", "/TLEData");
 
     xhr.onload = function() {
-        console.log(xhr.responseText);
-        var response = JSON.parse(xhr.responseText);
+        console.log("response text " + xhr.responseText);
+        console.log("xhr status "  + xhr.status);
 
-            if(xhr.status == 200) {
-                console.log("DOWNLOAD");
+        if(xhr.status == 200) {
+            console.log("DOWNLOAD");
 
-                downloadLink.href = "TLE_output.txt";
-                downloadLink.download = "TLE_output.txt";
+            downloadLink.href = "TLE_output.txt";
+            downloadLink.download = "TLE_output.txt";
+            downloadLink.innerHTML = "TLE_output.txt";
+            downloadLink.style.color = "white";
+         }
+    }
 
-            }
-        }
-        xhr.send();
+    xhr.send();
 }
-
-
