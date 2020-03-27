@@ -22,7 +22,7 @@ import java.time.ZonedDateTime;
   * @author space-track.org
   *
   */
-@WebServlet(name = "TLEServlet")
+@WebServlet(name = "TLEServlet", urlPatterns = "/TLEData")
 public class TLEServlet extends HttpServlet {
     //zoneID = los angeles
     public static ZoneId zoneId = ZoneId.of( "America/Los_Angeles" );

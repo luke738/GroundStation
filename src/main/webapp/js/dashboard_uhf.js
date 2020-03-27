@@ -15,7 +15,15 @@ socket.addEventListener('message', function(event) {
 
 slider.oninput = function() {
     output.innerHTML = this.value;
-}
+};
+
+var download = document.querySelector('#download');
+var downloadLink = document.querySelector('#downloadLink');
+
+download.addEventListener('click', function(event) {
+    console.log("ONSUBMIT CLICKED");
+    downloadFile();
+});
 
 function toggleTransmit() {
     transmit = true;
@@ -68,6 +76,25 @@ function sendData() {
     // console.log("RESP: " + xhr.response);
     // var response = JSON.parse(xhr.response); //Could check and see if request was successful
 
+}
+
+function downloadFile() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/TLEData");
+
+    xhr.onload = function() {
+        console.log(xhr.responseText);
+        var response = JSON.parse(xhr.responseText);
+
+            if(xhr.status == 200) {
+                console.log("DOWNLOAD");
+
+                downloadLink.href = response.fileDownloadUri;
+                downloadLink.download = response.fileDownloadUri;
+
+            }
+        }
+        xhr.send();
 }
 
 

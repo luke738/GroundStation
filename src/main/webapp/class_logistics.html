@@ -57,35 +57,26 @@
 
                         <form id = "classcodeBox" onsubmit="return sendData()">
                             <div class="form-group">
-                                <!--<p>Add Class Code</p>-->
-                                <!--<input id="add_classcode" name="add_classcode" type="text" placeholder="1234">-->
                                 <input id="classcode" name="classcode" type="text" placeholder="1234">
                                 <input id="add_class_code" type="button" class="btn btn-primary" value="Add Class Code" onclick="sendData(this.id);"/>
                             </div>
 
                             <div class="form-group">
-                                <!--<p>Change password </p>-->
-                                <!--<input id="new_password" name="new_password" type="text" placeholder="New Password">-->
                                 <input id="newpw" name="newpw" type="text" placeholder="1234">
                                 <input id="change_password" type="button" class="btn btn-primary" value="New Password" onclick="sendData(this.id);"/>
                                 <p id = "onsuccess"></p>
                             </div>
 
                             <div class="form-group">
-                                <!--<p>Add Admin </p>-->
-                                <!--<input id="add_admin" name="add_admin" type="text" placeholder="Add Admin">-->
                                 <input id="addadmin" name="addadmin" type="text" placeholder="example@email.com">
                                 <input id="add_admin" type="button" class="btn btn-primary" value="Add Admin" onclick="sendData(this.id);"/>
                             </div>
 
                             <div class="form-group">
-                                <!--<p>Delete Class Code </p>-->
                                 <input id="deleteclasscode" name="deleteclasscode" type="text" placeholder="delete class code">
                                 <input id="delete_class_code" type="button" class="btn btn-primary" value="Delete Class Code" onclick="sendData(this.id);"/>
-                                <!--<input id="delete_classcode" name="delete_classcode" type="text" placeholder="Delete Class Code">-->
                             </div>
-
-                            <!--<input id="submitAdminInfo" type="button" class="btn btn-primary" value="Add Code" onclick="sendData();"/>-->
+                            
 
                         </form>
 
@@ -94,16 +85,7 @@
             </div>
 
         </div>
-        <div class="btn pull-right">
-            <!--<form onsubmit="addStudent()">-->
-                <input class="btn btn-primary" id="addStudent" type="button" value="Add Student" onclick="addStudent();"/>
 
-            <!--</form>-->
-            <!--<form onsubmit="removeStudent()">-->
-                <input class="btn btn-danger" id="removeStudent" type="button" value="Remove Student" onclick="removeStudent();"/>
-
-            <!--</form>-->
-        </div>
     </div>
 
 <script>
@@ -115,10 +97,9 @@
     xhr.send(data);
 
     var wholeclass = JSON.parse(xhr.response); //Could check and see if request was successful
-    console.log(wholeclass);
 
-    let students = [];
     //build the students array so that we can populate the students table
+    let students = [];
     var i;
     for (i = 0; i < wholeclass.body.length; i++) {
         var admin = "admin";
@@ -128,7 +109,6 @@
         var element = {name:wholeclass.body[i][0], username:wholeclass.body[i][1], status:admin};
         students.push(element);
     }
-
     console.log(students);
 
     function generateTable(table, data) {
@@ -141,7 +121,6 @@
             }
         }
     }
-
 
     let table = document.querySelector("#table");
     generateTable(table, students);
@@ -160,13 +139,10 @@
 
         if (action === "change_password") {
             value = "new_password="+new_password;
-
         } else if (action === "add_admin") {
             value = "user_email="+addadmin;
-
         } else if (action === "delete_class_code") {
             value = "old_class_code="+deleteclasscode;
-
         } else if (action === "add_class_code") {
             value = "new_class_code="+classcode;
         }
@@ -182,14 +158,6 @@
         if (action === "change_password") {
             document.querySelector('#onsuccess').innerHTML = response.header;
         }
-
-    }
-
-    function addStudent() {
-
-    }
-
-    function removeStudent() {
 
     }
 
