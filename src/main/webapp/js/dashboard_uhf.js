@@ -89,8 +89,8 @@ function downloadFile() {
             if(xhr.status == 200) {
                 console.log("DOWNLOAD");
 
-                downloadLink.href = response.fileDownloadUri;
-                downloadLink.download = response.fileDownloadUri;
+                downloadLink.href = "TLE_output.txt";
+                downloadLink.download = "TLE_output.txt";
 
             }
         }
