@@ -14,8 +14,10 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.net.URL;
+import java.nio.file.Files;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.nio.file.Paths;
 
 /**
   * A servlet for downloading tle data from space-track
@@ -75,6 +77,11 @@ public class TLEServlet extends HttpServlet {
 
                 System.out.println("Output from Server .... \n");
                 File TLE_data = new File("TLE_output.txt");
+
+                byte[] encoded = Files.readAllBytes(Paths.get(TLE_data.getPath()));
+                String TLE_dataString = new String(encoded, "UTF-8");
+                respWriter.println(gson.toJson(new Message("TLE_data",TLE_dataString)));
+
                 BufferedWriter fw;
                 //print output & store in file
                 try {

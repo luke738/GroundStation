@@ -17,13 +17,11 @@ slider.oninput = function() {
     output.innerHTML = this.value;
 };
 
-var download = document.querySelector('#download');
-var downloadLink = document.querySelector('#downloadLink');
+// Start file download.
+document.getElementById("dwn-btn").addEventListener("click", function(){
+    download1();
+}, false);
 
-download.addEventListener('click', function(event) {
-    console.log("ONSUBMIT CLICKED");
-    downloadFile();
-});
 
 function toggleTransmit() {
     transmit = true;
@@ -78,23 +76,35 @@ function sendData() {
 
 }
 
-function downloadFile() {
+function download1() {
+
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/TLEData");
+    xhr.open("POST", "/TLEData",false);
+    var data = {};
+    xhr.send(data);
 
-    xhr.onload = function() {
-        console.log("response text " + xhr.responseText);
-        console.log("xhr status "  + xhr.status);
+    console.log("RESP: " + xhr.response);
+    var response = JSON.parse(xhr.response);
 
-        if(xhr.status == 200) {
-            console.log("DOWNLOAD");
+    var text = response.body;
 
-            downloadLink.href = "TLE_output.txt";
-            downloadLink.download = "TLE_output.txt";
-            downloadLink.innerHTML = "TLE_output.txt";
-            downloadLink.style.color = "white";
-         }
-    }
+    if(xhr.status == 200) {
 
-    xhr.send();
+        if (response.header == "TLE_data") {
+            console.log("encodeURIComponent(text) " + encodeURIComponent(text));
+            console.log("(text) " + (text));
+
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', "TLE_data.txt");
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+                document.body.removeChild(element);
+            }
+        }
 }
+
