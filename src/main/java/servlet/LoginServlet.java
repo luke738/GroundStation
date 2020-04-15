@@ -46,7 +46,7 @@ public class LoginServlet extends HttpServlet {
             Message reqMessage = gson.fromJson(reqBody, Message.class);
             username = reqMessage.header;
             //Interact with the raw JSON to determine the type of the object via unique fields
-            JsonObject signupinfo = new JsonParser().parse( (String) reqMessage.body.toString()).getAsJsonObject();
+            JsonObject signupinfo = new JsonParser().parse((String) reqMessage.body).getAsJsonObject();
             password = signupinfo.get("password").getAsString();
             classcode = signupinfo.get("classcode").getAsString();
             name = signupinfo.get("name").getAsString();
@@ -62,7 +62,7 @@ public class LoginServlet extends HttpServlet {
                     if (db.checkUser(username))
                     {
                         String[] pInfo = db.getPasswordInfo(username);
-                        System.out.println(PasswordHashing.hashPassword(password, pInfo[0]));
+                        // System.out.println(PasswordHashing.hashPassword(password, pInfo[0]));
                         // Log In Successful
                         if ((PasswordHashing.hashPassword(password, pInfo[0])).equals(pInfo[1]))
                         {

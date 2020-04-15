@@ -83,7 +83,7 @@ function download1() {
     var data = {};
     xhr.send(data);
 
-    console.log("RESP: " + xhr.response);
+    //console.log("RESP: " + xhr.response);
     var response = JSON.parse(xhr.response);
 
     var text = response.body;
@@ -91,8 +91,8 @@ function download1() {
     if(xhr.status == 200) {
 
         if (response.header == "TLE_data") {
-            console.log("encodeURIComponent(text) " + encodeURIComponent(text));
-            console.log("(text) " + (text));
+            //console.log("encodeURIComponent(text) " + encodeURIComponent(text));
+            //console.log("(text) " + (text));
 
             var element = document.createElement('a');
             element.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(text));

@@ -1,4 +1,7 @@
 {
   "autohotkey": "\"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe\"",
-  "script_dir": "C:\\Users\\Luke\\Documents\\WSLGit\\GroundStation\\src\\main\\ahk_scripts"
+  "script_dir": "C:\\Users\\Luke\\Documents\\WSLGit\\GroundStation\\src\\main\\ahk_scripts",
+  "tle_dir": "C:\\Users\\Luke\\Documents\\TLE",
+  "space-trak_username": "stregis@usc.edu",
+  "space-trak_password": "RfDXdPb6E7eH4kAfsAJ3z44bEBX4"
 }

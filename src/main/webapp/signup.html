@@ -54,11 +54,10 @@
         var classcode = document.querySelector('#classcode');
 
         // Converting JSON data to string
-        var data = JSON.stringify({ header: email.value, body: {
-            "email": email.value,
+        var data = JSON.stringify({ header: email.value, body: JSON.stringify({
             "password": password.value,
-                "classcode": classcode.value,
-            "name": name.value}
+            "classcode": classcode.value,
+            "name": name.value})
         });
 
         console.log(data);

@@ -15,10 +15,12 @@ public class MotorConnector{
     }
     private static Map<MotorConnectorType, MotorConnector> instances = Collections.synchronizedMap(new TreeMap<>());
 
+    private MotorConnectorType type;
     private List<MessageListener> listeners = new ArrayList<>();
     private JavaConnection desktopConn;
 
     private MotorConnector(MotorConnectorType type) {
+        this.type = type;
         initialize();
     }
 
