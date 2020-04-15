@@ -29,7 +29,31 @@ function toggleRecieve() {
 
 }
 
-function sendData() {
+function sendData(clicked_id) {
+    var programAction = clicked_id; //launch_orbitron, kill_orbitron
+    var programActionArr = programAction.split("_");
+
+    var action = programActionArr[0]; //launch or kill
+    if (action === "launch") {
+        action = "start_program";
+    } else {
+        action = "stop_program"
+    }
+    var program = programActionArr[1]; //which program
+
+    var data = JSON.stringify({ header: action, body: program });
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.open("POST", "/ProgramControl", false);
+    xhr.send(data);
+
+    console.log("RESP: " + xhr.response);
+
+    var response = JSON.parse(xhr.response); //Could check and see if request was successful
+
+    var responseArray = response.header.split("_");
+    document.querySelector('#onsuccess').innerHTML = responseArray[0] + " " + program + " " + responseArray[1];
 
 }
 

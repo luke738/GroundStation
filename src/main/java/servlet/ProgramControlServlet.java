@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "ProgramControlServlet")
+@WebServlet(name = "ProgramControlServlet", urlPatterns = "/ProgramControl")
 public class ProgramControlServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
