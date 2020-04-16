@@ -54,24 +54,30 @@
                             <div class="form">
                                 <div class="form-group">
                                     <!--buttons go here -->
-                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                    <div class="btn-group" role="group">
                                         <input id = "launch_orbitron" class="btn btn-outline-primary" type="submit" value="Launch Orbitron" onclick="sendData(this.id);"/>
                                         <input id = "kill_orbitron" class="btn btn-outline-primary" type="submit" value="Kill Orbitron" onclick="sendData(this.id);"/>
                                     </div>
-                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                    <div class="btn-group" role="group">
                                         <input id = "launch_spidmd01" class="btn btn-outline-primary" type="submit" value="Launch SPID MD-01 Driver" onclick="sendData(this.id);"/>
                                         <input id = "kill_spidmd01" class="btn btn-outline-primary" type="submit" value="Kill SPID MD-01 Driver" onclick="sendData(this.id);"/>
                                     </div>
-                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                    <div class="btn-group" role="group">
                                         <input id = "launch_sdrsharp" class="btn btn-outline-primary" type="submit" value="Launch SDRSharp" onclick="sendData(this.id);"/>
                                         <input id = "kill_sdrsharp" class="btn btn-outline-primary" type="submit" value="Kill SDRSharp" onclick="sendData(this.id);"/>
                                     </div>
-                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                    <div class="btn-group" role="group">
                                         <input id = "launch_pstrotator" class="btn btn-outline-primary" type="submit" value="Launch PSTRotator" onclick="sendData(this.id);"/>
                                         <input id = "kill_pstrotator" class="btn btn-outline-primary" type="submit" value="Kill PSTRotator" onclick="sendData(this.id);"/>
                                     </div>
 
                                     <p id = "onsuccess"></p>
+
+                                    <div class="btn-group" role="group">
+                                        <input id = "shutdown" class="btn btn-outline-danger" type="submit" value="Shut Down Desktop" onclick="sendData(this.id);"/>
+                                        <div id = "shutdown_onsuccess"></div>
+                                    </div>
+
 
                                 </div>
                             </div>

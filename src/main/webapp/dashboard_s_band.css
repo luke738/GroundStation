@@ -10,3 +10,11 @@
 #onsuccess {
     color:black;
 }
+
+#shutdown_onsuccess {
+    color:black;
+}
+
+#shutdown {
+    display:none;
+}

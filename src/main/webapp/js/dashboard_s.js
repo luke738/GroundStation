@@ -6,6 +6,12 @@ slider.oninput = function() {
     output.innerHTML = this.value;
 }
 
+//program control: show kill desktop button if admin
+var admin = sessionStorage.getItem("isAdmin");
+if (admin == "true") {
+    document.getElementById("shutdown").style.display = "block";
+}
+
 function toggleTransmit() {
     var x = document.getElementById("data_entry_box");
     var state = document.getElementById("transmit_btn");
@@ -30,18 +36,24 @@ function toggleRecieve() {
 }
 
 function sendData(clicked_id) {
-    var programAction = clicked_id; //launch_orbitron, kill_orbitron
-    var programActionArr = programAction.split("_");
 
-    var action = programActionArr[0]; //launch or kill
-    if (action === "launch") {
-        action = "start_program";
+    var programAction = clicked_id; //launch_orbitron, kill_orbitron, or shutdown
+    var data = null;
+    if (programAction == "shutdown") {
+        data = JSON.stringify({header: "shutdown"});
     } else {
-        action = "stop_program"
-    }
-    var program = programActionArr[1]; //which program
+        var programActionArr = programAction.split("_");
 
-    var data = JSON.stringify({ header: action, body: program });
+        var action = programActionArr[0]; //launch or kill
+        if (action === "launch") {
+            action = "start_program";
+        } else if (action === "kill") {
+            action = "stop_program"
+        }
+        var program = programActionArr[1]; //which program
+
+        data = JSON.stringify({ header: action, body: program });
+    }
 
     var xhr = new XMLHttpRequest();
 
@@ -53,7 +65,10 @@ function sendData(clicked_id) {
     var response = JSON.parse(xhr.response); //Could check and see if request was successful
 
     var responseArray = response.header.split("_");
-    document.querySelector('#onsuccess').innerHTML = responseArray[0] + " " + program + " " + responseArray[1];
-
+    if (responseArray[0] === "shutdown") {
+        document.querySelector('#shutdown_onsuccess').innerHTML = " " + responseArray[0] + " " + responseArray[1];
+    } else {
+        document.querySelector('#onsuccess').innerHTML = responseArray[0] + " " + program + " " + responseArray[1];
+    }
 }
 
