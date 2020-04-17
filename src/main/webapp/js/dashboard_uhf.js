@@ -15,8 +15,11 @@ socket.addEventListener('open', function(event) {
 });
 
 socket.addEventListener('message', function(event) {
+    var date = new Date();
+    var timeStamp = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
     console.log(event.data);
-    document.querySelector("#console_view").innerHTML += event.data; //not appending, new data each time
+    document.getElementById("console_view").innerHTML += timeStamp + " " + event.data + "<br>"; //not appending, new data each time
 });
 
 slider.oninput = function() {
