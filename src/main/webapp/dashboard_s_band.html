@@ -25,8 +25,11 @@
                 <li class="nav-item nav-link">
                     <a class="nav-link" href="dashboard_uhf_band.html">Dashboard UHF</a>
                 </li>
-                <li class="nav-item nav-link">
+                <li id="class_logistics_nav" class="nav-item nav-link">
                     <a class="nav-link" href="class_logistics.html">Class Logistics</a>
+                </li>
+                <li class="nav-item nav-link">
+                    <a class="nav-link" href="account_info.html">Account Info</a>
                 </li>
             </ul>
         </div>
@@ -95,22 +98,7 @@
                     <h5 class="card-header">Antenna Data:</h5>
                     <div class="card-body bg-light">
                         <div class="row">
-                            <div class="col-6">
 
-                                <h5>Set Antenna Angle:</h5>
-                                Current Angle:  <span id="curr_ag" class="text-primary">150</span> degrees
-
-                                <div class="form-row">
-                                    <div class="col">
-                                        <input type="range" id="antAngleSlider" class="custom-range" min="0" max="180">
-                                        <p class="card-text">
-                                            Set angle to: <span id="set_angle" class="text-primary"></span> degrees
-                                        </p>
-                                    </div>
-                                </div>
-                                <input id = "set_motor_angle" class="btn btn-primary" type="submit" value="Set Angle" onclick="sendMotorAngleData();"/>
-
-                            </div>
                             <div class="col-6">
                                 <div class="form">
                                     <h5>Set Azimuth & Elevation:</h5>
@@ -175,6 +163,7 @@
 
     <script src="js/dashboard_s.js"></script>
     <script src="js/motor_control.js"></script>
+    <script src="js/nav_control.js"></script>
 
 
 </body>

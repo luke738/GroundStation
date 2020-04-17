@@ -10,18 +10,27 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link" href="dashboard_s_band.html">Dashboard S-band </a>
-                <a class="nav-item nav-link" href="dashboard_uhf_band.html">Dashboard UHF</a>
-                <a class="nav-item nav-link active" href="class_logistics.html">Class Logistics<span class="sr-only">(current)</span></a>
-            </div>
-        </div>
-    </nav>
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+            <li class="nav-item nav-link ">
+                <a class="nav-link" href="dashboard_s_band.html">Dashboard S-band</a>
+            </li>
+            <li class="nav-item nav-link">
+                <a class="nav-link" href="dashboard_uhf_band.html">Dashboard UHF</a>
+            </li>
+            <li id="class_logistics_nav" class="nav-item nav-link active">
+                <a class="nav-link" href="class_logistics.html">Class Logistics</a>
+            </li>
+            <li class="nav-item nav-link">
+                <a class="nav-link" href="account_info.html">Account Info</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
 
     <div class="container-fluid">
@@ -88,78 +97,80 @@
 
     </div>
 
-<script>
+    <script src="js/nav_control.js"></script>
 
-    var classcode = sessionStorage.getItem("classcode");
-    var xhr = new XMLHttpRequest();
-    var data = {};
-    xhr.open("POST", "/Admin?actions=grab_class&class_code="+classcode, false);
-    xhr.send(data);
+    <script>
 
-    var wholeclass = JSON.parse(xhr.response); //Could check and see if request was successful
-
-    //build the students array so that we can populate the students table
-    let students = [];
-    var i;
-    for (i = 0; i < wholeclass.body.length; i++) {
-        var admin = "admin";
-        if (wholeclass.body[i][2] === -1) {
-            admin = "not admin";
-        }
-        var element = {name:wholeclass.body[i][0], username:wholeclass.body[i][1], status:admin};
-        students.push(element);
-    }
-    console.log(students);
-
-    function generateTable(table, data) {
-        for (let element of data) {
-            let row = table.insertRow();
-            for (key in element) {
-                let cell = row.insertCell();
-                let text = document.createTextNode(element[key]);
-                cell.appendChild(text);
-            }
-        }
-    }
-
-    let table = document.querySelector("#table");
-    generateTable(table, students);
-
-    function sendData(clicked_id) {
-        var action = clicked_id;
-
-        var new_password = document.querySelector('#newpw').value;
-        var classcode = document.querySelector('#classcode').value;
-        var addadmin = document.querySelector('#addadmin').value;
-        var deleteclasscode = document.querySelector('#deleteclasscode').value;
-
+        var classcode = sessionStorage.getItem("classcode");
         var xhr = new XMLHttpRequest();
-        var value = null;
         var data = {};
-
-        if (action === "change_password") {
-            value = "new_password="+new_password;
-        } else if (action === "add_admin") {
-            value = "user_email="+addadmin;
-        } else if (action === "delete_class_code") {
-            value = "old_class_code="+deleteclasscode;
-        } else if (action === "add_class_code") {
-            value = "new_class_code="+classcode;
-        }
-
-        xhr.open("POST", "/Admin?actions="+action+"&"+value, false);
+        xhr.open("POST", "/Admin?actions=grab_class&class_code="+classcode, false);
         xhr.send(data);
 
-        console.log("RESP: " + xhr.response);
+        var wholeclass = JSON.parse(xhr.response); //Could check and see if request was successful
 
-        var response = JSON.parse(xhr.response); //Could check and see if request was successful
+        //build the students array so that we can populate the students table
+        let students = [];
+        var i;
+        for (i = 0; i < wholeclass.body.length; i++) {
+            var admin = "admin";
+            if (wholeclass.body[i][2] === -1) {
+                admin = "not admin";
+            }
+            var element = {name:wholeclass.body[i][0], username:wholeclass.body[i][1], status:admin};
+            students.push(element);
+        }
+        console.log(students);
 
-        //show password changed successfully message
-        if (action === "change_password") {
-            document.querySelector('#onsuccess').innerHTML = response.header;
+        function generateTable(table, data) {
+            for (let element of data) {
+                let row = table.insertRow();
+                for (key in element) {
+                    let cell = row.insertCell();
+                    let text = document.createTextNode(element[key]);
+                    cell.appendChild(text);
+                }
+            }
         }
 
-    }
+        let table = document.querySelector("#table");
+        generateTable(table, students);
+
+        function sendData(clicked_id) {
+            var action = clicked_id;
+
+            var new_password = document.querySelector('#newpw').value;
+            var classcode = document.querySelector('#classcode').value;
+            var addadmin = document.querySelector('#addadmin').value;
+            var deleteclasscode = document.querySelector('#deleteclasscode').value;
+
+            var xhr = new XMLHttpRequest();
+            var value = null;
+            var data = {};
+
+            if (action === "change_password") {
+                value = "new_password="+new_password;
+            } else if (action === "add_admin") {
+                value = "user_email="+addadmin;
+            } else if (action === "delete_class_code") {
+                value = "old_class_code="+deleteclasscode;
+            } else if (action === "add_class_code") {
+                value = "new_class_code="+classcode;
+            }
+
+            xhr.open("POST", "/Admin?actions="+action+"&"+value, false);
+            xhr.send(data);
+
+            console.log("RESP: " + xhr.response);
+
+            var response = JSON.parse(xhr.response); //Could check and see if request was successful
+
+            //show password changed successfully message
+            if (action === "change_password") {
+                document.querySelector('#onsuccess').innerHTML = response.header;
+            }
+
+        }
 
 
 </script>

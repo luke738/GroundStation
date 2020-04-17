@@ -10,20 +10,6 @@ motorSocket.addEventListener('message', function(event) {
 });
 
 
-function sendMotorAngleData() {
-    var slider = document.getElementById("antAngleSlider");
-    var output = slider.value;
-
-    // Converting JSON data to string
-    var data = JSON.stringify({header: "updateAngle", body: output});
-
-
-    motorSocket.onopen = function (event) {
-        motorSocket.send(data);
-    }
-
-}
-
 function sendMotorAEData() {
     var azVal = document.getElementById("azimuth").value;
     var elevationVal = document.getElementById("elevation").value;
@@ -31,9 +17,7 @@ function sendMotorAEData() {
     // Converting JSON data to string
     var data = JSON.stringify({header: "updateAzimuthElevation", azimuth: azVal, elevation: elevationVal});
 
+    motorSocket.send(data);
 
-    motorSocket.onopen = function (event) {
-        motorSocket.send(data);
-    }
 
 }

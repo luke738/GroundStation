@@ -16,7 +16,7 @@ socket.addEventListener('open', function(event) {
 
 socket.addEventListener('message', function(event) {
     console.log(event.data);
-    document.querySelector("#console_view").innerHTML = event.data; //not appending, new data each time
+    document.querySelector("#console_view").innerHTML += event.data; //not appending, new data each time
 });
 
 slider.oninput = function() {
@@ -62,9 +62,9 @@ function sendData() {
     var data = JSON.stringify({header: array[0], body: array[1], userID: 1});
 
     if (transmit) {
-        socket.onopen = function (event) {
-            socket.send(data);
-        }
+
+        socket.send(data);
+
     }
 
 }
