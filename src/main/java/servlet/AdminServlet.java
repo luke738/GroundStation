@@ -32,46 +32,48 @@ public class AdminServlet extends HttpServlet {
 
         Boolean admin = (Boolean) session.getAttribute("adminStatus");
         //if not an admin send back warning
-        if (admin == false){
+        if (!admin){
             //CHECK TO SEE IF THIS IS THE RIGHT REDIRECT
             response.sendRedirect("account_info.html");
         }
         else {
             //getting message for change password
-            if (admin_actions.equals("change_password")) {
-                //            Message reqMessage = gson.fromJson(reqBody, Message.class);
-                //only need new password
-                //GET PASSWORD FROM FRONT END
-                password = request.getParameter("new_password");
-                //generate salt and hashed pw
-                salted = PasswordHashing.getRandomSalt();
-                hashed_pw = PasswordHashing.hashPassword(password, salted);
-                password = "";
-            }
-            //getting message for if add admin (proposed admin email)
-            else if (admin_actions.equals("add_admin")) {
-                //            Message reqMessage = gson.fromJson(reqBody, Message.class);
-                //only need proposed admin email
-                //GET EMAIL FROM FRONT END
-                user_email = request.getParameter("user_email");
-                ;
-            }
-            //getting message for delete class code ; need old class code
-            else if (admin_actions.equals("delete_class_code")) {
-                //            Message reqMessage = gson.fromJson(reqBody, Message.class);
-                //only need deleted class_code
-                //GET CLASS CODE
-                classcode = request.getParameter("old_class_code");
-                ;
-            }
-            //getting message for add class code ; need new class code
-            else if (admin_actions.equals("add_class_code")) {
-                //            Message reqMessage = gson.fromJson(reqBody, Message.class);
-                //only need new class_code
-                //GET CLASS CODE
-                classcode = request.getParameter("new_class_code");
-            } else if (admin_actions.equals("grab_class")) {
-                classcode = request.getParameter("class_code");
+            switch(admin_actions)
+            {
+                case "change_password":
+                    //            Message reqMessage = gson.fromJson(reqBody, Message.class);
+                    //only need new password
+                    //GET PASSWORD FROM FRONT END
+                    password = request.getParameter("new_password");
+                    //generate salt and hashed pw
+                    salted = PasswordHashing.getRandomSalt();
+                    hashed_pw = PasswordHashing.hashPassword(password, salted);
+                    password = "";
+                    break;
+                //getting message for if add admin (proposed admin email)
+                case "add_admin":
+                    //            Message reqMessage = gson.fromJson(reqBody, Message.class);
+                    //only need proposed admin email
+                    //GET EMAIL FROM FRONT END
+                    user_email = request.getParameter("user_email");
+                    break;
+                //getting message for delete class code ; need old class code
+                case "delete_class_code":
+                    //            Message reqMessage = gson.fromJson(reqBody, Message.class);
+                    //only need deleted class_code
+                    //GET CLASS CODE
+                    classcode = request.getParameter("old_class_code");
+                    break;
+                //getting message for add class code ; need new class code
+                case "add_class_code":
+                    //            Message reqMessage = gson.fromJson(reqBody, Message.class);
+                    //only need new class_code
+                    //GET CLASS CODE
+                    classcode = request.getParameter("new_class_code");
+                    break;
+                case "grab_class":
+                    classcode = request.getParameter("class_code");
+                    break;
             }
         }
 

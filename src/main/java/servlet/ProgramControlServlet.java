@@ -50,7 +50,7 @@ public class ProgramControlServlet extends HttpServlet {
             }
             break;
             case "shutdown": {
-                if((boolean) session.getAttribute("isAdmin")) {
+                if((boolean) session.getAttribute("adminStatus")) {
                     desktopConn.send(reqMessage);
                     Message desktopResp = desktopConn.receive(Message.class);
                     if(desktopResp.header.equals("shutdown_ack")) {
