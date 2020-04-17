@@ -24,14 +24,25 @@
     </nav>
 
     <!--change password functionality-->
-    <form id = "loginBox" onsubmit="return sendData()">
-        <div>
-            <p>Change password? </p>
-            <input id="new_password" name="new_password" type="text" placeholder="New Password">
-        </div>
+    <div style="margin-top: 20px;"></div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header">Account Manager Widget</div>
+            <div class="card-body">
+                <h5 class="card-title">Manage Account Password</h5>
+                <form id = "loginBox" onsubmit="return sendData()">
+                    <div>
+                        <p>Change password? </p>
+                        <input id="new_password"  name="new_password" type="text" placeholder="New Password">
+                    </div>
 
-        <input id="submit" type="button" value="Change Password" onclick="sendData();"/>
-    </form>
+                    <input id="submit" class="btn btn-primary" style="margin-top:5px"  type="button" value="Change Password" onclick="sendData();"/>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
 
     <div id = "onsuccess"></div>
 

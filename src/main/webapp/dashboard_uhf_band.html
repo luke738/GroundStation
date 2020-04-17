@@ -38,166 +38,183 @@
         <div class="row">
             <div class="col-2"></div>
         </div>
+        <br>
         <h2>Dashboard UHF-band</h2>
-        <div class="row">
-            <div class="col-4"></div>
-            <div class="col-4">
-                <span>Type: </span>
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" id="transmit_btn" class="btn btn-secondary active" onclick="toggleTransmit()">
-                        Transmit
-                    </button>
-                    <button type="button" id="recieve_btn" class="btn btn-secondary" onclick="toggleRecieve()">
-                        Recieve
-                    </button>
-                </div>
-            </div>
-
-        </div>
         <br>
 
         <div class="row">
-            <div class="col-sm-7">
-                <div class="btn-group" role="group">
-                    <input class="btn btn-primary" type="button" id="dwn-btn" value="Download TLE data file" onclick="download1();"/>
-                    <div id = "download_onsuccess"></div>
-                </div>
+            <div class="row">
 
-                <div class="card bg-dark text-white">
-                    <div class="card-body">
-                        <h5 class="card-title">Button controls</h5>
-                        <div class="card text-black">
+                <div class="col-6">
+
+                    <div class="btn-group" role="group">
+                        <input class="btn btn-primary" type="button" id="dwn-btn" value="Download TLE data file" onclick="download1();"/>
+                        <div id = "download_onsuccess"></div>
+                    </div>
+                    <span style="margin-left: 10vw">Type: </span>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" id="transmit_btn" class="btn btn-secondary active" onclick="toggleTransmit()">
+                            Transmit
+                        </button>
+                        <button type="button" id="recieve_btn" class="btn btn-secondary" onclick="toggleRecieve()">
+                            Recieve
+                        </button>
+                    </div>
+
+                    <div class="card bg-dark text-white" style="margin-top: 5px">
+                        <div class="card-body">
+                            <h5 class="card-title">Button controls</h5>
+                            <div class="card text-black">
+                                <div class="card-body">
+                                    <div class="form">
+                                        <div class="form-group">
+                                            <!--buttons go here -->
+                                            <div class="btn-group" role="group">
+                                                <input id = "launch_orbitron" class="btn btn-outline-primary" type="submit" value="Launch Orbitron" onclick="program_sendData(this.id);"/>
+                                                <input id = "kill_orbitron" class="btn btn-outline-primary" type="submit" value="Kill Orbitron" onclick="program_sendData(this.id);"/>
+                                            </div>
+                                            <div class="btn-group" role="group">
+                                                <input id = "launch_spidmd01" class="btn btn-outline-primary" type="submit" value="Launch SPID MD-01 Driver" onclick="program_sendData(this.id);"/>
+                                                <input id = "kill_spidmd01" class="btn btn-outline-primary" type="submit" value="Kill SPID MD-01 Driver" onclick="program_sendData(this.id);"/>
+                                            </div>
+                                            <div class="btn-group" role="group">
+                                                <input id = "launch_sdrsharp" class="btn btn-outline-primary" type="submit" value="Launch SDRSharp" onclick="program_sendData(this.id);"/>
+                                                <input id = "kill_sdrsharp" class="btn btn-outline-primary" type="submit" value="Kill SDRSharp" onclick="program_sendData(this.id);"/>
+                                            </div>
+                                            <div class="btn-group" role="group">
+                                                <input id = "launch_pstrotator" class="btn btn-outline-primary" type="submit" value="Launch PSTRotator" onclick="program_sendData(this.id);"/>
+                                                <input id = "kill_pstrotator" class="btn btn-outline-primary" type="submit" value="Kill PSTRotator" onclick="program_sendData(this.id);"/>
+                                            </div>
+
+                                            <p id = "onsuccess"></p>
+
+                                            <div class="btn-group" role="group">
+                                                <input id = "shutdown" class="btn btn-outline-danger" type="submit" value="Shut Down Desktop" onclick="program_sendData(this.id);"/>
+                                                <div id = "shutdown_onsuccess"></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="card-body">
-                                <div class="form">
-                                    <div class="form-group">
-                                        <!--buttons go here -->
-                                        <div class="btn-group" role="group">
-                                            <input id = "launch_orbitron" class="btn btn-outline-primary" type="submit" value="Launch Orbitron" onclick="program_sendData(this.id);"/>
-                                            <input id = "kill_orbitron" class="btn btn-outline-primary" type="submit" value="Kill Orbitron" onclick="program_sendData(this.id);"/>
-                                        </div>
-                                        <div class="btn-group" role="group">
-                                            <input id = "launch_spidmd01" class="btn btn-outline-primary" type="submit" value="Launch SPID MD-01 Driver" onclick="program_sendData(this.id);"/>
-                                            <input id = "kill_spidmd01" class="btn btn-outline-primary" type="submit" value="Kill SPID MD-01 Driver" onclick="program_sendData(this.id);"/>
-                                        </div>
-                                        <div class="btn-group" role="group">
-                                            <input id = "launch_sdrsharp" class="btn btn-outline-primary" type="submit" value="Launch SDRSharp" onclick="program_sendData(this.id);"/>
-                                            <input id = "kill_sdrsharp" class="btn btn-outline-primary" type="submit" value="Kill SDRSharp" onclick="program_sendData(this.id);"/>
-                                        </div>
-                                        <div class="btn-group" role="group">
-                                            <input id = "launch_pstrotator" class="btn btn-outline-primary" type="submit" value="Launch PSTRotator" onclick="program_sendData(this.id);"/>
-                                            <input id = "kill_pstrotator" class="btn btn-outline-primary" type="submit" value="Kill PSTRotator" onclick="program_sendData(this.id);"/>
-                                        </div>
-
-                                        <p id = "onsuccess"></p>
-
-                                        <div class="btn-group" role="group">
-                                            <input id = "shutdown" class="btn btn-outline-danger" type="submit" value="Shut Down Desktop" onclick="program_sendData(this.id);"/>
-                                            <div id = "shutdown_onsuccess"></div>
-                                        </div>
+                                <h5 class="card-title">Console</h5>
+                                <div class="card text-dark">
+                                    <div class="card-body">
+                                        <div id="console_view"></div>
 
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Console</h5>
-                        <div class="card text-dark">
-                            <div class="card-body">
-                                <div id="console_view"></div>
 
-                            </div>
-                        </div>
-                    </div>
+                            <div class="card-body" id="data_entry_box">
+                                <h5 class="card-title">Enter data here:</h5>
+                                <div class="card text-black">
+                                    <div class="card-body">
+                                        <form class="form">
 
-                    <div class="card-body" id="data_entry_box">
-                        <h5 class="card-title">Enter data here:</h5>
-                        <div class="card text-black">
-                            <div class="card-body">
-                                <form class="form">
+                                            <div class="form-group">
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                            </div>
+                                            <input id = "submitConsole" class="btn btn-primary" type="submit" value="Submit" onclick="sendData();"/>
 
-                                    <div class="form-group">
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                        </form>
+
                                     </div>
-                                    <input id = "submitConsole" class="btn btn-primary" type="submit" value="Submit" onclick="sendData();"/>
+                                </div>
 
-                                </form>
 
                             </div>
                         </div>
-
-
                     </div>
-                </div>
-            </div>
-            <div class="col-sm-5">
-                <div class="card">
-                    <div class = "bandIPcard" class="card-body">
-                        <h5 class="card-title">UHF/VHF Camera</h5>
-                        <p class="card-text"></p>
-                        <iframe class = "bandIP" src="http://uhfcam.usc.edu/video.cgi"></iframe>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class = "bandIPcard" class="card-body">
-                        <h5 class="card-title">SBand Camera</h5>
-                        <p class="card-text"></p>
-                        <iframe class = "bandIP" src="http://sbandcam.usc.edu/video.cgi"></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col">
-                <h5 class="card-header">Antenna Data:</h5>
-                <div class="card-body bg-light">
-                    <div class="row">
-                        <div class="col-6">
+                    <div class="col">
+                        <h5 class="card-header">Antenna Data:</h5>
+                        <div class="card-body bg-light">
+                            <div class="row">
+                                <div class="col-6">
 
-                                <h5>Set Antenna Angle:</h5>
-                                Current Angle:  <span id="curr_ag" class="text-primary">150</span> degrees
+                                    <h5>Set Antenna Angle:</h5>
+                                    Current Angle:  <span id="curr_ag" class="text-primary">150</span> degrees
 
-                                <div class="form-row">
-                                    <div class="col">
-                                        <input type="range" id="antAngleSlider" class="custom-range" min="0" max="180">
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <input type="range" id="antAngleSlider" class="custom-range" min="0" max="180">
+                                            <p class="card-text">
+                                                Set angle to: <span id="set_angle" class="text-primary"></span> degrees
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <input id = "set_motor_angle" class="btn btn-primary" type="submit" value="Set Angle" onclick="sendMotorAngleData();"/>
+
+                                </div>
+                                <div class="col-6">
+                                    <div class="form">
+                                        <h5>Set Azimuth & Elevation:</h5>
                                         <p class="card-text">
-                                            Set angle to: <span id="set_angle" class="text-primary"></span> degrees
+                                            Current Azimuth: <span id="curr_ax" class="text-primary">10</span>
+                                            Current Elevation: <span id="curr_el" class="text-primary">20</span>
                                         </p>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Set Angle</button>
 
-                        </div>
-                        <div class="col-6">
-                            <div class="form">
-                                <h5>Set Azimuth & Elevation:</h5>
-                                <p class="card-text">
-                                    Current Azimuth: <span id="curr_ax" class="text-primary">10</span>
-                                    Current Elevation: <span id="curr_el" class="text-primary">20</span>
-                                </p>
+                                        <div class="form-row">
+                                            <div class="col-4">
+                                                <label for="azimuth">Azimuth</label>
+                                                <input type="number" class="form-control" id="azimuth" placeholder="10">
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="elevation">Elevation</label>
+                                                <input type="number" class="form-control" id="elevation" placeholder="10">
+                                            </div>
+                                        </div>
+                                        <input id = "set_azimuth_elevation" class="btn btn-primary" style="margin-top: 5px;" type="submit" value="Set Azimuth & Elevation" onclick="sendMotorAEData();"/>
+                                    </div>
 
-                                <div class="form-row">
-                                    <div class="col-4">
-                                        <label for="azimuth">Azimuth</label>
-                                        <input type="number" class="form-control" id="azimuth" placeholder="10">
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="elevation">Elevation</label>
-                                        <input type="number" class="form-control" id="elevation" placeholder="10">
-                                    </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Set Azimuth & Elevation</button>
                             </div>
-
                         </div>
                     </div>
                 </div>
+
+
+
+                <div class="row">
+                    <div class="col">
+                        <div class="row" style="width:50vw">
+                            <div class="col">
+                                <div class="card">
+                                    <div class = "bandIPcard" class="card-body">
+                                        <h5 class="card-title">UHF/VHF Camera</h5>
+                                        <p class="card-text"></p>
+                                        <iframe class = "bandIP" src="http://uhfcam.usc.edu/video.cgi"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="card">
+                                    <div class = "bandIPcard" class="card-body">
+                                        <h5 class="card-title">SBand Camera</h5>
+                                        <p class="card-text"></p>
+                                        <iframe class = "bandIP" src="http://sbandcam.usc.edu/video.cgi"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
+
+
     </div>
 
     <script src="js/dashboard_uhf.js"></script>
-
+    <script src="js/motor_control.js"></script>
 
 </body>
 
