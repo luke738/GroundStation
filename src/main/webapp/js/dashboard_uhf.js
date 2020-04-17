@@ -49,30 +49,17 @@ function toggleRecieve() {
 
 function sendData() {
     var command = document.querySelector('#exampleFormControlTextarea1');
-    // console.log(command.value);
 
     var array = command.value.split(" ");
 
     // Converting JSON data to string
     var data = JSON.stringify({header: array[0], body: array[1], userID: 1});
-    // console.log(data);
-
-    // Creating a XHR object
-    // var xhr = new XMLHttpRequest();
-    // xhr.open("POST", "/UHFData", false);
-    // xhr.send(data);
 
     if (transmit) {
         socket.onopen = function (event) {
             socket.send(data);
         }
     }
-
-
-    // socket.close();
-
-    // console.log("RESP: " + xhr.response);
-    // var response = JSON.parse(xhr.response); //Could check and see if request was successful
 
 }
 
@@ -82,29 +69,12 @@ function download1() {
     xhr.open("POST", "/TLEData",false);
     var data = {};
     xhr.send(data);
-
-    //console.log("RESP: " + xhr.response);
+// console.log(xhr.response);
     var response = JSON.parse(xhr.response);
+// console.log(response);
+    var success = response.header;
+    if (success == "tle_success") {
+        document.querySelector("#download_onsuccess").innerHTML = "TLE file downloaded";
+    }
 
-    var text = response.body;
-
-    if(xhr.status == 200) {
-
-        if (response.header == "TLE_data") {
-            //console.log("encodeURIComponent(text) " + encodeURIComponent(text));
-            //console.log("(text) " + (text));
-
-            var element = document.createElement('a');
-            element.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(text));
-            element.setAttribute('download', "TLE_data.txt");
-
-            element.style.display = 'none';
-            document.body.appendChild(element);
-
-            element.click();
-
-                document.body.removeChild(element);
-            }
-        }
 }
-

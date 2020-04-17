@@ -72,3 +72,19 @@ function sendData(clicked_id) {
     }
 }
 
+
+function download1() {
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/TLEData",false);
+    var data = {};
+    xhr.send(data);
+// console.log(xhr.response);
+    var response = JSON.parse(xhr.response);
+// console.log(response);
+    var success = response.header;
+    if (success == "tle_success") {
+        document.querySelector("#download_onsuccess").innerHTML = "TLE file downloaded";
+    }
+
+}
