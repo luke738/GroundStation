@@ -56,15 +56,13 @@ function toggleRecieve() {
 function sendData() {
     var command = document.querySelector('#exampleFormControlTextarea1');
 
-    var array = command.value.split(" ");
+    var array = command.value.split(" ",1);
 
     // Converting JSON data to string
-    var data = JSON.stringify({header: array[0], body: array[1], userID: 1});
+    var data = JSON.stringify({header: array[0], body: array[1]});
 
     if (transmit) {
-
         socket.send(data);
-
     }
 
 }
