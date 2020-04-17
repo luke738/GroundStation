@@ -65,6 +65,41 @@
 
                 <div class="card bg-dark text-white">
                     <div class="card-body">
+                        <h5 class="card-title">Button controls</h5>
+                        <div class="card text-black">
+                            <div class="card-body">
+                                <div class="form">
+                                    <div class="form-group">
+                                        <!--buttons go here -->
+                                        <div class="btn-group" role="group">
+                                            <input id = "launch_orbitron" class="btn btn-outline-primary" type="submit" value="Launch Orbitron" onclick="program_sendData(this.id);"/>
+                                            <input id = "kill_orbitron" class="btn btn-outline-primary" type="submit" value="Kill Orbitron" onclick="program_sendData(this.id);"/>
+                                        </div>
+                                        <div class="btn-group" role="group">
+                                            <input id = "launch_spidmd01" class="btn btn-outline-primary" type="submit" value="Launch SPID MD-01 Driver" onclick="program_sendData(this.id);"/>
+                                            <input id = "kill_spidmd01" class="btn btn-outline-primary" type="submit" value="Kill SPID MD-01 Driver" onclick="program_sendData(this.id);"/>
+                                        </div>
+                                        <div class="btn-group" role="group">
+                                            <input id = "launch_sdrsharp" class="btn btn-outline-primary" type="submit" value="Launch SDRSharp" onclick="program_sendData(this.id);"/>
+                                            <input id = "kill_sdrsharp" class="btn btn-outline-primary" type="submit" value="Kill SDRSharp" onclick="program_sendData(this.id);"/>
+                                        </div>
+                                        <div class="btn-group" role="group">
+                                            <input id = "launch_pstrotator" class="btn btn-outline-primary" type="submit" value="Launch PSTRotator" onclick="program_sendData(this.id);"/>
+                                            <input id = "kill_pstrotator" class="btn btn-outline-primary" type="submit" value="Kill PSTRotator" onclick="program_sendData(this.id);"/>
+                                        </div>
+
+                                        <p id = "onsuccess"></p>
+
+                                        <div class="btn-group" role="group">
+                                            <input id = "shutdown" class="btn btn-outline-danger" type="submit" value="Shut Down Desktop" onclick="program_sendData(this.id);"/>
+                                            <div id = "shutdown_onsuccess"></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="card-body">
                         <h5 class="card-title">Console</h5>
                         <div class="card text-dark">
                             <div class="card-body">
