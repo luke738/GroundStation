@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -67,9 +66,9 @@ public class LoginServlet extends HttpServlet {
                         if ((PasswordHashing.hashPassword(password, pInfo[0])).equals(pInfo[1]))
                         {
                             int userIDstore = db.getUserID(username);
-                            boolean AdminStatus = false;
+                            boolean isAdmin = false;
                             if (db.isAdministrator(username)!=-1){
-                                AdminStatus = true;
+                                isAdmin = true;
                             }
 
                             classcode = db.getUserClassCode(username);
@@ -81,13 +80,13 @@ public class LoginServlet extends HttpServlet {
                             session.setAttribute("email", username);
                             session.setAttribute("userID", userIDstore);
                             session.setAttribute("loggedIn",true);
-                            session.setAttribute("isAdmin",AdminStatus);
+                            session.setAttribute("adminStatus",Boolean.toString(isAdmin));
 
                             userToFrontend.put("email", username);
                             userToFrontend.put("userID", userIDstore+"");
                             userToFrontend.put("loggedIn", "true");
                             userToFrontend.put("classcode", classcode);
-                            userToFrontend.put("isAdmin", Boolean.toString(AdminStatus));
+                            userToFrontend.put("adminStatus", Boolean.toString(isAdmin));
 
                             respWriter.println(gson.toJson(new Message("LoggedIn", userToFrontend)));
                         }
@@ -116,9 +115,11 @@ public class LoginServlet extends HttpServlet {
                         db.createUser(username, PasswordHashing.hashPassword(password, salt), salt, name, classcode);
 
                         int userIDstore = db.getUserID(username);
+                        boolean isAdmin = false;
                         session.setAttribute("hello", "Hello " + username);
                         session.setAttribute("userID", userIDstore);
                         session.setAttribute("loggedIn",true);
+                        session.setAttribute("adminStatus", Boolean.toString(isAdmin));
                         //NEED TO CHANGE FOR VERIFICATION VIA ADMINISTRATOR EVENTUALLY
                         respWriter.println(gson.toJson(new Message("Created", userIDstore)));
                     }

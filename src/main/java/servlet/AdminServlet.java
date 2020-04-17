@@ -13,8 +13,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @WebServlet(name = "AdminServlet", urlPatterns = "/Admin")
@@ -32,39 +30,49 @@ public class AdminServlet extends HttpServlet {
         String salted = "";
         String hashed_pw = "";
 
-        //getting message for change password
-        if(admin_actions.equals("change_password")) {
-//            Message reqMessage = gson.fromJson(reqBody, Message.class);
-            //only need new password
-            //GET PASSWORD FROM FRONT END
-            password = request.getParameter("new_password");
-            //generate salt and hashed pw
-            salted = PasswordHashing.getRandomSalt();
-            hashed_pw = PasswordHashing.hashPassword(password, salted);
-            password = "";
+        Boolean admin = (Boolean) session.getAttribute("adminStatus");
+        //if not an admin send back warning
+        if (admin == false){
+            //CHECK TO SEE IF THIS IS THE RIGHT REDIRECT
+            response.sendRedirect("account_info.html");
         }
-        //getting message for if add admin (proposed admin email)
-        else if(admin_actions.equals("add_admin"))  {
-//            Message reqMessage = gson.fromJson(reqBody, Message.class);
-            //only need proposed admin email
-            //GET EMAIL FROM FRONT END
-            user_email = request.getParameter("user_email");;
-        }
-        //getting message for delete class code ; need old class code
-        else if(admin_actions.equals("delete_class_code"))  {
-//            Message reqMessage = gson.fromJson(reqBody, Message.class);
-            //only need deleted class_code
-            //GET CLASS CODE
-            classcode = request.getParameter("old_class_code");;
-        }
-        //getting message for add class code ; need new class code
-        else if(admin_actions.equals("add_class_code"))  {
-//            Message reqMessage = gson.fromJson(reqBody, Message.class);
-            //only need new class_code
-            //GET CLASS CODE
-            classcode = request.getParameter("new_class_code");
-        } else if (admin_actions.equals("grab_class")) {
-            classcode = request.getParameter("class_code");
+        else {
+            //getting message for change password
+            if (admin_actions.equals("change_password")) {
+                //            Message reqMessage = gson.fromJson(reqBody, Message.class);
+                //only need new password
+                //GET PASSWORD FROM FRONT END
+                password = request.getParameter("new_password");
+                //generate salt and hashed pw
+                salted = PasswordHashing.getRandomSalt();
+                hashed_pw = PasswordHashing.hashPassword(password, salted);
+                password = "";
+            }
+            //getting message for if add admin (proposed admin email)
+            else if (admin_actions.equals("add_admin")) {
+                //            Message reqMessage = gson.fromJson(reqBody, Message.class);
+                //only need proposed admin email
+                //GET EMAIL FROM FRONT END
+                user_email = request.getParameter("user_email");
+                ;
+            }
+            //getting message for delete class code ; need old class code
+            else if (admin_actions.equals("delete_class_code")) {
+                //            Message reqMessage = gson.fromJson(reqBody, Message.class);
+                //only need deleted class_code
+                //GET CLASS CODE
+                classcode = request.getParameter("old_class_code");
+                ;
+            }
+            //getting message for add class code ; need new class code
+            else if (admin_actions.equals("add_class_code")) {
+                //            Message reqMessage = gson.fromJson(reqBody, Message.class);
+                //only need new class_code
+                //GET CLASS CODE
+                classcode = request.getParameter("new_class_code");
+            } else if (admin_actions.equals("grab_class")) {
+                classcode = request.getParameter("class_code");
+            }
         }
 
 
@@ -100,6 +108,7 @@ public class AdminServlet extends HttpServlet {
                     //classcode exists in db for admin
                     if (db.checkClassCode(classcode))
                     {
+                        //SHOULD WE ADD A WARNING LIKE: IF YOU DELETE THIS CLASS, x students will be removed?
                         db.deleteClassCode(db.isAdministrator(session.getAttribute("email").toString()));
                         respWriter.println(gson.toJson(new Message("Deleted Class Code")));
                     }
