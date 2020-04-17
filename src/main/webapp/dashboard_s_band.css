@@ -18,3 +18,7 @@
 #shutdown {
     display:none;
 }
+
+#download_onsuccess {
+    color:black;
+}
