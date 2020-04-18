@@ -80,13 +80,13 @@ public class LoginServlet extends HttpServlet {
                             session.setAttribute("email", username);
                             session.setAttribute("userID", userIDstore);
                             session.setAttribute("loggedIn",true);
-                            session.setAttribute("adminStatus",Boolean.toString(isAdmin));
+                            session.setAttribute("isAdmin",Boolean.toString(isAdmin));
 
                             userToFrontend.put("email", username);
                             userToFrontend.put("userID", userIDstore+"");
                             userToFrontend.put("loggedIn", "true");
                             userToFrontend.put("classcode", classcode);
-                            userToFrontend.put("adminStatus", Boolean.toString(isAdmin));
+                            userToFrontend.put("isAdmin", Boolean.toString(isAdmin));
 
                             respWriter.println(gson.toJson(new Message("LoggedIn", userToFrontend)));
                         }
@@ -116,12 +116,19 @@ public class LoginServlet extends HttpServlet {
 
                         int userIDstore = db.getUserID(username);
                         boolean isAdmin = false;
+
+                        Map<String,String> userToFrontend = new HashMap<>();
                         session.setAttribute("hello", "Hello " + username);
                         session.setAttribute("userID", userIDstore);
-                        session.setAttribute("loggedIn",true);
-                        session.setAttribute("adminStatus", Boolean.toString(isAdmin));
+                        session.setAttribute("isAdmin", Boolean.toString(isAdmin));
+
+                        userToFrontend.put("email", username);
+                        userToFrontend.put("userID", userIDstore+"");
+                        userToFrontend.put("classcode", classcode);
+                        userToFrontend.put("isAdmin", Boolean.toString(isAdmin));
+
                         //NEED TO CHANGE FOR VERIFICATION VIA ADMINISTRATOR EVENTUALLY
-                        respWriter.println(gson.toJson(new Message("Created", userIDstore)));
+                        respWriter.println(gson.toJson(new Message("Created", userToFrontend)));
                     }
 
                     // Invalid Username But Correct Class Code

@@ -1,11 +1,14 @@
 var socket = new WebSocket("ws://localhost:8080/UHFData");
 var transmit = true;
-var slider = document.getElementById("antAngleSlider");
-var output = document.getElementById("set_angle");
-output.innerHTML = slider.value;
+// var slider = document.getElementById("antAngleSlider");
+// var output = document.getElementById("set_angle");
+// output.innerHTML = slider.value;
 
 //program control: show kill desktop button if admin
 var admin = sessionStorage.getItem("isAdmin");
+console.log("admin ");
+console.log(admin);
+
 if (admin == "true") {
     document.getElementById("shutdown").style.display = "block";
 }
@@ -21,10 +24,6 @@ socket.addEventListener('message', function(event) {
     console.log(event.data);
     document.getElementById("console_view").innerHTML += timeStamp + " " + event.data + "<br>"; //not appending, new data each time
 });
-
-slider.oninput = function() {
-    output.innerHTML = this.value;
-};
 
 // Start file download.
 document.getElementById("dwn-btn").addEventListener("click", function(){

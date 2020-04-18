@@ -1,11 +1,3 @@
-var slider = document.getElementById("antAngleSlider");
-var output = document.getElementById("set_angle");
-output.innerHTML = slider.value;
-
-slider.oninput = function() {
-    output.innerHTML = this.value;
-}
-
 //program control: show kill desktop button if admin
 var admin = sessionStorage.getItem("isAdmin");
 if (admin == "true") {
