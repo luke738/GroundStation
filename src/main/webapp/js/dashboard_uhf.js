@@ -1,14 +1,8 @@
 var socket = new WebSocket("ws://localhost:8080/UHFData");
 var transmit = true;
-// var slider = document.getElementById("antAngleSlider");
-// var output = document.getElementById("set_angle");
-// output.innerHTML = slider.value;
 
 //program control: show kill desktop button if admin
 var admin = sessionStorage.getItem("isAdmin");
-console.log("admin ");
-console.log(admin);
-
 if (admin == "true") {
     document.getElementById("shutdown").style.display = "block";
 }
@@ -41,6 +35,9 @@ function toggleTransmit() {
 
     x.style.display = "block";
 
+    var data = JSON.stringify({header: "set_transmit", body: "true"});
+    socket.send(data);
+
 }
 
 function toggleRecieve() {
@@ -52,6 +49,9 @@ function toggleRecieve() {
     other.classList.toggle("active");
 
     x.style.display = "none";
+
+    var data = JSON.stringify({header: "set_transmit", body: "false"});
+    socket.send(data);
 
 }
 
@@ -82,7 +82,6 @@ function download1() {
     if (success == "tle_success") {
         document.querySelector("#download_onsuccess").innerHTML = "TLE file downloaded";
     }
-
 }
 
 function program_sendData(clicked_id) {
