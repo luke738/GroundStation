@@ -51,7 +51,8 @@ public class Main
                     final int tInd = threads.size();
                     Thread t = new Thread(() ->
                     {
-                        while(run.get())
+                        boolean innerRun = true;
+                        while(run.get() && innerRun)
                         {
                             Message m = jc.receive(Message.class);
                             switch(m.header)
@@ -133,6 +134,8 @@ public class Main
                                     }
                                     process.destroy();
                                     jc.send(new Message("success"));
+                                    jc.close();
+                                    innerRun = false;
                                 }
                                 break;
                                 case "stop_program":
@@ -212,12 +215,16 @@ public class Main
                                     }
                                     process.destroy();
                                     jc.send(new Message("success"));
+                                    jc.close();
+                                    innerRun = false;
                                 }
                                 break;
                                 case "shutdown":
                                 {
                                     run.set(false);
                                     System.out.println("Shutting down...");
+                                    jc.send(new Message("shutdown_ack"));
+                                    jc.close();
                                 }
                                 break;
                                 case "uhf_transmit_toggle":
@@ -262,7 +269,7 @@ public class Main
                                         String TLE_dataString = br.lines().collect(Collectors.joining(System.lineSeparator()));
 
                                         // System.out.println("Output from Server .... \n");
-                                        File TLE_data = new File(config.get("tle_dir").getAsString() + "TLE_output.txt");
+                                        File TLE_data = new File(config.get("tle_dir").getAsString() + "\\TLE_output.txt");
                                         TLE_data.createNewFile();
 
                                         BufferedWriter fw;
@@ -297,8 +304,6 @@ public class Main
                                 }
                             }
                         }
-                        jc.send(new Message("shutdown_ack"));
-                        jc.close();
                         System.out.println("Connection closed.");
                         threads.remove(tInd);
                     });
