@@ -46,8 +46,9 @@ public class MotorController implements MessageListener
     @OnMessage
     public void onMessage(String message, Session session){
         JsonElement data = parser.parse(message);
-        //TODO: check HttpSession to see if user has edit access
+        //TODO: check if this is first message, add to correct computer list
         Boolean success = false; //connector.sendData(data);
+        //TODO: check who sent this message, then relay to correct computer
         try
         {
             session.getBasicRemote().sendText(gson.toJson(new Message(success ? "success" : "failure")));
@@ -75,7 +76,7 @@ public class MotorController implements MessageListener
     @Override
     public void messageReceived(Message m)
     {
-        //Send data to their sql?
+        //TODO: modify this to not send the message to all clients, but only to clients connected to the antenna that sent the message
         for(Session s : clients) {
             try
             {
