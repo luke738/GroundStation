@@ -58,6 +58,7 @@ public class Main
                             switch(m.header)
                             {
                                 case "motor_control": {
+                                    //TODO Need to synchronize access to PstRotator UDP
                                     //Kick out a polling thread here
                                     ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
                                     exec.scheduleAtFixedRate(() -> {

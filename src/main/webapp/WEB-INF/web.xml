@@ -30,4 +30,20 @@
         <!-- add password-->
     </context-param>
 
+    <context-param>
+        <param-name>sband_host</param-name>
+        <param-value>127.0.0.1</param-value>
+        <!-- add desktop host-->
+    </context-param>
+    <context-param>
+        <param-name>uhf_host</param-name>
+        <param-value>127.0.0.1</param-value>
+        <!-- add desktop host-->
+    </context-param>
+    <context-param>
+        <param-name>desktop_port</param-name>
+        <param-value>6789</param-value>
+        <!-- add desktop port-->
+    </context-param>
+
 </web-app>

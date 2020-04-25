@@ -5,6 +5,7 @@ import info.JavaConnection;
 import info.Message;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -48,11 +49,12 @@ public class TLEServlet extends HttpServlet {
             //update TLE download time
             TLE_download_time = ZonedDateTime.now(zoneId);
             JavaConnection desktopConn;
+            ServletContext context = getServletContext();
             if(reqMessage.header.equals("sband")) {
-                desktopConn = new JavaConnection(new Socket("127.0.0.1",6789)); //TODO: Set to SBAND IP
+                desktopConn = new JavaConnection(new Socket(context.getInitParameter("sband_host"), Integer.parseInt(context.getInitParameter("desktop_port"))));
             }
             else if(reqMessage.header.equals("uhf")) {
-                desktopConn = new JavaConnection(new Socket("127.0.0.1",6789)); //TODO: Set to UHF IP
+                desktopConn = new JavaConnection(new Socket(context.getInitParameter("uhf_host"), Integer.parseInt(context.getInitParameter("desktop_port"))));
             }
             else {
                 respWriter.println(gson.toJson(new Message("invalid_computer")));
