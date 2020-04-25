@@ -11,7 +11,7 @@ import java.util.*;
 
 public class MotorConnector{
     public enum MotorConnectorType{
-        UHF, SBAND
+        UHF//, SBAND TODO uncomment if SBAND can use PstRotator
     }
     private static Map<MotorConnectorType, MotorConnector> instances = Collections.synchronizedMap(new TreeMap<>());
 

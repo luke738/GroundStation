@@ -5,6 +5,7 @@ import connector.DataListener;
 import connector.UHFDataConnector;
 import info.Message;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -17,7 +18,7 @@ import java.util.regex.Pattern;
 public class UHFDataSocket implements DataListener
 {
     private static List<Session> clients = Collections.synchronizedList(new ArrayList<Session>());
-    private UHFDataConnector connector = UHFDataConnector.getInstance();
+    private UHFDataConnector connector;
     private JsonParser parser = new JsonParser();
     private Gson gson = new Gson();
 
@@ -25,6 +26,7 @@ public class UHFDataSocket implements DataListener
 
     public UHFDataSocket()
     {
+        connector = new UHFDataConnector("127.0.0.1",6789,2186);
         connector.addDataListener(this);
     }
 

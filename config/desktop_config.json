@@ -2,6 +2,7 @@
   "autohotkey": "\"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe\"",
   "script_dir": "C:\\Users\\Luke\\Documents\\WSLGit\\GroundStation\\src\\main\\ahk_scripts",
   "tle_dir": "C:\\Users\\Luke\\Documents\\TLE",
+  "tle_filter": "\"D:\\Desktop\\ASTE-566 Trackable Satellites\\ASTE599_Filter.exe\"",
   "space-trak_username": "stregis@usc.edu",
   "space-trak_password": "RfDXdPb6E7eH4kAfsAJ3z44bEBX4"
 }

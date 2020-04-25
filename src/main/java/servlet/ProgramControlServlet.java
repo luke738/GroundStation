@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import info.JavaConnection;
 import info.Message;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,9 +23,22 @@ public class ProgramControlServlet extends HttpServlet {
         PrintWriter respWriter = response.getWriter();
         Gson gson = new Gson();
         String reqBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        Message reqMessage = gson.fromJson(reqBody, Message.class);
+        Message reqSuperMessage = gson.fromJson(reqBody, Message.class);
+        Message reqMessage = gson.fromJson((String) reqSuperMessage.body, Message.class);
 
-        JavaConnection desktopConn = new JavaConnection(new Socket("127.0.0.1",6789));
+        JavaConnection desktopConn;
+        ServletContext context = getServletContext();
+        if(reqSuperMessage.header.equals("sband")) {
+            desktopConn = new JavaConnection(new Socket(context.getInitParameter("sband_host"), Integer.parseInt(context.getInitParameter("desktop_port")))); //TODO: Set to SBAND IP
+        }
+        else if(reqSuperMessage.header.equals("uhf")) {
+            desktopConn = new JavaConnection(new Socket(context.getInitParameter("uhf_host"), Integer.parseInt(context.getInitParameter("desktop_port")))); //TODO: Set to UHF IP
+        }
+        else {
+            respWriter.println(gson.toJson(new Message("invalid_computer")));
+            return;
+        }
+
 
         switch(reqMessage.header) {
             case "start_program": {

@@ -12,7 +12,7 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
@@ -51,11 +51,29 @@ public class Main
                     final int tInd = threads.size();
                     Thread t = new Thread(() ->
                     {
-                        while(run.get())
+                        boolean innerRun = true;
+                        while(run.get() && innerRun)
                         {
                             Message m = jc.receive(Message.class);
                             switch(m.header)
                             {
+                                case "motor_control": {
+                                    //TODO Need to synchronize access to PstRotator UDP
+                                    //Kick out a polling thread here
+                                    ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+                                    exec.scheduleAtFixedRate(() -> {
+                                        //Send UDP request to PstRotator for current antenna position
+
+                                        //Send current position back to socket
+
+                                    }, 0, 1, TimeUnit.SECONDS);
+                                    //Enter tighter motor control loop with new syntax
+                                    while(run.get()) {
+                                        Message mc = jc.receive(Message.class);
+
+                                    }
+                                }
+                                break;
                                 case "start_program":
                                 {
                                     String name = (String) m.body;
@@ -133,6 +151,8 @@ public class Main
                                     }
                                     process.destroy();
                                     jc.send(new Message("success"));
+                                    jc.close();
+                                    innerRun = false;
                                 }
                                 break;
                                 case "stop_program":
@@ -212,12 +232,16 @@ public class Main
                                     }
                                     process.destroy();
                                     jc.send(new Message("success"));
+                                    jc.close();
+                                    innerRun = false;
                                 }
                                 break;
                                 case "shutdown":
                                 {
                                     run.set(false);
                                     System.out.println("Shutting down...");
+                                    jc.send(new Message("shutdown_ack"));
+                                    jc.close();
                                 }
                                 break;
                                 case "uhf_transmit_toggle":
@@ -262,7 +286,7 @@ public class Main
                                         String TLE_dataString = br.lines().collect(Collectors.joining(System.lineSeparator()));
 
                                         // System.out.println("Output from Server .... \n");
-                                        File TLE_data = new File(config.get("tle_dir").getAsString() + "TLE_output.txt");
+                                        File TLE_data = new File(config.get("tle_dir").getAsString() + "\\TLE_output.txt");
                                         TLE_data.createNewFile();
 
                                         BufferedWriter fw;
@@ -290,6 +314,45 @@ public class Main
                                         System.out.println("Download failed! Check username/password and connection.");
                                         jc.send(new Message("download_failure"));
                                     }
+                                    if(false) //TODO: REMOVE FOR DEPLOYMENT
+                                    {
+                                        Process process = null;
+                                        try
+                                        {
+                                            ProcessBuilder pb = new ProcessBuilder(config.get("tle_filter").getAsString());
+                                            process = pb.start();
+                                            BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                                            String line;
+                                            while((line = br.readLine()) != null)
+                                            {
+                                                System.out.println(line);
+                                            }
+                                            br.close();
+                                            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                                            while((line = errorReader.readLine()) != null)
+                                            {
+                                                System.out.println(line);
+                                            }
+                                            errorReader.close();
+                                        }
+                                        catch(IOException e)
+                                        {
+                                            e.printStackTrace();
+                                            System.out.println("Error launching filter.");
+                                            jc.send(new Message("launch_failed"));
+                                        }
+                                        try
+                                        {
+                                            process.waitFor();
+                                        }
+                                        catch(Exception e)
+                                        {
+                                            e.printStackTrace();
+                                            System.out.println("Unable to wait for filter to run.");
+                                            jc.send(new Message("launch_failed"));
+                                        }
+                                        process.destroy();
+                                    }
                                 }
                                 default:
                                 {
@@ -297,8 +360,6 @@ public class Main
                                 }
                             }
                         }
-                        jc.send(new Message("shutdown_ack"));
-                        jc.close();
                         System.out.println("Connection closed.");
                         threads.remove(tInd);
                     });

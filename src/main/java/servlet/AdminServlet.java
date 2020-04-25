@@ -30,7 +30,7 @@ public class AdminServlet extends HttpServlet {
         String salted = "";
         String hashed_pw = "";
 
-        Boolean admin = (Boolean) session.getAttribute("adminStatus");
+        boolean admin = session.getAttribute("isAdmin").equals("true");
         //if not an admin send back warning
         if (!admin){
             //CHECK TO SEE IF THIS IS THE RIGHT REDIRECT

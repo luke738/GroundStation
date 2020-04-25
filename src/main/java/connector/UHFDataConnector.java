@@ -8,6 +8,7 @@ import info.Connection;
 import info.JavaConnection;
 import info.Message;
 
+import javax.servlet.ServletContext;
 import java.net.Socket;
 import java.util.*;
 
@@ -16,19 +17,17 @@ public class UHFDataConnector implements DataListener{
     private Connection pythonConn;
     private JavaConnection desktopConn;
 
-    private static final UHFDataConnector single = new UHFDataConnector();
-    private UHFDataConnector() {
-        initialize();
+    public UHFDataConnector(String desktop_host, int desktop_port, int python_port) {
+        initialize(desktop_host, desktop_port, python_port);
     }
 
-    private void initialize() {
+    private void initialize(String host, int port, int python_port) {
         //Initialize desktopConn
         while(desktopConn == null)
         {
             try
             {
-                //desktopConn = new JavaConnection(new Socket("10.182.13.99", 6789)); //TODO: Uncomment for deployment
-                desktopConn = new JavaConnection(new Socket("127.0.0.1",6789));
+                desktopConn = new JavaConnection(new Socket(host, port));
             }
             catch (Exception e)
             {
@@ -40,8 +39,7 @@ public class UHFDataConnector implements DataListener{
         {
             try
             {
-                //pythonConn = new Connection(new Socket("10.182.13.99", 2186)); //TODO: Uncomment for deployment
-                pythonConn = new Connection(new Socket("127.0.0.1", 2186));
+                pythonConn = new Connection(new Socket(host, python_port));
             }
             catch (Exception e)
             {
@@ -49,10 +47,6 @@ public class UHFDataConnector implements DataListener{
             }
         }
         pythonConn.addDataListener(this);
-    }
-
-    public static UHFDataConnector getInstance(){
-        return single;
     }
 
     public void setTransmitState(Boolean state) {
