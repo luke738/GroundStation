@@ -77,11 +77,7 @@
             sessionStorage.setItem("classcode", response.body.classcode);
             sessionStorage.setItem("isAdmin", response.body.isAdmin);
 
-            if (response.body.isAdmin == "true") {
-                window.location = "/dashboard_s_band.html";
-            } else {
-                window.location = "/user_dashboards_band.html";
-            }
+            window.location = "/dashboard_s_band.html";
         }
     }
 </script>

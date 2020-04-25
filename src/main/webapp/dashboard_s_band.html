@@ -116,8 +116,12 @@
                                             <label for="elevation">Elevation</label>
                                             <input type="number" class="form-control" id="elevation" placeholder="10">
                                         </div>
+
                                     </div>
-                                    <input id = "set_azimuth_elevation" class="btn btn-primary" style="margin-top: 5px;" type="submit" value="Set Azimuth & Elevation" onclick="sendMotorAEData();"/>
+                                    <div class="form-row">
+                                        <input id = "set_azimuth_elevation" class="btn btn-primary" style="margin-top: 5px;" type="submit" value="Set Azimuth & Elevation" onclick="sendMotorAEData();"/>
+                                        <div id = "wrap_warning"></div>
+                                    </div>
                                 </div>
 
                             </div>

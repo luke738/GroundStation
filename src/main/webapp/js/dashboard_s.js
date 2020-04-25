@@ -11,7 +11,6 @@ function toggleTransmit() {
     state.classList.add("active");
     other.classList.toggle("active");
 
-
     x.style.display = "block";
 
 }
@@ -44,7 +43,8 @@ function sendData(clicked_id) {
         }
         var program = programActionArr[1]; //which program
 
-        data = JSON.stringify({ header: action, body: program });
+        data = JSON.stringify({header: ["sband"], body: JSON.stringify({header: [action], body: [program]})});
+
     }
 
     var xhr = new XMLHttpRequest();
@@ -69,7 +69,7 @@ function download1() {
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/TLEData",false);
-    var data = {};
+    var data = {"header": ["sband"]};
     xhr.send(data);
 // console.log(xhr.response);
     var response = JSON.parse(xhr.response);

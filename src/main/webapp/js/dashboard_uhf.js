@@ -7,17 +7,18 @@ if (admin == "true") {
     document.getElementById("shutdown").style.display = "block";
 }
 
-socket.addEventListener('open', function(event) {
-    socket.send(JSON.stringify({}));
-});
-
 socket.addEventListener('message', function(event) {
     var date = new Date();
     var timeStamp = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 
-    console.log(event.data);
-    document.getElementById("console_view").innerHTML += timeStamp + " " + event.data + "<br>"; //not appending, new data each time
+    document.getElementById("console_view").innerHTML += timeStamp + " " + event.data.header + " " + event.data.body + "<br>";
 });
+
+var form = document.getElementById("data_form");
+function handleForm(event) {
+    event.preventDefault();
+}
+form.addEventListener('submit', handleForm);
 
 // Start file download.
 document.getElementById("dwn-btn").addEventListener("click", function(){
@@ -59,9 +60,13 @@ function sendData() {
     var command = document.querySelector('#exampleFormControlTextarea1');
 
     var array = command.value.split(" ",1);
+    var data = {};
 
-    // Converting JSON data to string
-    var data = JSON.stringify({header: array[0], body: array[1]});
+    if (array[0] == "shutdown") {
+        data = JSON.stringify({header: array[0]});
+    } else {
+        data = JSON.stringify({header: array[0], body: array[1]});
+    }
 
     if (transmit) {
         socket.send(data);
@@ -73,7 +78,7 @@ function download1() {
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/TLEData",false);
-    var data = {};
+    var data = {"header": ["uhf"]};
     xhr.send(data);
 // console.log(xhr.response);
     var response = JSON.parse(xhr.response);
@@ -101,7 +106,8 @@ function program_sendData(clicked_id) {
         }
         var program = programActionArr[1]; //which program
 
-        data = JSON.stringify({ header: action, body: program });
+        data = JSON.stringify({header: ["uhf"], body: JSON.stringify({header: [action], body: [program]})});
+
     }
 
     var xhr = new XMLHttpRequest();

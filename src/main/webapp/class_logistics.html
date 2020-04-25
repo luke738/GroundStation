@@ -70,11 +70,11 @@
                                 <input id="add_class_code" type="button" class="btn btn-primary" value="Add Class Code" onclick="sendData(this.id);"/>
                             </div>
 
-                            <div class="form-group">
-                                <input id="newpw" name="newpw" type="text" placeholder="1234">
-                                <input id="change_password" type="button" class="btn btn-primary" value="New Password" onclick="sendData(this.id);"/>
-                                <p id = "onsuccess"></p>
-                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<input id="newpw" name="newpw" type="text" placeholder="1234">-->
+                                <!--<input id="change_password" type="button" class="btn btn-primary" value="New Password" onclick="sendData(this.id);"/>-->
+                                <!--<p id = "onsuccess"></p>-->
+                            <!--</div>-->
 
                             <div class="form-group">
                                 <input id="addadmin" name="addadmin" type="text" placeholder="example@email.com">
@@ -139,7 +139,6 @@
         function sendData(clicked_id) {
             var action = clicked_id;
 
-            var new_password = document.querySelector('#newpw').value;
             var classcode = document.querySelector('#classcode').value;
             var addadmin = document.querySelector('#addadmin').value;
             var deleteclasscode = document.querySelector('#deleteclasscode').value;
@@ -148,9 +147,7 @@
             var value = null;
             var data = {};
 
-            if (action === "change_password") {
-                value = "new_password="+new_password;
-            } else if (action === "add_admin") {
+            if (action === "add_admin") {
                 value = "user_email="+addadmin;
             } else if (action === "delete_class_code") {
                 value = "old_class_code="+deleteclasscode;
@@ -164,11 +161,6 @@
             console.log("RESP: " + xhr.response);
 
             var response = JSON.parse(xhr.response); //Could check and see if request was successful
-
-            //show password changed successfully message
-            if (action === "change_password") {
-                document.querySelector('#onsuccess').innerHTML = response.header;
-            }
 
         }
 
