@@ -43,6 +43,32 @@ INSERT INTO `Administrators` VALUES (1,'1',1);
 UNLOCK TABLES;
 
 --
+-- Table structure for table `TLE_times`
+--
+
+DROP TABLE IF EXISTS `TLE_times`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `TLE_times` (
+  `tle_id` int(11) NOT NULL AUTO_INCREMENT,
+  `TLE_dt` datetime NOT NULL,
+  PRIMARY KEY (`tle_id`),
+  UNIQUE KEY `time_id_UNIQUE` (`tle_id`),
+  UNIQUE KEY `TLE_dt_UNIQUE` (`TLE_dt`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `TLE_times`
+--
+
+LOCK TABLES `TLE_times` WRITE;
+/*!40000 ALTER TABLE `TLE_times` DISABLE KEYS */;
+INSERT INTO `TLE_times` VALUES (1,'2020-04-26 18:19:07'),(2,'2020-04-26 18:24:56');
+/*!40000 ALTER TABLE `TLE_times` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `UserInfo`
 --
 
@@ -79,4 +105,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-08 17:47:30
+-- Dump completed on 2020-04-26 18:31:43
