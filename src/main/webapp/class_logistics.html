@@ -101,67 +101,73 @@
 
     <script>
 
-        var classcode = sessionStorage.getItem("classcode");
-        var xhr = new XMLHttpRequest();
-        var data = {};
-        xhr.open("POST", "/Admin?actions=grab_class&class_code="+classcode, false);
-        xhr.send(data);
+        if (!isAdmin) {
+            window.location.href = "/account_info.html";
 
-        var wholeclass = JSON.parse(xhr.response); //Could check and see if request was successful
-
-        //build the students array so that we can populate the students table
-        let students = [];
-        var i;
-        for (i = 0; i < wholeclass.body.length; i++) {
-            var admin = "admin";
-            if (wholeclass.body[i][2] === -1) {
-                admin = "not admin";
-            }
-            var element = {name:wholeclass.body[i][0], username:wholeclass.body[i][1], status:admin};
-            students.push(element);
-        }
-        console.log(students);
-
-        function generateTable(table, data) {
-            for (let element of data) {
-                let row = table.insertRow();
-                for (key in element) {
-                    let cell = row.insertCell();
-                    let text = document.createTextNode(element[key]);
-                    cell.appendChild(text);
-                }
-            }
         }
 
-        let table = document.querySelector("#table");
-        generateTable(table, students);
-
-        function sendData(clicked_id) {
-            var action = clicked_id;
-
-            var classcode = document.querySelector('#classcode').value;
-            var addadmin = document.querySelector('#addadmin').value;
-            var deleteclasscode = document.querySelector('#deleteclasscode').value;
-
+            var classcode = sessionStorage.getItem("classcode");
             var xhr = new XMLHttpRequest();
-            var value = null;
             var data = {};
-
-            if (action === "add_admin") {
-                value = "user_email="+addadmin;
-            } else if (action === "delete_class_code") {
-                value = "old_class_code="+deleteclasscode;
-            } else if (action === "add_class_code") {
-                value = "new_class_code="+classcode;
-            }
-
-            xhr.open("POST", "/Admin?actions="+action+"&"+value, false);
+            xhr.open("POST", "/Admin?actions=grab_class&class_code=" + classcode, false);
             xhr.send(data);
 
-            console.log("RESP: " + xhr.response);
+            var wholeclass = JSON.parse(xhr.response); //Could check and see if request was successful
 
-            var response = JSON.parse(xhr.response); //Could check and see if request was successful
+            //build the students array so that we can populate the students table
+            let students = [];
+            var i;
+            for (i = 0; i < wholeclass.body.length; i++) {
+                var admin = "admin";
+                if (wholeclass.body[i][2] === -1) {
+                    admin = "not admin";
+                }
+                var element = {name: wholeclass.body[i][0], username: wholeclass.body[i][1], status: admin};
+                students.push(element);
+            }
+            console.log(students);
 
+            function generateTable(table, data) {
+                for (let element of data) {
+                    let row = table.insertRow();
+                    for (key in element) {
+                        let cell = row.insertCell();
+                        let text = document.createTextNode(element[key]);
+                        cell.appendChild(text);
+                    }
+                }
+            }
+
+            let table = document.querySelector("#table");
+            generateTable(table, students);
+
+            function sendData(clicked_id) {
+                var action = clicked_id;
+
+                var classcode = document.querySelector('#classcode').value;
+                var addadmin = document.querySelector('#addadmin').value;
+                var deleteclasscode = document.querySelector('#deleteclasscode').value;
+
+                var xhr = new XMLHttpRequest();
+                var value = null;
+                var data = {};
+
+                if (action === "add_admin") {
+                    value = "user_email=" + addadmin;
+                } else if (action === "delete_class_code") {
+                    value = "old_class_code=" + deleteclasscode;
+                } else if (action === "add_class_code") {
+                    value = "new_class_code=" + classcode;
+                }
+
+                xhr.open("POST", "/Admin?actions=" + action + "&" + value, false);
+                xhr.send(data);
+
+                console.log("RESP: " + xhr.response);
+
+                var response = JSON.parse(xhr.response); //Could check and see if request was successful
+
+            
         }
 
 
