@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import info.Message;
 import security.PasswordHashing;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

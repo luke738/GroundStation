@@ -24,12 +24,6 @@ public class UHFDataSocket implements DataListener
 
     private static Pattern pattern = Pattern.compile("^(?:0x)?[0-9a-fA-F]+$");
 
-    public UHFDataSocket()
-    {
-        connector = new UHFDataConnector("127.0.0.1",6789,2186);
-        connector.addDataListener(this);
-    }
-
     @OnOpen
     public void open(Session session, EndpointConfig endpoint)
     {
@@ -40,6 +34,12 @@ public class UHFDataSocket implements DataListener
             if(httpSession.getAttribute("loggedIn")!=null && (Boolean) httpSession.getAttribute("loggedIn"))
             {
                 clients.add(session);
+                ServletContext context = httpSession.getServletContext();
+                String desktop_host = context.getInitParameter("uhf_host");
+                int desktop_port = Integer.parseInt(context.getInitParameter("desktop_port"));
+                int python_port = Integer.parseInt(context.getInitParameter("python_port"));
+                connector = new UHFDataConnector(desktop_host, desktop_port, python_port);
+                connector.addDataListener(this);
             }
         }
     }
@@ -50,7 +50,7 @@ public class UHFDataSocket implements DataListener
         System.out.println(message);
         JsonElement data = parser.parse(message);
         String body = "send_failure";
-        Boolean valid = false;
+        boolean valid = false;
         switch (data.getAsJsonObject().get("header").getAsString()) {
             case "set_transmit": {
                 if(!data.getAsJsonObject().has("body")) {
@@ -105,7 +105,7 @@ public class UHFDataSocket implements DataListener
                 body = "unknown_type";
             }
         }
-        Boolean success =  valid ? connector.sendData(data) : false;
+        boolean success =  valid ? connector.sendData(data) : false;
         try
         {
             session.getBasicRemote().sendText(gson.toJson(new Message(success ? "success" : "failure", body)));
@@ -133,7 +133,7 @@ public class UHFDataSocket implements DataListener
     {
         if(data.getAsJsonObject().get("header").getAsString().equalsIgnoreCase("data_rx"))
         {
-            //Send data to their sql
+            //TODO Send data to uhf storage database, if so desired
         }
         else if(data.getAsJsonObject().get("header").getAsString().equalsIgnoreCase("shutdown_delay")) {
             TimerTask task = new TimerTask()

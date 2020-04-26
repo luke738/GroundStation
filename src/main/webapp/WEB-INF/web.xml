@@ -45,5 +45,10 @@
         <param-value>6789</param-value>
         <!-- add desktop port-->
     </context-param>
+    <context-param>
+        <param-name>python_port</param-name>
+        <param-value>2186</param-value>
+        <!-- add desktop port-->
+    </context-param>
 
 </web-app>
