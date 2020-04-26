@@ -1,6 +1,7 @@
 package servlet;
 
 import java.sql.*;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 public class Database {
@@ -277,6 +278,40 @@ public class Database {
         }
         return "";
     }
-    //
+    //Method: check if TLE has been downloaded in the last hour
+    //returns true if able to download new TLE
+    public boolean TLE_status(ZonedDateTime current) {
+        try {
+            ps = conn.prepareStatement("SELECT TIMEDIFF(CURRENT_TIMESTAMP, (SELECT TLE_dt from TLE_times ORDER BY tle_id DESC LIMIT 0, 1));");
+            rs = ps.executeQuery();
+            //hrs: mins: seconds
+            if (rs.next()) {
+               String time_diff = rs.getString("td");
+               int ind = time_diff.indexOf(":");
+               int hours = Integer.parseInt((time_diff.substring(0, ind)));
+               if (hours < 1){
+                   addCurrentTLETime();
+                   return true;
+               }
+               return false;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SQLException in function \"validate\"");
+            e.printStackTrace();
+        }
+        return false;
+    }
+    //change stored TLE download time to the current time of TLE download
+    public void addCurrentTLETime(){
+        try {
+            ps = conn.prepareStatement("INSERT INTO GroundStation.TLE_times(TLE_dt) VALUES(CURRENT_TIMESTAMP);");
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("SQLException in function \"validate\"");
+            e.printStackTrace();
+        }
+    }
+
 
 }
