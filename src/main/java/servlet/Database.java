@@ -243,7 +243,7 @@ public class Database {
         ResultSet rs1;
 
         try {
-            ps1 = conn.prepareStatement("SELECT * FROM userinfo WHERE classcode=?;");
+            ps1 = conn.prepareStatement("SELECT * FROM UserInfo WHERE classcode=?;");
             ps1.setString(1, classcode);
             rs1 = ps1.executeQuery();
 
@@ -312,6 +312,26 @@ public class Database {
             e.printStackTrace();
         }
     }
+    //grab all of the TLE download times :
+    public ArrayList<String> grabTLEs(String classcode) {
+        ArrayList <String> tles = new ArrayList<>();
+        PreparedStatement ps1;
+        ResultSet rs1;
 
+        try {
+            ps1 = conn.prepareStatement("SELECT TLE_dt FROM TLE_times;");
+            rs1 = ps1.executeQuery();
+
+            while (rs1.next()) {
+                String dt = rs1.getString("TLE_dt");
+                tles.add(dt);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SQLException in function \"validate\"");
+            e.printStackTrace();
+        }
+        return tles;
+    }
 
 }
