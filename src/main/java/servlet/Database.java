@@ -1,7 +1,6 @@
 package servlet;
 
 import java.sql.*;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 public class Database {
@@ -279,8 +278,7 @@ public class Database {
         return "";
     }
     //Method: check if TLE has been downloaded in the last hour
-    //returns true if able to download new TLE
-    public boolean TLE_status(ZonedDateTime current) {
+    public boolean TLE_status() {
         try {
             ps = conn.prepareStatement("SELECT TIMEDIFF(CURRENT_TIMESTAMP, (SELECT TLE_dt from TLE_times ORDER BY tle_id DESC LIMIT 0, 1));");
             rs = ps.executeQuery();
@@ -290,7 +288,6 @@ public class Database {
                int ind = time_diff.indexOf(":");
                int hours = Integer.parseInt((time_diff.substring(0, ind)));
                if (hours < 1){
-                   addCurrentTLETime();
                    return true;
                }
                return false;
@@ -302,7 +299,7 @@ public class Database {
         }
         return false;
     }
-    //change stored TLE download time to the current time of TLE download
+    //add recent TLE download time to TLE db
     public void addCurrentTLETime(){
         try {
             ps = conn.prepareStatement("INSERT INTO GroundStation.TLE_times(TLE_dt) VALUES(CURRENT_TIMESTAMP);");
@@ -312,8 +309,23 @@ public class Database {
             e.printStackTrace();
         }
     }
+    public String getRecentTLETime(){
+        try {
+            ps = conn.prepareStatement("SELECT TLE_dt from TLE_times ORDER BY tle_id DESC LIMIT 0, 1));");
+            rs = ps.executeQuery();
+            if(rs.next()){
+                return rs.getString("TLE_dt");
+            }
+            return "";
+        } catch (SQLException e) {
+            System.out.println("SQLException in function \"validate\"");
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     //grab all of the TLE download times :
-    public ArrayList<String> grabTLEs(String classcode) {
+    public ArrayList<String> grabTLEs() {
         ArrayList <String> tles = new ArrayList<>();
         PreparedStatement ps1;
         ResultSet rs1;
