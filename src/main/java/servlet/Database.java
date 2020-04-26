@@ -83,6 +83,27 @@ public class Database {
         }
         return -1;
     }
+    //change the classcode of UserInfo table when user is made an admin
+    //the new admin's UserInfo table classcode will be the admins Administrator table AdminID
+    public void changeClassCode(String username){
+        try{
+            int userID = getUserID(username);
+            int adminCode = isAdministrator(username);
+            if (isAdministrator(username)==-1){
+                return;
+            }
+            ps = conn.prepareStatement("UPDATE UserInfo SET classcode = ? WHERE userID=? AND username=?");
+            ps.setInt(1,adminCode);
+            ps.setInt(2,userID);
+            ps.setString(3,username);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("SQLException in function \"VALIDATE\"");
+            e.printStackTrace();
+        }
+
+    }
+
     //returns AdminID if exists; returns -1 if not an admin
     public int isAdministrator(String username){
         try{
@@ -177,6 +198,7 @@ public class Database {
 
         return false;
     }
+    //adds a classcode into the the admin's section of classcodes
     public Boolean addClassCode(String username, String classcode){
         try {
             int userID = getUserID(username);
@@ -212,7 +234,7 @@ public class Database {
             e.printStackTrace();
         }
     }
-
+    //given the classcode, this returns an arraylist of strings of usernames
     public ArrayList<String[]> grabClass(String classcode) {
         ArrayList <String[]> wholeClass = new ArrayList<>();
 
@@ -239,7 +261,7 @@ public class Database {
         }
         return wholeClass;
     }
-
+    //Method: returns class code of user given the username (aka email)
     public String getUserClassCode(String username) {
         try {
             ps = conn.prepareStatement("SELECT u.classcode FROM UserInfo u WHERE username=?");
@@ -255,5 +277,6 @@ public class Database {
         }
         return "";
     }
+    //
 
 }
