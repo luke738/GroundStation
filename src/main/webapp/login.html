@@ -38,6 +38,16 @@
 
 <script>
 
+    var input = document.getElementById("password");
+
+    input.addEventListener("keyup", function(event) {
+        var key = event.key;
+        if (key === "Enter") {
+            event.preventDefault();
+            document.getElementById("submit").click();
+        }
+    });
+
     function sendData(){
         var email = document.querySelector('#email');
         var pw = document.querySelector('#password');

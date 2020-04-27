@@ -47,6 +47,17 @@
 </html>
 
 <script>
+
+    var input = document.getElementById("classcode");
+
+    input.addEventListener("keyup", function(event) {
+        var key = event.key;
+        if (key === "Enter") {
+            event.preventDefault();
+            document.getElementById("submit").click();
+        }
+    });
+
     function sendData(){
         var name = document.querySelector('#name');
         var email = document.querySelector('#email');
