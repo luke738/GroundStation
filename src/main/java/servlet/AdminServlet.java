@@ -87,6 +87,7 @@ public class AdminServlet extends HttpServlet {
                     //email in db & not already admin
                     if(!db.checkUser(user_email) && db.isAdministrator(user_email)==-1) {
                         db.addAdministrator(user_email);
+                        db.changeClassCode(user_email);
                         respWriter.println("Administrator, " + user_email + " added!");
                         respWriter.close();
                         return;
