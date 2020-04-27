@@ -11,7 +11,9 @@ socket.addEventListener('message', function(event) {
     var date = new Date();
     var timeStamp = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 
-    document.getElementById("console_view").innerHTML += timeStamp + " " + event.data.header + " " + event.data.body + "<br>";
+    var eventData = JSON.parse(event.data);
+
+    document.getElementById("console_view").innerHTML += timeStamp + " " + eventData.header + " " + eventData.body + "<br>";
 });
 
 var form = document.getElementById("data_form");
