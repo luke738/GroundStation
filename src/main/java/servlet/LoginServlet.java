@@ -87,7 +87,11 @@ public class LoginServlet extends HttpServlet {
                             userToFrontend.put("userID", userIDstore+"");
                             userToFrontend.put("loggedIn", "true");
                             userToFrontend.put("classcode", classcode);
-                            userToFrontend.put("isAdmin", Boolean.toString(isAdmin));
+                            if (isAdmin) {
+                                userToFrontend.put("isAdmin", "isAdmin");
+                            } else {
+                                userToFrontend.put("isAdmin", "notAdmin");
+                            }
 
                             respWriter.println(gson.toJson(new Message("LoggedIn", userToFrontend)));
                         }
@@ -126,7 +130,11 @@ public class LoginServlet extends HttpServlet {
                         userToFrontend.put("email", username);
                         userToFrontend.put("userID", userIDstore+"");
                         userToFrontend.put("classcode", classcode);
-                        userToFrontend.put("isAdmin", Boolean.toString(isAdmin));
+                        if (isAdmin) {
+                            userToFrontend.put("isAdmin", "isAdmin");
+                        } else {
+                            userToFrontend.put("isAdmin", "notAdmin");
+                        }
 
                         //NEED TO CHANGE FOR VERIFICATION VIA ADMINISTRATOR EVENTUALLY
                         respWriter.println(gson.toJson(new Message("Created", userToFrontend)));

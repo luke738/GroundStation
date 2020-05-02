@@ -101,9 +101,14 @@
 
     <script>
 
-        if (!isAdmin) {
-            window.location.href = "/account_info.html";
+        var loggedIn = sessionStorage.getItem("loggedIn");
+        if (loggedIn == "loggedIn") {
+            window.location.href = "/login.html";
+        }
 
+        var isAdmin = sessionStorage.getItem("isAdmin");
+        if (isAdmin == "isAdmin") {
+            window.location.href = "/account_info.html";
         }
 
             var classcode = sessionStorage.getItem("classcode");
@@ -125,7 +130,7 @@
                 var element = {name: wholeclass.body[i][0], username: wholeclass.body[i][1], status: admin};
                 students.push(element);
             }
-            console.log(students);
+            // console.log(students);
 
             function generateTable(table, data) {
                 for (let element of data) {
@@ -163,11 +168,10 @@
                 xhr.open("POST", "/Admin?actions=" + action + "&" + value, false);
                 xhr.send(data);
 
-                console.log("RESP: " + xhr.response);
+                // console.log("RESP: " + xhr.response);
 
                 var response = JSON.parse(xhr.response); //Could check and see if request was successful
 
-            
         }
 
 

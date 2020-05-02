@@ -1,9 +1,15 @@
 var socket = new WebSocket("ws://localhost:8080/UHFData");
 var transmit = true;
 
+//if not logged in, return to login page
+var loggedIn = sessionStorage.getItem("loggedIn");
+if (loggedIn == "loggedIn") {
+    window.location.href = "/login.html";
+}
+
 //program control: show kill desktop button if admin
 var admin = sessionStorage.getItem("isAdmin");
-if (admin == "true") {
+if (admin == "isAdmin") {
     document.getElementById("shutdown").style.display = "block";
 }
 

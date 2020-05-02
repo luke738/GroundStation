@@ -1,6 +1,11 @@
+var loggedIn = sessionStorage.getItem("loggedIn");
+if (loggedIn == "loggedIn") {
+    window.location.href = "/login.html";
+}
+
 //program control: show kill desktop button if admin
 var admin = sessionStorage.getItem("isAdmin");
-if (admin == "true") {
+if (admin == "isAdmin") {
     document.getElementById("shutdown").style.display = "block";
 }
 

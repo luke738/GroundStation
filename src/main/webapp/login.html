@@ -54,7 +54,7 @@
 
         // Converting JSON data to string
         var data = JSON.stringify({ header: email.value, body: pw.value });
-        console.log(data);
+        //console.log(data);
 
         // Creating a XHR object
         var xhr = new XMLHttpRequest();
@@ -63,7 +63,7 @@
         // Sending data with the request
         xhr.send(data);
 
-        console.log("RESP: " + xhr.response);
+        //console.log("RESP: " + xhr.response);
 
         var response = JSON.parse(xhr.response); //Could check and see if request was successful
         console.log(response);
@@ -72,7 +72,8 @@
         } else {
             sessionStorage.setItem("userID", response.body.userID);
             sessionStorage.setItem("classcode", response.body.classcode);
-            sessionStorage.setItem("isAdmin", response.body.isAdmin);
+            sessionStorage.setItem("isAdmin", response.body.isAdmin); //"isAdmin" or "notAdmin"
+            sessionStorage.setItem("loggedIn", "loggedIn");
             window.location = "/dashboard_s_band.html";
         }
     }

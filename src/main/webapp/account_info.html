@@ -58,6 +58,12 @@
     <script src="js/nav_control.js"></script>
 
     <script>
+
+        var loggedIn = sessionStorage.getItem("loggedIn");
+        if (loggedIn == "loggedIn") {
+            window.location.href = "/login.html";
+        }
+
         function sendData(){
             var new_password = document.querySelector('#new_password');
 

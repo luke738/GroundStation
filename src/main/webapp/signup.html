@@ -83,10 +83,10 @@
             console.log("stays at signup html");
             window.location = "/signup.html";
         } else {
-
             sessionStorage.setItem("userID", response.body.userID);
             sessionStorage.setItem("classcode", response.body.classcode);
             sessionStorage.setItem("isAdmin", response.body.isAdmin);
+            sessionStorage.setItem("loggedIn", "loggedIn");
 
             window.location = "/dashboard_s_band.html";
         }
