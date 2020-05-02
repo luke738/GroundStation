@@ -2,14 +2,12 @@ var socket = new WebSocket("ws://localhost:8080/UHFData");
 var transmit = true;
 
 //if not logged in, return to login page
-var loggedIn = sessionStorage.getItem("loggedIn");
-if (loggedIn == "loggedIn") {
+if (sessionStorage.getItem("loggedIn") !== "true") {
     window.location.href = "/login.html";
 }
 
 //program control: show kill desktop button if admin
-var admin = sessionStorage.getItem("isAdmin");
-if (admin == "isAdmin") {
+if (sessionStorage.getItem("isAdmin") !== "true") {
     document.getElementById("shutdown").style.display = "block";
 }
 
@@ -70,7 +68,7 @@ function sendData() {
     var array = command.value.split(" ",1);
     var data = {};
 
-    if (array[0] == "shutdown") {
+    if (array[0] === "shutdown") {
         data = JSON.stringify({header: array[0]});
     } else {
         data = JSON.stringify({header: array[0], body: array[1]});
@@ -86,14 +84,17 @@ function download1() {
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/TLEData",false);
-    var data = {"header": ["uhf"]};
+    var data = JSON.stringify({"header": "uhf"});
     xhr.send(data);
 // console.log(xhr.response);
     var response = JSON.parse(xhr.response);
 // console.log(response);
     var success = response.header;
-    if (success == "tle_success") {
+    if (success === "tle_success") {
         document.querySelector("#download_onsuccess").innerHTML = "TLE file downloaded";
+    }
+    else {
+        document.querySelector("#download_onsuccess").innerHTML = response.header + " " + response.body;
     }
 }
 
@@ -101,7 +102,7 @@ function program_sendData(clicked_id) {
 
     var programAction = clicked_id; //launch_orbitron, kill_orbitron, or shutdown
     var data = null;
-    if (programAction == "shutdown") {
+    if (programAction === "shutdown") {
         data = JSON.stringify({header: "shutdown"});
     } else {
         var programActionArr = programAction.split("_");

@@ -3,6 +3,7 @@ package servlet;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import info.Message;
 import security.PasswordHashing;
 
@@ -87,11 +88,7 @@ public class LoginServlet extends HttpServlet {
                             userToFrontend.put("userID", userIDstore+"");
                             userToFrontend.put("loggedIn", "true");
                             userToFrontend.put("classcode", classcode);
-                            if (isAdmin) {
-                                userToFrontend.put("isAdmin", "isAdmin");
-                            } else {
-                                userToFrontend.put("isAdmin", "notAdmin");
-                            }
+                            userToFrontend.put("isAdmin", Boolean.toString(isAdmin));
 
                             respWriter.println(gson.toJson(new Message("LoggedIn", userToFrontend)));
                         }
@@ -130,11 +127,7 @@ public class LoginServlet extends HttpServlet {
                         userToFrontend.put("email", username);
                         userToFrontend.put("userID", userIDstore+"");
                         userToFrontend.put("classcode", classcode);
-                        if (isAdmin) {
-                            userToFrontend.put("isAdmin", "isAdmin");
-                        } else {
-                            userToFrontend.put("isAdmin", "notAdmin");
-                        }
+                        userToFrontend.put("isAdmin", Boolean.toString(isAdmin));
 
                         //NEED TO CHANGE FOR VERIFICATION VIA ADMINISTRATOR EVENTUALLY
                         respWriter.println(gson.toJson(new Message("Created", userToFrontend)));

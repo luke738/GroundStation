@@ -1,1 +1,1 @@
-document.getElementById("uhf_transmit_feature_toggle").style.display = "block";
+document.getElementById("uhf_transmit_feature_toggle").style.display = "none";

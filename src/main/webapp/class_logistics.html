@@ -101,13 +101,11 @@
 
     <script>
 
-        var loggedIn = sessionStorage.getItem("loggedIn");
-        if (loggedIn == "loggedIn") {
+        if (sessionStorage.getItem("loggedIn") !== "true") {
             window.location.href = "/login.html";
         }
 
-        var isAdmin = sessionStorage.getItem("isAdmin");
-        if (isAdmin == "isAdmin") {
+        if (sessionStorage.getItem("isAdmin") !== "true") {
             window.location.href = "/account_info.html";
         }
 

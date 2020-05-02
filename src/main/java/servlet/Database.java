@@ -284,13 +284,10 @@ public class Database {
             rs = ps.executeQuery();
             //hrs: mins: seconds
             if (rs.next()) {
-               String time_diff = rs.getString("td");
-               int ind = time_diff.indexOf(":");
-               int hours = Integer.parseInt((time_diff.substring(0, ind)));
-               if (hours < 1){
-                   return true;
-               }
-               return false;
+                String time_diff = rs.getString(1); //TIMEDIFF does not return a named column, or if it does it isn't "td"
+                int ind = time_diff.indexOf(":");
+                int hours = Integer.parseInt((time_diff.substring(0, ind)));
+                return hours < 1;
             }
 
         } catch (SQLException e) {
@@ -311,7 +308,7 @@ public class Database {
     }
     public String getRecentTLETime(){
         try {
-            ps = conn.prepareStatement("SELECT TLE_dt from TLE_times ORDER BY tle_id DESC LIMIT 0, 1));");
+            ps = conn.prepareStatement("SELECT TLE_dt from TLE_times ORDER BY tle_id DESC LIMIT 0, 1;");
             rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getString("TLE_dt");

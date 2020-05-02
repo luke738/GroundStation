@@ -37,9 +37,9 @@ public class TLEServlet extends HttpServlet {
         String reqBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         Message reqMessage = gson.fromJson(reqBody, Message.class);
         //if within 60 minutes of last TLE download, the server will not allow TLE download
-        if (db.TLE_status() == false){
+        if (db.TLE_status()){
             String last_req = db.getRecentTLETime();
-            respWriter.println(gson.toJson(new Message("Cannot pull TLE data within 1 hr of last request!", "Last request was at ") + last_req));
+            respWriter.println(gson.toJson(new Message("Cannot pull TLE data within 1 hr of last request!", "Last request was at " + last_req)));
         }
         else {
             JavaConnection desktopConn;
@@ -62,7 +62,7 @@ public class TLEServlet extends HttpServlet {
                 respWriter.println(gson.toJson(new Message("tle_success")));
             }
             else {
-                respWriter.println(gson.toJson(new Message("tle_failure", desktopResp.body)));
+                respWriter.println(gson.toJson(new Message("tle_failure", "exception downloading TLEs")));
             }
         }
 

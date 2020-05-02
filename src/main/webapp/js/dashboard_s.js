@@ -1,11 +1,10 @@
-var loggedIn = sessionStorage.getItem("loggedIn");
-if (loggedIn == "loggedIn") {
+if (sessionStorage.getItem("loggedIn") !== "true") {
     window.location.href = "/login.html";
 }
 
 //program control: show kill desktop button if admin
 var admin = sessionStorage.getItem("isAdmin");
-if (admin == "isAdmin") {
+if (admin === "true") {
     document.getElementById("shutdown").style.display = "block";
 }
 
@@ -74,7 +73,7 @@ function download1() {
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/TLEData",false);
-    var data = {"header": ["sband"]};
+    var data = JSON.stringify({"header": "sband"});
     xhr.send(data);
 // console.log(xhr.response);
     var response = JSON.parse(xhr.response);
@@ -82,6 +81,9 @@ function download1() {
     var success = response.header;
     if (success == "tle_success") {
         document.querySelector("#download_onsuccess").innerHTML = "TLE file downloaded";
+    }
+    else {
+        document.querySelector("#download_onsuccess").innerHTML = response.header + " " + response.body;
     }
 
 }

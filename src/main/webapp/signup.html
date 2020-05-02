@@ -79,14 +79,13 @@
 
         console.log("RESP: " + xhr.response);
         var response = JSON.parse(xhr.response); //Could check and see if request was successful
-        if(response.header != "Created") {
-            console.log("stays at signup html");
+        if(response.header !== "Created") {
             window.location = "/signup.html";
         } else {
             sessionStorage.setItem("userID", response.body.userID);
             sessionStorage.setItem("classcode", response.body.classcode);
             sessionStorage.setItem("isAdmin", response.body.isAdmin);
-            sessionStorage.setItem("loggedIn", "loggedIn");
+            sessionStorage.setItem("loggedIn", "true");
 
             window.location = "/dashboard_s_band.html";
         }

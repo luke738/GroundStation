@@ -11,27 +11,25 @@ import java.util.*;
 
 public class MotorConnector{
     public enum MotorConnectorType{
-        UHF//, SBAND TODO uncomment if SBAND can use PstRotator
+        UHF, SBAND
     }
-    private static Map<MotorConnectorType, MotorConnector> instances = Collections.synchronizedMap(new TreeMap<>());
 
     private MotorConnectorType type;
     private List<MessageListener> listeners = new ArrayList<>();
     private JavaConnection desktopConn;
 
-    private MotorConnector(MotorConnectorType type) {
+    public MotorConnector(MotorConnectorType type, String host, int port) {
         this.type = type;
-        initialize();
+        initialize(host, port);
     }
 
-    private void initialize() {
+    private void initialize(String host, int port) {
         //Initialize desktopConn
         while(desktopConn == null)
         {
             try
             {
-                //desktopConn = new JavaConnection(new Socket("10.182.13.99", 6789)); //TODO: Uncomment for deployment
-                desktopConn = new JavaConnection(new Socket("127.0.0.1",6789));
+                desktopConn = new JavaConnection(new Socket(host, port));
             }
             catch (Exception e)
             {
@@ -40,59 +38,17 @@ public class MotorConnector{
         }
         Thread t = new Thread(() -> {
             Message m = desktopConn.receive(Message.class);
-            sendEvent(m);
+            Message m2 = new Message(type.toString(), m);
+            sendEvent(m2);
         });
         t.start();
     }
 
-    public static MotorConnector getInstance(MotorConnectorType type) {
-        if(!instances.containsKey(type))
-        {
-            synchronized (MotorConnector.class)
-            {
-                if(!instances.containsKey(type))
-                {
-                    instances.put(type, new MotorConnector(type));
-                }
-            }
-        }
-        return instances.get(type);
-    }
-
-    public static Map<MotorConnectorType, MotorConnector> getInstances() {
-        if(instances.size() != MotorConnectorType.values().length) {
-            for(MotorConnectorType type : MotorConnectorType.values()) {
-                if(!instances.containsKey(type))
-                {
-                    synchronized (MotorConnector.class)
-                    {
-                        if(!instances.containsKey(type))
-                        {
-                            instances.put(type, new MotorConnector(type));
-                        }
-                    }
-                }
-            }
-        }
-        return instances;
-    }
-
-    public Boolean sendData(Message m) {
-        if(validateSend(m))
+    public void sendData(Message m) {
+        synchronized(MotorConnector.class)
         {
             desktopConn.send(m);
-            return true;
         }
-        else
-            return false;
-    }
-
-    private Boolean validateRecieve(Message m) {
-        return true;
-    }
-
-    private Boolean validateSend(Message m) {
-        return true;
     }
 
     public void addMessageListener(MessageListener m) {
@@ -104,18 +60,9 @@ public class MotorConnector{
     }
 
     private void sendEvent(Message m) {
-        if(validateRecieve(m))
+        for (MessageListener ml : listeners)
         {
-            for (MessageListener ml : listeners)
-            {
-                ml.messageReceived(m);
-            }
-        }
-        else {
-            for (MessageListener ml : listeners)
-            {
-                ml.messageReceived(new Message("invalid"));
-            }
+            ml.messageReceived(m);
         }
     }
 }

@@ -59,8 +59,7 @@
 
     <script>
 
-        var loggedIn = sessionStorage.getItem("loggedIn");
-        if (loggedIn == "loggedIn") {
+        if (sessionStorage.getItem("loggedIn") !== "true") {
             window.location.href = "/login.html";
         }
 
