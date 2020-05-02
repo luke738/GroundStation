@@ -8,13 +8,13 @@ motorSocket.addEventListener('message', function(event) {
     var body = event.data.body;
 
     //check antenna wrapper light
-    if (head == "antenna_wrapped")
+    if (head === "antenna_wrapped")
     {
-        if (body == "true")
+        if (body === "true")
         {
             document.getElementById("wrap_warning").innerHTML = "Antenna Wrap Warning: ON";
             document.getElementById("wrap_warning").style.color = "red";
-        } else if (body == "false")
+        } else if (body === "false")
         {
             document.getElementById("wrap_warning").innerHTML = "Antenna Wrap Warning: OFF";
             document.getElementById("wrap_warning").style.color = "lightgray";
@@ -23,12 +23,12 @@ motorSocket.addEventListener('message', function(event) {
     }
 
     //parse return value for current azimuth and elevation
-    if (head == "currentAzimuth")
+    if (head === "currentAzimuth")
     {
         document.getElementById("curr_ax").innerHTML = body;
 
     }
-    if (head == "currentElevation")
+    if (head === "currentElevation")
     {
         document.getElementById("curr_el").innerHTML = body;
     }
