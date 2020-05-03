@@ -1,20 +1,3 @@
-
-var transmit = true;
-
-if(enableUHF) {
-    var socket = new WebSocket("ws://localhost:8080/UHFData");
-}
-
-socket.addEventListener('message', function(event) {
-    var date = new Date();
-    var timeStamp = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-
-    var eventData = JSON.parse(event.data);
-
-    document.getElementById("console_view").innerHTML += timeStamp + " " + eventData.header + " " + eventData.body + "<br>";
-});
-
-
 //if not logged in, return to login page
 if (sessionStorage.getItem("loggedIn") !== "true") {
     window.location.href = "/login.html";
@@ -23,6 +6,21 @@ if (sessionStorage.getItem("loggedIn") !== "true") {
 //program control: show kill desktop button if admin
 if (sessionStorage.getItem("isAdmin") !== "true") {
     document.getElementById("shutdown").style.display = "block";
+}
+
+var transmit = true;
+
+if(enableUHF) {
+    var socket = new WebSocket("ws://localhost:8080/UHFData");
+
+    socket.addEventListener('message', function(event) {
+        var date = new Date();
+        var timeStamp = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
+        var eventData = JSON.parse(event.data);
+
+        document.getElementById("console_view").innerHTML += timeStamp + " " + eventData.header + " " + eventData.body + "<br>";
+    });
 }
 
 var form = document.getElementById("data_form");

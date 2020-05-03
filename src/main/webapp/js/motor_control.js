@@ -23,48 +23,52 @@ if (!dashBoardUHF) {
 } else {
 
     var motorSocket = new WebSocket("ws://localhost:8080/MotorControl");
-    var dashboardVal = JSON.stringify({"header": "antenna_name", "body": "uhf"});
 
-    //tell motor controller it's uhf dashboard
-    motorSocket.send(dashboardVal);
-}
+    motorSocket.addEventListener("open", function(event) {
+        var dashboardVal = JSON.stringify({"header": "antenna_name", "body": "uhf"});
 
-motorSocket.addEventListener('message', function(event) {
+        //tell motor controller it's uhf dashboard
+        motorSocket.send(dashboardVal);
+    });
 
-    // console.log(event.data);
+    motorSocket.addEventListener('message', function(event) {
 
-    var head = event.data.header;
-    var body = event.data.body;
+        // console.log(event.data);
 
-    //check antenna wrapper light
-    if (head === "antenna_wrapped")
-    {
-        if (body === "true")
+        var head = event.data.header;
+        var body = event.data.body;
+
+        //check antenna wrapper light
+        if (head === "antenna_wrapped")
         {
-            document.getElementById("wrap_warning").innerHTML = "Antenna Wrap Warning: ON";
-            document.getElementById("wrap_warning").style.color = "red";
-        } else if (body === "false")
-        {
-            document.getElementById("wrap_warning").innerHTML = "Antenna Wrap Warning: OFF";
-            document.getElementById("wrap_warning").style.color = "lightgray";
+            if (body === "true")
+            {
+                document.getElementById("wrap_warning").innerHTML = "Antenna Wrap Warning: ON";
+                document.getElementById("wrap_warning").style.color = "red";
+            } else if (body === "false")
+            {
+                document.getElementById("wrap_warning").innerHTML = "Antenna Wrap Warning: OFF";
+                document.getElementById("wrap_warning").style.color = "lightgray";
+            }
+
         }
 
-    }
+        //parse return value for current azimuth and elevation
+        if (head === "currentAzimuth")
+        {
+            document.getElementById("curr_ax").innerHTML = body;
 
-    //parse return value for current azimuth and elevation
-    if (head === "currentAzimuth")
-    {
-        document.getElementById("curr_ax").innerHTML = body;
+        }
+        if (head === "currentElevation")
+        {
+            document.getElementById("curr_el").innerHTML = body;
+        }
 
-    }
-    if (head === "currentElevation")
-    {
-        document.getElementById("curr_el").innerHTML = body;
-    }
-
-});
+    });
+}
 
 function sendMotorAEData() {
+    if (!dashBoardUHF) return;
     var azVal = document.getElementById("azimuth").value;
     var elevationVal = document.getElementById("elevation").value;
 
@@ -80,6 +84,7 @@ function sendMotorAEData() {
 }
 
 function stopMotorController() {
+    if (!dashBoardUHF) return;
     var data = JSON.stringify({header: "stop"});
     motorSocket.send(data);
 }
