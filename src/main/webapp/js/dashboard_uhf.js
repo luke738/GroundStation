@@ -1,11 +1,9 @@
-var socket = new WebSocket("ws://localhost:8080/UHFData");
+
 var transmit = true;
 
-/**
- * delete line 10 when UHF python script is complete
- */
-
-socket.close();
+if(enableUHF) {
+    var socket = new WebSocket("ws://localhost:8080/UHFData");
+}
 
 socket.addEventListener('message', function(event) {
     var date = new Date();
