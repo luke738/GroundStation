@@ -124,6 +124,7 @@ public class Main
                                 {
                                     downloadTLEs(config, jc, innerRun);
                                 }
+                                break;
                                 default:
                                 {
                                     jc.send(new Message("invalid_request"));
