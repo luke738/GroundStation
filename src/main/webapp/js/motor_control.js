@@ -1,4 +1,31 @@
-var motorSocket = new WebSocket("ws://localhost:8080/MotorControl");
+/**
+ * Turn off motor controller socket if s-band dashboard
+ * renable once sband antenna controls work
+ */
+
+if (!dashBoardUHF) {
+    /**
+     * delete line 12 & renable commented out code below
+     * once s-band motor controls work
+     */
+    var motorSocket = new WebSocket("ws://localhost:8080/MotorControl");
+    motorSocket.close();
+    // var dashboardVal = JSON.stringify({"header": "antenna_name", "body": "sband"});
+
+    //tell motor controller it's sband dashboard
+    //motorSocket.send(dashboardVal);
+
+    //hide motor control dashboard controls
+    document.getElementById("s_band_motor_controls").style.display = "none";
+
+} else {
+
+    var motorSocket = new WebSocket("ws://localhost:8080/MotorControl");
+    var dashboardVal = JSON.stringify({"header": "antenna_name", "body": "uhf"});
+
+    //tell motor controller it's uhf dashboard
+    motorSocket.send(dashboardVal);
+}
 
 motorSocket.addEventListener('message', function(event) {
 
@@ -35,7 +62,6 @@ motorSocket.addEventListener('message', function(event) {
 
 });
 
-
 function sendMotorAEData() {
     var azVal = document.getElementById("azimuth").value;
     var elevationVal = document.getElementById("elevation").value;
@@ -45,4 +71,9 @@ function sendMotorAEData() {
 
     motorSocket.send(data);
 
+}
+
+function stopMotorController() {
+    var data = JSON.stringify({header: "stop"});
+    motorSocket.send(data);
 }

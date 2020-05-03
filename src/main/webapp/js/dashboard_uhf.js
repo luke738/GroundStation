@@ -1,15 +1,11 @@
 var socket = new WebSocket("ws://localhost:8080/UHFData");
 var transmit = true;
 
-//if not logged in, return to login page
-if (sessionStorage.getItem("loggedIn") !== "true") {
-    window.location.href = "/login.html";
-}
+/**
+ * delete line 10 when UHF python script is complete
+ */
 
-//program control: show kill desktop button if admin
-if (sessionStorage.getItem("isAdmin") !== "true") {
-    document.getElementById("shutdown").style.display = "block";
-}
+socket.close();
 
 socket.addEventListener('message', function(event) {
     var date = new Date();
@@ -19,6 +15,17 @@ socket.addEventListener('message', function(event) {
 
     document.getElementById("console_view").innerHTML += timeStamp + " " + eventData.header + " " + eventData.body + "<br>";
 });
+
+
+//if not logged in, return to login page
+if (sessionStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "/login.html";
+}
+
+//program control: show kill desktop button if admin
+if (sessionStorage.getItem("isAdmin") !== "true") {
+    document.getElementById("shutdown").style.display = "block";
+}
 
 var form = document.getElementById("data_form");
 function handleForm(event) {

@@ -94,7 +94,7 @@
 
                     </div>
                 </div>
-                <div class="col">
+                <div id="s_band_motor_controls"  class="col">
                     <h5 class="card-header">Antenna Data:</h5>
                     <div class="card-body bg-light">
                         <div class="row">
@@ -105,8 +105,8 @@
                                     <span id="wrap_warning" style="float:right; color:lightgray">Antenna Wrap Warning: OFF</span>
                                     <span style="clear:both"></span>
                                     <p class="card-text">
-                                        Current Azimuth: <span id="curr_ax" class="text-primary">10</span>
-                                        Current Elevation: <span id="curr_el" class="text-primary">20</span>
+                                        Current Azimuth: <span id="curr_ax" class="text-primary">10</span>°
+                                        Current Elevation: <span id="curr_el" class="text-primary">20</span>°
                                     </p>
 
                                     <div class="form-row">
@@ -122,6 +122,7 @@
                                     </div>
                                     <div class="form-row">
                                         <input id = "set_azimuth_elevation" class="btn btn-primary" style="margin-top: 5px;" type="submit" value="Set Azimuth & Elevation" onclick="sendMotorAEData();"/>
+                                        <input id = "stop_motor_controller" class="btn btn-danger" style="margin-top: 5px;" type="submit" value="Stop motor controller" onclick="stopMotorController();"/>
                                     </div>
                                 </div>
 
@@ -166,6 +167,7 @@
 
 </div>
 
+    <script>var dashBoardUHF = false;</script>
     <script src="js/dashboard_s.js"></script>
     <script src="js/motor_control.js"></script>
     <script src="js/nav_control.js"></script>
