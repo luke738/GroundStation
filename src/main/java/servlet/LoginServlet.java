@@ -3,7 +3,6 @@ package servlet;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import info.Message;
 import security.PasswordHashing;
 

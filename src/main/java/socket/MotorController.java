@@ -33,6 +33,7 @@ public class MotorController implements MessageListener
             HttpSession httpSession = (HttpSession) endpoint.getUserProperties().get("httpSession");
             if(httpSession.getAttribute("loggedIn")!=null && (Boolean) httpSession.getAttribute("loggedIn"))
             {
+                session.getUserProperties().put("isAdmin", httpSession.getAttribute("isAdmin"));
                 session.getUserProperties().put("motor_first", true);
                 clients.add(session);
                 ServletContext context = httpSession.getServletContext();
@@ -48,13 +49,7 @@ public class MotorController implements MessageListener
         JsonElement data = parser.parse(message);
         if((boolean) session.getUserProperties().get("motor_first")) {
             if(!data.getAsJsonObject().get("header").getAsString().equals("antenna_name")) {
-                try
-                {
-                    session.getBasicRemote().sendText(gson.toJson(new Message("failure", "must_send_antenna_name_first")));
-                }
-                catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
+                wrappedSend(session, gson.toJson(new Message("failure", "must_send_antenna_name_first")));
                 return;
             }
             MotorConnector.MotorConnectorType antenna;
@@ -64,13 +59,7 @@ public class MotorController implements MessageListener
             }
             catch(IllegalArgumentException e) {
                 e.printStackTrace();
-                try
-                {
-                    session.getBasicRemote().sendText(gson.toJson(new Message("failure", "invalid_antenna_name")));
-                }
-                catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
+                wrappedSend(session, gson.toJson(new Message("failure", "invalid_antenna_name")));
                 return;
             }
             String host = null;
@@ -82,6 +71,13 @@ public class MotorController implements MessageListener
             }
             session.getUserProperties().put("motor_first", false);
             session.getUserProperties().put("antenna", antenna);
+            if(!typeClients.containsKey(antenna)) {
+                synchronized(MotorController.class) {
+                    if(!typeClients.containsKey(antenna)) {
+                        typeClients.put(antenna, new ArrayList<>());
+                    }
+                }
+            }
             typeClients.get(antenna).add(session);
             if(!connectors.containsKey(antenna)) {
                 synchronized(MotorController.class) {
@@ -93,25 +89,42 @@ public class MotorController implements MessageListener
             connectors.get(antenna).addMessageListener(this);
             return;
         }
-        if(data.getAsJsonObject().get("header").getAsString().equals("updateAzimuthElevation")) {
-            Message m = new Message("updateAzEl", new int[]{data.getAsJsonObject().get("azimuth").getAsInt(), data.getAsJsonObject().get("elevation").getAsInt()});
-            connectors.get((MotorConnector.MotorConnectorType) session.getUserProperties().get("antenna")).sendData(m);
-            try
-            {
-                session.getBasicRemote().sendText(gson.toJson(new Message("success")));
+        switch(data.getAsJsonObject().get("header").getAsString()) {
+            case "updateAzimuthElevation": {
+                Message m = new Message("updateAzEl", new double[]{data.getAsJsonObject().get("azimuth").getAsDouble(), data.getAsJsonObject().get("elevation").getAsDouble()});
+                connectors.get((MotorConnector.MotorConnectorType) session.getUserProperties().get("antenna")).sendData(m);
+                wrappedSend(session, gson.toJson(new Message("success")));
             }
-            catch (IOException ioe) {
-                ioe.printStackTrace();
+            break;
+            case "stop": {
+                Message m = new Message("stop");
+                connectors.get((MotorConnector.MotorConnectorType) session.getUserProperties().get("antenna")).sendData(m);
+                wrappedSend(session, gson.toJson(new Message("success")));
+            }
+            case "calibrate_wrap": {
+                if(Boolean.parseBoolean((String) session.getUserProperties().get("isAdmin"))) {
+                    Message m = new Message("calibrate_wrap");
+                    connectors.get((MotorConnector.MotorConnectorType) session.getUserProperties().get("antenna")).sendData(m);
+                    wrappedSend(session, gson.toJson(new Message("success")));
+                }
+                else {
+                    wrappedSend(session, gson.toJson(new Message("failure", "inadequate_permissions")));
+                }
+            }
+            break;
+            default: {
+                wrappedSend(session, gson.toJson(new Message("failure", "invalid_command")));
             }
         }
-        else {
-            try
-            {
-                session.getBasicRemote().sendText(gson.toJson(new Message("failure", "invalid_command")));
-            }
-            catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
+    }
+
+    private void wrappedSend(Session session, String text) {
+        try
+        {
+            session.getBasicRemote().sendText(text);
+        }
+        catch (IOException ioe) {
+            ioe.printStackTrace();
         }
     }
 
@@ -119,9 +132,11 @@ public class MotorController implements MessageListener
     public void close(Session session)
     {
         clients.remove(session);
-        typeClients.get((MotorConnector.MotorConnectorType) session.getUserProperties().get("antenna")).remove(session);
-        for(MotorConnector connector : connectors.values()) {
-            connector.removeMessageListener(this);
+        if(!(boolean)session.getUserProperties().get("motor_first"))
+        {
+            MotorConnector.MotorConnectorType antenna = (MotorConnector.MotorConnectorType) session.getUserProperties().get("antenna");
+            typeClients.get(antenna).remove(session);
+            connectors.get(antenna).removeMessageListener(this);
         }
     }
 
@@ -137,14 +152,7 @@ public class MotorController implements MessageListener
         MotorConnector.MotorConnectorType antenna = MotorConnector.MotorConnectorType.valueOf(m.header);
         Message body = (Message) m.body;
         for(Session s : typeClients.get(antenna)) {
-            try
-            {
-                s.getBasicRemote().sendText(gson.toJson(body));
-            }
-            catch (IOException ioe)
-            {
-                ioe.printStackTrace();
-            }
+            wrappedSend(s, gson.toJson(body));
         }
     }
 }

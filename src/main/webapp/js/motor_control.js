@@ -68,6 +68,10 @@ function sendMotorAEData() {
     var azVal = document.getElementById("azimuth").value;
     var elevationVal = document.getElementById("elevation").value;
 
+    if(azVal === "" || elevationVal === "") {
+        return;
+    }
+
     // Converting JSON data to string
     var data = JSON.stringify({header: "updateAzimuthElevation", azimuth: azVal, elevation: elevationVal});
 
