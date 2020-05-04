@@ -4,7 +4,7 @@ if (sessionStorage.getItem("loggedIn") !== "true") {
 }
 
 //program control: show kill desktop button if admin
-if (sessionStorage.getItem("isAdmin") !== "true") {
+if (sessionStorage.getItem("isAdmin") === "true") {
     document.getElementById("shutdown").style.display = "block";
 }
 
@@ -106,7 +106,7 @@ function program_sendData(clicked_id) {
     var programAction = clicked_id; //launch_orbitron, kill_orbitron, or shutdown
     var data = null;
     if (programAction === "shutdown") {
-        data = JSON.stringify({header: "shutdown"});
+        data = JSON.stringify({header: "uhf", body: JSON.stringify({header: "shutdown"})});
     } else {
         var programActionArr = programAction.split("_");
 
@@ -118,7 +118,7 @@ function program_sendData(clicked_id) {
         }
         var program = programActionArr[1]; //which program
 
-        data = JSON.stringify({header: ["uhf"], body: JSON.stringify({header: [action], body: [program]})});
+        data = JSON.stringify({header: "uhf", body: JSON.stringify({header: action, body: program})});
 
     }
 

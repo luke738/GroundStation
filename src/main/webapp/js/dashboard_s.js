@@ -12,8 +12,8 @@ function sendData(clicked_id) {
 
     var programAction = clicked_id; //launch_orbitron, kill_orbitron, or shutdown
     var data = null;
-    if (programAction == "shutdown") {
-        data = JSON.stringify({header: "shutdown"});
+    if (programAction === "shutdown") {
+        data = JSON.stringify({header: "sband", body: JSON.stringify({header: "shutdown"})});
     } else {
         var programActionArr = programAction.split("_");
 
@@ -25,7 +25,7 @@ function sendData(clicked_id) {
         }
         var program = programActionArr[1]; //which program
 
-        data = JSON.stringify({header: ["sband"], body: JSON.stringify({header: [action], body: [program]})});
+        data = JSON.stringify({header:"sband", body: JSON.stringify({header: action, body: program})});
 
     }
 

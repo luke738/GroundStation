@@ -40,9 +40,10 @@ public class TLEServlet extends HttpServlet {
 
         //if not logged in send back!
         HttpSession session = request.getSession();
-        boolean logged_in = session.getAttribute("loggedIn").equals("true");
+        boolean logged_in = (boolean) session.getAttribute("loggedIn");
         if (!logged_in){
             response.sendRedirect("login.html");
+            return;
         }
         //if within 60 minutes of last TLE download, the server will not allow TLE download
         if (db.TLE_status()){

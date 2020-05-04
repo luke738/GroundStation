@@ -23,9 +23,10 @@ public class UserServlet extends HttpServlet {
         String reqBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())); //Java 8 magic to collect all lines from a BufferedReader, in this case the request.
 
         //if not logged in send back!
-        boolean logged_in = session.getAttribute("loggedIn").equals("true");
+        boolean logged_in = (boolean) session.getAttribute("loggedIn");
         if (!logged_in){
             response.sendRedirect("login.html");
+            return;
         }
 
         String change_password = request.getParameter("change_pw");

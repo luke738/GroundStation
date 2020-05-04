@@ -27,7 +27,6 @@ public class PasswordHashing {
 
         try {
             PBEKeySpec spec = new PBEKeySpec(chars, bytes, ITERATIONS, KEY_LENGTH);
-
             Arrays.fill(chars, Character.MIN_VALUE);
 
             SecretKeyFactory fac = SecretKeyFactory.getInstance(ALGORITHM);
@@ -38,6 +37,7 @@ public class PasswordHashing {
             return Base64.getEncoder().encodeToString(securePassword);
 
         } catch (IllegalArgumentException | NoSuchAlgorithmException | InvalidKeySpecException ex) {
+            ex.printStackTrace();
             System.err.println("Exception encountered in hashPassword()");
             return "";
 
