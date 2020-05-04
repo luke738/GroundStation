@@ -249,9 +249,11 @@ public class Database {
             while (rs1.next()) {
                 String name = rs1.getString("name");
                 String email = rs1.getString("username");
-                String status = "" + (isAdministrator(email));
-
-                String[] user = {name,email,status};
+                Boolean status = true;
+                if(isAdministrator(email)==-1){
+                    status = false;
+                }
+                String[] user = {name,email,status.toString()};
                 wholeClass.add(user);
             }
 
@@ -260,6 +262,39 @@ public class Database {
             e.printStackTrace();
         }
         return wholeClass;
+    }
+    //given the classcode, this returns an arraylist of strings of usernames
+    public ArrayList<String[]> grabwholeClass() {
+        ArrayList <String[]> everyone = new ArrayList<>();
+
+        PreparedStatement ps1;
+        ResultSet rs1;
+
+        try {
+            ps1 = conn.prepareStatement("SELECT * FROM UserInfo WHERE =?;");
+
+            rs1 = ps1.executeQuery();
+
+            while (rs1.next()) {
+                String name = rs1.getString("name");
+                String email = rs1.getString("username");
+                //default is that it is an admin so status is true and classcode is true
+                Boolean status = true;
+                String ccode = "ADMIN";
+                if(isAdministrator(email)==-1){
+                    status = false;
+                    ccode = rs1.getString("classcode");
+                }
+                
+                String[] user = {name,email,status.toString(),ccode};
+                everyone.add(user);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SQLException in function \"validate\"");
+            e.printStackTrace();
+        }
+        return everyone;
     }
     //Method: returns class code of user given the username (aka email)
     public String getUserClassCode(String username) {
