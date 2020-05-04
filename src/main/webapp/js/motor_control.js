@@ -1,6 +1,9 @@
+//hide motor control dashboard controls, delete once sband controls work
+document.getElementById("s_band_motor_controls").style.display = "none";
 
 if (sessionStorage.getItem("isAdmin") === "true") {
-    document.getElementById("calibrate_wrap_check").style.display = "block";
+// uncomment this line of code once sband motor controller works
+//  document.getElementById("calibrate_wrap_check").style.display = "block";
     document.getElementById("shutdown_btn_group").style.display = "inline";
 } else {
     document.getElementById("calibrate_wrap_check").style.display = "none";
@@ -18,9 +21,6 @@ if (!dashBoardUHF) {
 
     //tell motor controller it's sband dashboard
     //motorSocket.send(dashboardVal);
-
-    //hide motor control dashboard controls, delete once sband controls work
-    document.getElementById("s_band_motor_controls").style.display = "none";
 
 } else {
 
