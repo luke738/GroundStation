@@ -40,7 +40,7 @@ public class UserServlet extends HttpServlet {
             Message reqMessage = gson.fromJson(reqBody, Message.class);
             String action = reqMessage.header; //"new_password"
             password = (String) reqMessage.body;
-            System.out.println("password: " + password);
+//            System.out.println("password: " + password);
 
             //only need new password
             //GET PASSWORD FROM FRONT END
