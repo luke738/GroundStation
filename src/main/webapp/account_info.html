@@ -42,10 +42,10 @@
             <div class="card-header">Account Manager Widget</div>
             <div class="card-body">
                 <h5 class="card-title">Manage Account Password</h5>
-                <form id = "loginBox" onsubmit="return sendData()">
+                <form id = "loginBox" onsubmit="sendData(); return false;">
                     <div>
                         <p>Change password? </p>
-                        <input id="new_password"  name="new_password" type="text" placeholder="New Password">
+                        <input id="new_password"  name="new_password" type="password" placeholder="New Password">
                     </div>
 
                     <input id="submit" class="btn btn-primary" style="margin-top:5px"  type="button" value="Change Password" onclick="sendData();"/>
@@ -68,11 +68,13 @@
         }
 
         function sendData(){
+
             var new_password = document.querySelector('#new_password');
 
             var xhr = new XMLHttpRequest();
-            var data = {};
-            xhr.open("POST", "/User?change_pw=True&new_password="+new_password.value, false);
+            var data = JSON.stringify({ header: "new_password", body: new_password.value });
+
+            xhr.open("POST", "/User?change_pw=True", false);
             xhr.send(data);
 
             var response = JSON.parse(xhr.response); //Could check and see if request was successful
@@ -84,7 +86,6 @@
             } else {
                 document.querySelector('#onsuccess').innerHTML = response.header;
             }
-
         }
 
     </script>
