@@ -42,7 +42,7 @@
             <div class="card-header">Account Manager Widget</div>
             <div class="card-body">
                 <h5 class="card-title">Manage Account Password</h5>
-                <form id = "loginBox" onsubmit="return sendData()">
+                <form id = "loginBox" onsubmit="sendData(); return false;">
                     <div>
                         <p>Change password? </p>
                         <input id="new_password"  name="new_password" type="password" placeholder="New Password">
@@ -68,6 +68,7 @@
         }
 
         function sendData(){
+
             var new_password = document.querySelector('#new_password');
 
             var xhr = new XMLHttpRequest();
@@ -85,7 +86,6 @@
             } else {
                 document.querySelector('#onsuccess').innerHTML = response.header;
             }
-
         }
 
     </script>
