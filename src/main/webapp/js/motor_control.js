@@ -1,8 +1,10 @@
 
 if (sessionStorage.getItem("isAdmin") === "true") {
     document.getElementById("calibrate_wrap_check").style.display = "block";
+    document.getElementById("shutdown_btn_group").style.display = "inline";
 } else {
     document.getElementById("calibrate_wrap_check").style.display = "none";
+    document.getElementById("shutdown_btn_group").style.display = "none";
 }
 
 if (!dashBoardUHF) {
@@ -78,4 +80,11 @@ function sendMotorAEData() {
 function stopMotorController() {
     var data = JSON.stringify({header: "stop"});
     motorSocket.send(data);
+}
+
+function calibrateWrapCheck() {
+
+    var data = JSON.stringify({header: "calibrate_wrap"});
+    motorSocket.send(data);
+
 }
