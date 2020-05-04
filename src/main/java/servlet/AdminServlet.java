@@ -31,6 +31,12 @@ public class AdminServlet extends HttpServlet {
         String hashed_pw = "";
 
         boolean admin = session.getAttribute("isAdmin").equals("true");
+        boolean logged_in = session.getAttribute("loggedIn").equals("true");
+
+        if (!logged_in){
+            response.sendRedirect("login.html");
+        }
+
         //if not an admin send back warning
         if (!admin){
             //CHECK TO SEE IF THIS IS THE RIGHT REDIRECT

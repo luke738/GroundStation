@@ -26,6 +26,13 @@ public class ProgramControlServlet extends HttpServlet {
         Message reqSuperMessage = gson.fromJson(reqBody, Message.class);
         Message reqMessage = gson.fromJson((String) reqSuperMessage.body, Message.class);
 
+
+        //if not logged in redirect
+        boolean logged_in = session.getAttribute("loggedIn").equals("true");
+        if (!logged_in){
+            response.sendRedirect("login.html");
+        }
+
         JavaConnection desktopConn;
         ServletContext context = getServletContext();
         if(reqSuperMessage.header.equals("sband")) {
