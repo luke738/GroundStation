@@ -8,28 +8,6 @@ if (admin === "true") {
     document.getElementById("shutdown").style.display = "block";
 }
 
-function toggleTransmit() {
-    var x = document.getElementById("data_entry_box");
-    var state = document.getElementById("transmit_btn");
-    var other = document.getElementById("recieve_btn");
-    state.classList.add("active");
-    other.classList.toggle("active");
-
-    x.style.display = "block";
-
-}
-
-function toggleRecieve() {
-    var x = document.getElementById("data_entry_box");
-    var other = document.getElementById("transmit_btn");
-    var state = document.getElementById("recieve_btn");
-    state.classList.add("active");
-    other.classList.toggle("active");
-
-    x.style.display = "none";
-
-}
-
 function sendData(clicked_id) {
 
     var programAction = clicked_id; //launch_orbitron, kill_orbitron, or shutdown
