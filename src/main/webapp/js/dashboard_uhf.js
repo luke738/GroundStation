@@ -131,10 +131,16 @@ function program_sendData(clicked_id) {
 
     var response = JSON.parse(xhr.response); //Could check and see if request was successful
 
-    var responseArray = response.header.split("_");
-    if (responseArray[0] === "shutdown") {
-        document.querySelector('#shutdown_onsuccess').innerHTML = " " + responseArray[0] + " " + responseArray[1];
+    //recieves not logged in msg from backend
+    if (response.header === "loginError") {
+        sessionStorage.clear();
+        window.location.href = "/login.html";
     } else {
-        document.querySelector('#onsuccess').innerHTML = responseArray[0] + " " + program + " " + responseArray[1];
+        var responseArray = response.header.split("_");
+        if (responseArray[0] === "shutdown") {
+            document.querySelector('#shutdown_onsuccess').innerHTML = " " + responseArray[0] + " " + responseArray[1];
+        } else {
+            document.querySelector('#onsuccess').innerHTML = responseArray[0] + " " + program + " " + responseArray[1];
+        }
     }
 }
