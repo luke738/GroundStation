@@ -17,6 +17,7 @@ public class MotorConnector{
     private MotorConnectorType type;
     private List<MessageListener> listeners = new ArrayList<>();
     private JavaConnection desktopConn;
+    private boolean closed = false;
 
     public MotorConnector(MotorConnectorType type, String host, int port) {
         this.type = type;
@@ -30,6 +31,7 @@ public class MotorConnector{
             try
             {
                 desktopConn = new JavaConnection(new Socket(host, port));
+                desktopConn.send(new Message("motor_control"));
             }
             catch (Exception e)
             {
@@ -44,11 +46,8 @@ public class MotorConnector{
         t.start();
     }
 
-    public void sendData(Message m) {
-        synchronized(MotorConnector.class)
-        {
-            desktopConn.send(m);
-        }
+    public synchronized void sendData(Message m) {
+        desktopConn.send(m);
     }
 
     public void addMessageListener(MessageListener m) {

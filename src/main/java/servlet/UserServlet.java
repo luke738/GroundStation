@@ -22,6 +22,12 @@ public class UserServlet extends HttpServlet {
         Gson gson = new Gson();
         String reqBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())); //Java 8 magic to collect all lines from a BufferedReader, in this case the request.
 
+        //if not logged in send back!
+        boolean logged_in = session.getAttribute("loggedIn").equals("true");
+        if (!logged_in){
+            response.sendRedirect("login.html");
+        }
+
         String change_password = request.getParameter("change_pw");
         String password = "";
 

@@ -28,6 +28,9 @@
             <li class="nav-item nav-link active">
                 <a class="nav-link" href="account_info.html">Account Info</a>
             </li>
+            <li class="nav-item nav-link">
+                <a class="nav-link" href="login.html" onclick="logout()" id = "logout" >Log Out</a>
+            </li>
         </ul>
     </div>
 </nav>
@@ -56,6 +59,7 @@
     <div id = "onsuccess"></div>
 
     <script src="js/nav_control.js"></script>
+    <script src = "js/logout.js"></script>
 
     <script>
 
@@ -73,7 +77,13 @@
 
             var response = JSON.parse(xhr.response); //Could check and see if request was successful
 
-            document.querySelector('#onsuccess').innerHTML = response.header;
+            //recieves not logged in msg from backend
+            if (response.header === "loginError") {
+                sessionStorage.clear();
+                window.location.href = "/login.html";
+            } else {
+                document.querySelector('#onsuccess').innerHTML = response.header;
+            }
 
         }
 

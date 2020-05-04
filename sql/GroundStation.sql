@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.15, for macos10.14 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
--- Host: localhost    Database: GroundStation
+-- Host: 127.0.0.1    Database: groundstation
 -- ------------------------------------------------------
--- Server version	8.0.15
+-- Server version	8.0.19
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
- SET NAMES utf8 ;
+/*!50503 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -16,16 +16,16 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `Administrators`
+-- Table structure for table `administrators`
 --
 
-DROP TABLE IF EXISTS `Administrators`;
+DROP TABLE IF EXISTS `administrators`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `Administrators` (
-  `AdminID` int(11) NOT NULL AUTO_INCREMENT,
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `administrators` (
+  `AdminID` int NOT NULL AUTO_INCREMENT,
   `classcode` varchar(100) NOT NULL,
-  `userID` int(11) DEFAULT NULL,
+  `userID` int DEFAULT NULL,
   PRIMARY KEY (`AdminID`),
   KEY `fk1_idx` (`userID`),
   CONSTRAINT `fk1` FOREIGN KEY (`userID`) REFERENCES `userinfo` (`userID`)
@@ -33,67 +33,66 @@ CREATE TABLE `Administrators` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Administrators`
+-- Dumping data for table `administrators`
 --
 
-LOCK TABLES `Administrators` WRITE;
-/*!40000 ALTER TABLE `Administrators` DISABLE KEYS */;
-INSERT INTO `Administrators` VALUES (1,'1',1);
-/*!40000 ALTER TABLE `Administrators` ENABLE KEYS */;
+LOCK TABLES `administrators` WRITE;
+/*!40000 ALTER TABLE `administrators` DISABLE KEYS */;
+INSERT INTO `administrators` VALUES (1,'1',1);
+/*!40000 ALTER TABLE `administrators` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `TLE_times`
+-- Table structure for table `tle_times`
 --
 
-DROP TABLE IF EXISTS `TLE_times`;
+DROP TABLE IF EXISTS `tle_times`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `TLE_times` (
-  `tle_id` int(11) NOT NULL AUTO_INCREMENT,
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tle_times` (
+  `tle_id` int NOT NULL AUTO_INCREMENT,
   `TLE_dt` datetime NOT NULL,
   PRIMARY KEY (`tle_id`),
   UNIQUE KEY `time_id_UNIQUE` (`tle_id`),
   UNIQUE KEY `TLE_dt_UNIQUE` (`TLE_dt`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TLE_times`
+-- Dumping data for table `tle_times`
 --
 
-LOCK TABLES `TLE_times` WRITE;
-/*!40000 ALTER TABLE `TLE_times` DISABLE KEYS */;
-INSERT INTO `TLE_times` VALUES (1,'2020-04-26 18:19:07'),(2,'2020-04-26 18:24:56');
-/*!40000 ALTER TABLE `TLE_times` ENABLE KEYS */;
+LOCK TABLES `tle_times` WRITE;
+/*!40000 ALTER TABLE `tle_times` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tle_times` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `UserInfo`
+-- Table structure for table `userinfo`
 --
 
-DROP TABLE IF EXISTS `UserInfo`;
+DROP TABLE IF EXISTS `userinfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `UserInfo` (
-  `userID` int(11) NOT NULL AUTO_INCREMENT,
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `userinfo` (
+  `userID` int NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `pw` varchar(100) NOT NULL,
   `salt` varchar(100) NOT NULL,
   `name` varchar(100) NOT NULL,
   `classcode` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `UserInfo`
+-- Dumping data for table `userinfo`
 --
 
-LOCK TABLES `UserInfo` WRITE;
-/*!40000 ALTER TABLE `UserInfo` DISABLE KEYS */;
-INSERT INTO `UserInfo` VALUES (1,'memcclun@usc.edu','bDxjciUtN5+7x3jG808/ZB5aivoo0+XeWktGQsL5IiOuo7R+qq1drsZ2g1m169HyJ0jJj6WFNc6a/pRNEU+LgQ==','iECFBOEVC7OhIDaAmH7ufB3hBHh15uAtUFhrnAupzSaE6qUtuKTiT52i0paV37stfh8QJIF8CqVvDkVEsCyF3R','name','1');
-/*!40000 ALTER TABLE `UserInfo` ENABLE KEYS */;
+LOCK TABLES `userinfo` WRITE;
+/*!40000 ALTER TABLE `userinfo` DISABLE KEYS */;
+INSERT INTO `userinfo` VALUES (1,'sercgroundstation@gmail.com','2+1sT6r8IZJ7uwFgbqAJVQGiDhqNtA0IMDux9D5mPyg9gonFQdcs7qR29fDRa1tfUC6jZeWGA4E3X+59FEvY1w==','kusA1RP66E1I0Fk1T4jsReEEVlwpUertoEwJaAIHO8z51OQEdAgVlIe2rPMtr3SzbSfoO8wv6qVxROOyl7T5N+','USC Groundstation','1');
+/*!40000 ALTER TABLE `userinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -105,4 +104,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-26 18:31:43
+-- Dump completed on 2020-05-02 23:13:42

@@ -285,6 +285,7 @@ public class Database {
             //hrs: mins: seconds
             if (rs.next()) {
                 String time_diff = rs.getString(1); //TIMEDIFF does not return a named column, or if it does it isn't "td"
+                if(time_diff==null) return false;
                 int ind = time_diff.indexOf(":");
                 int hours = Integer.parseInt((time_diff.substring(0, ind)));
                 return hours < 1;

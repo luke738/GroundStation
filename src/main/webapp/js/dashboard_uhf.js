@@ -1,20 +1,3 @@
-
-var transmit = true;
-
-if(enableUHF) {
-    var socket = new WebSocket("ws://localhost:8080/UHFData");
-}
-
-socket.addEventListener('message', function(event) {
-    var date = new Date();
-    var timeStamp = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-
-    var eventData = JSON.parse(event.data);
-
-    document.getElementById("console_view").innerHTML += timeStamp + " " + eventData.header + " " + eventData.body + "<br>";
-});
-
-
 //if not logged in, return to login page
 if (sessionStorage.getItem("loggedIn") !== "true") {
     window.location.href = "/login.html";
@@ -23,6 +6,21 @@ if (sessionStorage.getItem("loggedIn") !== "true") {
 //program control: show kill desktop button if admin
 if (sessionStorage.getItem("isAdmin") !== "true") {
     document.getElementById("shutdown").style.display = "block";
+}
+
+var transmit = true;
+
+if(enableUHF) {
+    var socket = new WebSocket("ws://localhost:8080/UHFData");
+
+    socket.addEventListener('message', function(event) {
+        var date = new Date();
+        var timeStamp = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
+        var eventData = JSON.parse(event.data);
+
+        document.getElementById("console_view").innerHTML += timeStamp + " " + eventData.header + " " + eventData.body + "<br>";
+    });
 }
 
 var form = document.getElementById("data_form");
@@ -133,10 +131,16 @@ function program_sendData(clicked_id) {
 
     var response = JSON.parse(xhr.response); //Could check and see if request was successful
 
-    var responseArray = response.header.split("_");
-    if (responseArray[0] === "shutdown") {
-        document.querySelector('#shutdown_onsuccess').innerHTML = " " + responseArray[0] + " " + responseArray[1];
+    //recieves not logged in msg from backend
+    if (response.header === "loginError") {
+        sessionStorage.clear();
+        window.location.href = "/login.html";
     } else {
-        document.querySelector('#onsuccess').innerHTML = responseArray[0] + " " + program + " " + responseArray[1];
+        var responseArray = response.header.split("_");
+        if (responseArray[0] === "shutdown") {
+            document.querySelector('#shutdown_onsuccess').innerHTML = " " + responseArray[0] + " " + responseArray[1];
+        } else {
+            document.querySelector('#onsuccess').innerHTML = responseArray[0] + " " + program + " " + responseArray[1];
+        }
     }
 }

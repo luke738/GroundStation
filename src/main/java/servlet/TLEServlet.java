@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -36,6 +37,13 @@ public class TLEServlet extends HttpServlet {
         Gson gson = new Gson();
         String reqBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         Message reqMessage = gson.fromJson(reqBody, Message.class);
+
+        //if not logged in send back!
+        HttpSession session = request.getSession();
+        boolean logged_in = session.getAttribute("loggedIn").equals("true");
+        if (!logged_in){
+            response.sendRedirect("login.html");
+        }
         //if within 60 minutes of last TLE download, the server will not allow TLE download
         if (db.TLE_status()){
             String last_req = db.getRecentTLETime();
