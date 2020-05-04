@@ -10,9 +10,13 @@ dashBoardUHF = true;
 document.getElementById("uhf_transmit_feature_toggle").style.display = "none";
 
 //program control: show kill desktop button if admin
+<<<<<<< HEAD
 if (sessionStorage.getItem("isAdmin") !== "true") {
     document.getElementById("shutdown").style.display = "none";
 } else {
+=======
+if (sessionStorage.getItem("isAdmin") === "true") {
+>>>>>>> 0569bb9f0e35b8cb00d32ef2bcaf33c6da15096d
     document.getElementById("shutdown").style.display = "block";
 }
 
@@ -114,7 +118,7 @@ function program_sendData(clicked_id) {
     var programAction = clicked_id; //launch_orbitron, kill_orbitron, or shutdown
     var data = null;
     if (programAction === "shutdown") {
-        data = JSON.stringify({header: "shutdown"});
+        data = JSON.stringify({header: "uhf", body: JSON.stringify({header: "shutdown"})});
     } else {
         var programActionArr = programAction.split("_");
 
@@ -126,7 +130,7 @@ function program_sendData(clicked_id) {
         }
         var program = programActionArr[1]; //which program
 
-        data = JSON.stringify({header: ["uhf"], body: JSON.stringify({header: [action], body: [program]})});
+        data = JSON.stringify({header: "uhf", body: JSON.stringify({header: action, body: program})});
 
     }
 

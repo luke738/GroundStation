@@ -23,9 +23,10 @@ public class UserServlet extends HttpServlet {
         String reqBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())); //Java 8 magic to collect all lines from a BufferedReader, in this case the request.
 
         //if not logged in send back!
-        boolean logged_in = session.getAttribute("loggedIn").equals("true");
+        boolean logged_in = (boolean) session.getAttribute("loggedIn");
         if (!logged_in){
             response.sendRedirect("login.html");
+            return;
         }
 
         String change_password = request.getParameter("change_pw");
@@ -37,9 +38,14 @@ public class UserServlet extends HttpServlet {
         //getting message for change password
         if(change_password.equals("True")) {
 
+            Message reqMessage = gson.fromJson(reqBody, Message.class);
+            String action = reqMessage.header; //"new_password"
+            password = (String) reqMessage.body;
+//            System.out.println("password: " + password);
+
             //only need new password
             //GET PASSWORD FROM FRONT END
-            password = request.getParameter("new_password");
+            //password = request.getParameter("new_password");
 
             //generate salt and hashed pw
             salted = PasswordHashing.getRandomSalt();
