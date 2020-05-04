@@ -37,9 +37,14 @@ public class UserServlet extends HttpServlet {
         //getting message for change password
         if(change_password.equals("True")) {
 
+            Message reqMessage = gson.fromJson(reqBody, Message.class);
+            String action = reqMessage.header; //"new_password"
+            password = (String) reqMessage.body;
+            System.out.println("password: " + password);
+
             //only need new password
             //GET PASSWORD FROM FRONT END
-            password = request.getParameter("new_password");
+            //password = request.getParameter("new_password");
 
             //generate salt and hashed pw
             salted = PasswordHashing.getRandomSalt();
