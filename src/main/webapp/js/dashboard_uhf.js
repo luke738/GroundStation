@@ -3,8 +3,16 @@ if (sessionStorage.getItem("loggedIn") !== "true") {
     window.location.href = "/login.html";
 }
 
+//update global
+dashBoardUHF = true;
+
+//change none to block once finished
+document.getElementById("uhf_transmit_feature_toggle").style.display = "none";
+
 //program control: show kill desktop button if admin
 if (sessionStorage.getItem("isAdmin") !== "true") {
+    document.getElementById("shutdown").style.display = "none";
+} else {
     document.getElementById("shutdown").style.display = "block";
 }
 

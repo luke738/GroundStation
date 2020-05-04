@@ -101,11 +101,10 @@
                     <h5 class="card-header">Antenna Data:</h5>
                     <div class="card-body bg-light">
                         <div class="row">
-
                             <div class="col">
                                 <div class="form">
                                     <h5>Set Azimuth & Elevation:</h5>
-                                    <span id="wrap_warning" style="float:right; color:lightgray">Antenna Wrap Warning: OFF</span>
+                                    <span id="wrap_warning"  style="float:right; color:lightgray">Antenna Wrap Warning: OFF</span>
                                     <span style="clear:both"></span>
                                     <p class="card-text">
                                         Current Azimuth: <span id="curr_ax" class="text-primary">10</span>°
@@ -121,13 +120,10 @@
                                             <label for="elevation">Elevation</label>
                                             <input type="number" class="form-control" id="elevation" placeholder="10">
                                         </div>
-
                                     </div>
-                                    <div class="form-row">
-                                        <input id = "calibrate_wrap_check" class="btn btn-warning" style="margin-top: 5px;" type="submit" value="Calibrate wrap check" onclick="calibrateWrapCheck();"/>
-                                        <input id = "set_azimuth_elevation" class="btn btn-primary" style="margin-top: 5px;" type="submit" value="Set Azimuth & Elevation" onclick="sendMotorAEData();"/>
-                                        <input id = "stop_motor_controller" class="btn btn-danger" style="margin-top: 5px;" type="submit" value="Stop Antenna" onclick="stopMotorController();"/>
-                                    </div>
+                                    <input id = "calibrate_wrap_check" class="btn btn-warning" style="margin-top: 5px;" type="submit" value="Calibrate wrap check" onclick="calibrateWrapCheck();"/>
+                                    <input id = "set_azimuth_elevation" class="btn btn-primary" style="margin-top: 5px;" type="submit" value="Set Azimuth & Elevation" onclick="sendMotorAEData();"/>
+                                    <input id = "stop_motor_controller" class="btn btn-danger" style="margin-top: 5px;" type="submit" value="Stop Antenna" onclick="stopMotorController();"/>
                                 </div>
 
                             </div>
@@ -172,9 +168,8 @@
 </div>
 
     <script src="js/dashboard_state.js"></script>
-    <script>dashBoardUHF = false;</script>
-    <script src="js/dashboard_s.js"></script>
     <script src="js/motor_control.js"></script>
+    <script src="js/dashboard_s.js"></script>
     <script src="js/nav_control.js"></script>
     <script src = "js/logout.js"></script>
 

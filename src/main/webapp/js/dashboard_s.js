@@ -2,10 +2,18 @@ if (sessionStorage.getItem("loggedIn") !== "true") {
     window.location.href = "/login.html";
 }
 
+//update global
+dashBoardUHF = false;
+
+//hide motor control dashboard controls, delete once sband controls work
+document.getElementById("s_band_motor_controls").style.display = "none";
+
 //program control: show kill desktop button if admin
 var admin = sessionStorage.getItem("isAdmin");
 if (admin === "true") {
     document.getElementById("shutdown").style.display = "block";
+} else {
+    document.getElementById("shutdown").style.display = "none";
 }
 
 function sendData(clicked_id) {
