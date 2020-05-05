@@ -113,10 +113,9 @@
             window.location.href = "/account_info.html";
         }
 
-            var classcode = sessionStorage.getItem("classcode");
             var xhr = new XMLHttpRequest();
             var data = {};
-            xhr.open("POST", "/Admin?actions=grab_class&class_code=" + classcode, false);
+            xhr.open("POST", "/Admin?actions=grab_class", false);
             xhr.send(data);
 
             var wholeclass = JSON.parse(xhr.response); //Could check and see if request was successful

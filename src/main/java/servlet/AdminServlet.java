@@ -78,9 +78,6 @@ public class AdminServlet extends HttpServlet {
                     //GET CLASS CODE
                     classcode = request.getParameter("new_class_code");
                     break;
-                case "grab_class":
-                    classcode = request.getParameter("class_code");
-                    break;
             }
         }
 
@@ -137,8 +134,8 @@ public class AdminServlet extends HttpServlet {
                 break;
                     //grab entire class
                 case "grab_class":
-                    ArrayList<String[]> wholeclass = db.grabClass(classcode);
-                    respWriter.println(gson.toJson(new Message("class code "+classcode, wholeclass)));
+                    ArrayList<String[]> wholeclass = db.grabwholeClass();
+                    respWriter.println(gson.toJson(new Message("whole class", wholeclass)));
                 break;
 
             }
