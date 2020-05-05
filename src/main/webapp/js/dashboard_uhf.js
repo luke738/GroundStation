@@ -10,13 +10,9 @@ dashBoardUHF = true;
 document.getElementById("uhf_transmit_feature_toggle").style.display = "none";
 
 //program control: show kill desktop button if admin
-<<<<<<< HEAD
 if (sessionStorage.getItem("isAdmin") !== "true") {
     document.getElementById("shutdown").style.display = "none";
 } else {
-=======
-if (sessionStorage.getItem("isAdmin") === "true") {
->>>>>>> 0569bb9f0e35b8cb00d32ef2bcaf33c6da15096d
     document.getElementById("shutdown").style.display = "block";
 }
 

@@ -1,11 +1,7 @@
-
 if (sessionStorage.getItem("isAdmin") === "true") {
-// uncomment this line of code once sband motor controller works
     document.getElementById("calibrate_wrap_check").style.display = "block";
-    document.getElementById("shutdown_btn_group").style.display = "inline";
 } else {
     document.getElementById("calibrate_wrap_check").style.display = "none";
-    document.getElementById("shutdown_btn_group").style.display = "none";
 }
 
 if (!dashBoardUHF) {
