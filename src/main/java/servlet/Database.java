@@ -126,7 +126,7 @@ public class Database {
     public Boolean addAdministrator(String user_email){
         try {
             int userID = getUserID(user_email);
-            if(isAdministrator(user_email)!=-1) {
+            if(isAdministrator(user_email)==-1) {
                 ps = conn.prepareStatement("INSERT INTO Administrators(userID) VALUES(?)");
                 ps.setInt(1, userID);
                 ps.executeUpdate();
@@ -219,11 +219,19 @@ public class Database {
                 if(rs.next()) {
                     String ccodes = rs.getString("classcode");
                     classcodes = ccodes.split(",");
-                    ccodeList = new ArrayList<String>(Arrays.asList(classcodes));
+                    ccodeList = new ArrayList<>(Arrays.asList(classcodes));
+                }
+                else {
+                    ccodeList = new ArrayList<>();
                 }
                 ccodeList.add(classcode);
+                StringBuilder ccodeListString = new StringBuilder();
+                for(String s : ccodeList) {
+                    ccodeListString.append(s).append(",");
+                }
+                ccodeListString.deleteCharAt(ccodeListString.length()-1);
                 ps = conn.prepareStatement("UPDATE Administrators SET classcode = ? WHERE AdminID=?");
-                ps.setString(1,ccodeList.toString());
+                ps.setString(1,ccodeListString.toString());
                 ps.setInt(2,adminID);
                 ps.executeUpdate();
                 return true;
@@ -247,9 +255,17 @@ public class Database {
                 classcodes = ccodes.split(",");
                 ccodeList = new ArrayList<String>(Arrays.asList(classcodes));
             }
-            ccodeList.remove(ccodeList.indexOf(classcode));
+            else {
+                return; //No classcodes left
+            }
+            ccodeList.remove(classcode);
+            StringBuilder ccodeListString = new StringBuilder();
+            for(String s : ccodeList) {
+                ccodeListString.append(s).append(",");
+            }
+            ccodeListString.deleteCharAt(ccodeListString.length()-1);
             ps = conn.prepareStatement("UPDATE Administrators SET classcode = ? WHERE AdminID=? ");
-            ps.setString(1, ccodeList.toString());
+            ps.setString(1, ccodeListString.toString());
             ps.setInt(2,adminID);
             ps.executeUpdate();
         } catch (SQLException e) {

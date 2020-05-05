@@ -30,7 +30,7 @@ public class AdminServlet extends HttpServlet {
         String salted = "";
         String hashed_pw = "";
 
-        boolean admin = session.getAttribute("isAdmin").equals("true");
+        boolean admin = session.getAttribute("isAdmin") != null && session.getAttribute("isAdmin").equals("true");
         boolean logged_in = (boolean) session.getAttribute("loggedIn");
 
         if (!logged_in){
@@ -94,7 +94,6 @@ public class AdminServlet extends HttpServlet {
                     //email in db & not already admin
                     if(db.checkUser(user_email) && db.isAdministrator(user_email)==-1) {
                         db.addAdministrator(user_email);
-                        db.changeClassCode(user_email);
                         respWriter.println(gson.toJson(new Message("Administrator, " + user_email + " added!")));
                         respWriter.close();
                     }
@@ -116,7 +115,7 @@ public class AdminServlet extends HttpServlet {
                     if (db.checkClassCode(classcode))
                     {
                         //SHOULD WE ADD A WARNING LIKE: IF YOU DELETE THIS CLASS, x students will be removed?
-                        db.deleteClassCode(db.isAdministrator(session.getAttribute("email").toString()));
+                        db.deleteClassCode(db.isAdministrator(session.getAttribute("email").toString()), classcode);
                         respWriter.println(gson.toJson(new Message("Deleted Class Code")));
                     }
                     // Class Code does not exist in db

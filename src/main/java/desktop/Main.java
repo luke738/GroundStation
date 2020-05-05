@@ -83,8 +83,20 @@ public class Main
                                     System.out.println("Shutting down...");
                                     jc.send(new Message("shutdown_ack"));
                                     jc.close();
+                                    try
+                                    {
+                                        JavaConnection shut = new JavaConnection(new Socket("127.0.0.1",config.get("port").getAsInt()));
+                                        shut.send(new Message("shutdown_dummy"));
+                                        shut.close();
+                                    }
+                                    catch(IOException e)
+                                    {
+                                        e.printStackTrace();
+                                    }
                                 }
                                 break;
+                                case "shutdown_dummy":
+                                    break;
                                 case "uhf_transmit_toggle":
                                 {
                                     //TODO: Uncomment this block when UHF toggle interface is working. Remember to update IP and port in config file.
@@ -132,7 +144,7 @@ public class Main
                             }
                         }
                         System.out.println("Connection closed.");
-                        threads.remove(tInd);
+                        //threads.remove(tInd);
                     });
                     threads.add(t);
                     t.start();
