@@ -53,6 +53,7 @@
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Privileges</th>
+                            <th scope="col">Class Code</th>
                         </tr>
                         </thead>
 
@@ -129,10 +130,9 @@
                 if (wholeclass.body[i][2] === "false") {
                     admin = "user";
                 }
-                var element = {name: wholeclass.body[i][0], username: wholeclass.body[i][1], status: admin};
+                var element = {name: wholeclass.body[i][0], username: wholeclass.body[i][1], status: admin, classcode: wholeclass.body[i][3]};
                 students.push(element);
             }
-            // console.log(students);
 
             function generateTable(table, data) {
                 for (let element of data) {
