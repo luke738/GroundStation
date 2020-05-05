@@ -107,23 +107,23 @@
                                     <span id="wrap_warning"  style="float:right; color:lightgray">Antenna Wrap Warning: OFF</span>
                                     <span style="clear:both"></span>
                                     <p class="card-text">
-                                        Current Azimuth: <span id="curr_ax" class="text-primary">10</span>°
-                                        Current Elevation: <span id="curr_el" class="text-primary">20</span>°
+                                        Current Azimuth: <span id="curr_ax" class="text-primary">0</span>°
+                                        Current Elevation: <span id="curr_el" class="text-primary">0</span>°
                                     </p>
 
                                     <div class="form-row">
                                         <div class="col-4">
                                             <label for="azimuth">Azimuth</label>
-                                            <input type="number" class="form-control" id="azimuth" placeholder="10">
+                                            <input type="number" class="form-control" id="azimuth" placeholder="0">
                                         </div>
                                         <div class="col-4">
                                             <label for="elevation">Elevation</label>
-                                            <input type="number" class="form-control" id="elevation" placeholder="10">
+                                            <input type="number" class="form-control" id="elevation" placeholder="0">
                                         </div>
                                     </div>
-                                    <input id = "calibrate_wrap_check" class="btn btn-warning" style="margin-top: 5px;" type="submit" value="Calibrate wrap check" onclick="calibrateWrapCheck();"/>
                                     <input id = "set_azimuth_elevation" class="btn btn-primary" style="margin-top: 5px;" type="submit" value="Set Azimuth & Elevation" onclick="sendMotorAEData();"/>
                                     <input id = "stop_motor_controller" class="btn btn-danger" style="margin-top: 5px;" type="submit" value="Stop Antenna" onclick="stopMotorController();"/>
+                                    <input id = "calibrate_wrap_check" class="btn btn-warning" style="margin-top: 5px;" type="submit" value="Calibrate wrap check" onclick="calibrateWrapCheck();"/>
                                 </div>
 
                             </div>

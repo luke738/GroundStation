@@ -14,7 +14,7 @@ if (sessionStorage.getItem("isAdmin") !== "true") {
     document.getElementById("calibrate_wrap_check").style.display = "none";
 } else {
     document.getElementById("shutdown").style.display = "block";
-    document.getElementById("calibrate_wrap_check").style.display = "block";
+    document.getElementById("calibrate_wrap_check").style.display = "inline";
 }
 
 function sendData(clicked_id) {
