@@ -2,18 +2,27 @@ if (sessionStorage.getItem("loggedIn") !== "true") {
     window.location.href = "/login.html";
 }
 
+//update global
+dashBoardUHF = false;
+
+//hide motor control dashboard controls, delete once sband controls work
+document.getElementById("s_band_motor_controls").style.display = "none";
+
 //program control: show kill desktop button if admin
-var admin = sessionStorage.getItem("isAdmin");
-if (admin === "true") {
+if (sessionStorage.getItem("isAdmin") !== "true") {
+    document.getElementById("shutdown").style.display = "none";
+    document.getElementById("calibrate_wrap_check").style.display = "none";
+} else {
     document.getElementById("shutdown").style.display = "block";
+    document.getElementById("calibrate_wrap_check").style.display = "block";
 }
 
 function sendData(clicked_id) {
 
     var programAction = clicked_id; //launch_orbitron, kill_orbitron, or shutdown
     var data = null;
-    if (programAction == "shutdown") {
-        data = JSON.stringify({header: "shutdown"});
+    if (programAction === "shutdown") {
+        data = JSON.stringify({header: "sband", body: JSON.stringify({header: "shutdown"})});
     } else {
         var programActionArr = programAction.split("_");
 
@@ -25,7 +34,7 @@ function sendData(clicked_id) {
         }
         var program = programActionArr[1]; //which program
 
-        data = JSON.stringify({header: ["sband"], body: JSON.stringify({header: [action], body: [program]})});
+        data = JSON.stringify({header:"sband", body: JSON.stringify({header: action, body: program})});
 
     }
 

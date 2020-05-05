@@ -28,9 +28,10 @@ public class ProgramControlServlet extends HttpServlet {
 
 
         //if not logged in redirect
-        boolean logged_in = session.getAttribute("loggedIn").equals("true");
+        boolean logged_in = (boolean) session.getAttribute("loggedIn");
         if (!logged_in){
             response.sendRedirect("login.html");
+            return;
         }
 
         JavaConnection desktopConn;
@@ -71,7 +72,7 @@ public class ProgramControlServlet extends HttpServlet {
             }
             break;
             case "shutdown": {
-                if((boolean) session.getAttribute("adminStatus")) {
+                if(session.getAttribute("isAdmin").equals("true")) {
                     desktopConn.send(reqMessage);
                     Message desktopResp = desktopConn.receive(Message.class);
                     if(desktopResp.header.equals("shutdown_ack")) {

@@ -120,11 +120,14 @@ public class LoginServlet extends HttpServlet {
 
                         Map<String,String> userToFrontend = new HashMap<>();
                         session.setAttribute("hello", "Hello " + username);
+                        session.setAttribute("email", username);
                         session.setAttribute("userID", userIDstore);
-                        session.setAttribute("isAdmin", Boolean.toString(isAdmin));
+                        session.setAttribute("loggedIn",true);
+                        session.setAttribute("isAdmin",Boolean.toString(isAdmin));
 
                         userToFrontend.put("email", username);
                         userToFrontend.put("userID", userIDstore+"");
+                        userToFrontend.put("loggedIn", "true");
                         userToFrontend.put("classcode", classcode);
                         userToFrontend.put("isAdmin", Boolean.toString(isAdmin));
 

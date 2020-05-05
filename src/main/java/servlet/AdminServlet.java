@@ -31,10 +31,11 @@ public class AdminServlet extends HttpServlet {
         String hashed_pw = "";
 
         boolean admin = session.getAttribute("isAdmin").equals("true");
-        boolean logged_in = session.getAttribute("loggedIn").equals("true");
+        boolean logged_in = (boolean) session.getAttribute("loggedIn");
 
         if (!logged_in){
             response.sendRedirect("login.html");
+            return;
         }
 
         //if not an admin send back warning
@@ -91,27 +92,24 @@ public class AdminServlet extends HttpServlet {
             {
                 case "add_admin":
                     //email in db & not already admin
-                    if(!db.checkUser(user_email) && db.isAdministrator(user_email)==-1) {
+                    if(db.checkUser(user_email) && db.isAdministrator(user_email)==-1) {
                         db.addAdministrator(user_email);
                         db.changeClassCode(user_email);
-                        respWriter.println("Administrator, " + user_email + " added!");
+                        respWriter.println(gson.toJson(new Message("Administrator, " + user_email + " added!")));
                         respWriter.close();
-                        return;
                     }
                     //email does not exist
-                    else if(db.checkUser(user_email))
+                    else if(!db.checkUser(user_email))
                     {
                         respWriter.println(gson.toJson(new Message("User email does not exist in database!")));
                         respWriter.close();
-                        return;
                     }
                     //already admin
                     else{
                         respWriter.println(gson.toJson(new Message("User is already an administrator!")));
                         respWriter.close();
-                        return;
                     }
-
+                break;
                 // delete class code
                 case "delete_class_code":
                     //classcode exists in db for admin
@@ -126,21 +124,23 @@ public class AdminServlet extends HttpServlet {
                     {
                         respWriter.println(gson.toJson(new Message("Not a valid class code!")));
                         respWriter.close();
-                        return;
                     }
+                break;
                 //add class code
                 case "add_class_code":
                     db.addClassCode(session.getAttribute("email").toString(), classcode);
                     respWriter.println(gson.toJson(new Message("Added Class Code")));
+                break;
                 //change password
                 case "change_password":
                     db.fixUser(session.getAttribute("email").toString(), hashed_pw, salted);
                     respWriter.println(gson.toJson(new Message("Password changed successfully")));
-
+                break;
                     //grab entire class
                 case "grab_class":
                     ArrayList<String[]> wholeclass = db.grabClass(classcode);
                     respWriter.println(gson.toJson(new Message("class code "+classcode, wholeclass)));
+                break;
 
             }
         } catch(Exception e) { //Handle exceptions

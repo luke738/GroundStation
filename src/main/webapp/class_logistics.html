@@ -126,8 +126,9 @@
             var i;
             for (i = 0; i < wholeclass.body.length; i++) {
                 var admin = "admin";
-                if (wholeclass.body[i][2] === -1) {
-                    admin = "not admin";
+                console.log(wholeclass.body[i][2]);
+                if (wholeclass.body[i][2] === "false") {
+                    admin = "user";
                 }
                 var element = {name: wholeclass.body[i][0], username: wholeclass.body[i][1], status: admin};
                 students.push(element);
@@ -170,7 +171,7 @@
                 xhr.open("POST", "/Admin?actions=" + action + "&" + value, false);
                 xhr.send(data);
 
-                // console.log("RESP: " + xhr.response);
+                console.log("RESP: " + xhr.response);
 
                 var response = JSON.parse(xhr.response); //Could check and see if request was successful
 
