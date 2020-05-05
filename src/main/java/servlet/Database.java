@@ -1,7 +1,7 @@
 package servlet;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Database {
     private Connection conn;
@@ -123,13 +123,14 @@ public class Database {
         return -1;
     }
 
-    public Boolean addAdministrator(String username){
+    public Boolean addAdministrator(String user_email){
         try {
-            int userID = getUserID(username);
-            if(isAdministrator(username)!=-1) {
+            int userID = getUserID(user_email);
+            if(isAdministrator(user_email)!=-1) {
                 ps = conn.prepareStatement("INSERT INTO Administrators(userID) VALUES(?)");
                 ps.setInt(1, userID);
                 ps.executeUpdate();
+                changeClassCode(user_email);
                 return true;
             }
         } catch (SQLException e) {
@@ -180,16 +181,22 @@ public class Database {
     }
 
 
-
+    //CHANGE WITH CHANGE OF ADMINS
     public Boolean checkClassCode(String classcode) {
         try {
-            ps = conn.prepareStatement("SELECT a.userID FROM Administrators a WHERE classcode=?");
-            ps.setString(1, classcode);
+            ps = conn.prepareStatement("SELECT * FROM Administrators");
             rs = ps.executeQuery();
-            if (!rs.next()) {
-                return false;
+            String[] classcodes;
+            List<String> ccodeList = null;
+            while (rs.next()){
+                String ccodes = rs.getString("classcode");
+                classcodes = ccodes.split(",");
+                ccodeList = new ArrayList<String>(Arrays.asList(classcodes));
+                if (ccodeList.contains(classcode)){
+                    return true;
+                }
             }
-            return true;
+            return false;
 
         } catch (SQLException e) {
             System.out.println("SQLException in function \"validate\"");
@@ -207,11 +214,16 @@ public class Database {
                 ps = conn.prepareStatement("SELECT a.classcode, a.AdminID FROM Administrators a WHERE userID=?");
                 ps.setInt(1, userID);
                 rs = ps.executeQuery();
-                if(rs.next()){
-                    deleteClassCode(adminID);
+                String[] classcodes;
+                List<String> ccodeList = null;
+                if(rs.next()) {
+                    String ccodes = rs.getString("classcode");
+                    classcodes = ccodes.split(",");
+                    ccodeList = new ArrayList<String>(Arrays.asList(classcodes));
                 }
+                ccodeList.add(classcode);
                 ps = conn.prepareStatement("UPDATE Administrators SET classcode = ? WHERE AdminID=?");
-                ps.setString(1,classcode);
+                ps.setString(1,ccodeList.toString());
                 ps.setInt(2,adminID);
                 ps.executeUpdate();
                 return true;
@@ -223,10 +235,21 @@ public class Database {
         return false;
     }
 
-    public void deleteClassCode(int adminID) {
+    public void deleteClassCode(int adminID, String classcode) {
         try{
+            ps = conn.prepareStatement("SELECT classcode FROM Administrators WHERE AdminID=?");
+            ps.setInt(1, adminID);
+            rs = ps.executeQuery();
+            String[] classcodes;
+            List<String> ccodeList = null;
+            if(rs.next()) {
+                String ccodes = rs.getString("classcode");
+                classcodes = ccodes.split(",");
+                ccodeList = new ArrayList<String>(Arrays.asList(classcodes));
+            }
+            ccodeList.remove(ccodeList.indexOf(classcode));
             ps = conn.prepareStatement("UPDATE Administrators SET classcode = ? WHERE AdminID=? ");
-            ps.setString(1, "");
+            ps.setString(1, ccodeList.toString());
             ps.setInt(2,adminID);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -263,7 +286,7 @@ public class Database {
         }
         return wholeClass;
     }
-    //given the classcode, this returns an arraylist of strings of usernames
+    //grabs everyone in the system
     public ArrayList<String[]> grabwholeClass() {
         ArrayList <String[]> everyone = new ArrayList<>();
 
@@ -285,7 +308,7 @@ public class Database {
                     status = false;
                     ccode = rs1.getString("classcode");
                 }
-                
+
                 String[] user = {name,email,status.toString(),ccode};
                 everyone.add(user);
             }
