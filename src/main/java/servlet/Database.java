@@ -288,11 +288,11 @@ public class Database {
             while (rs1.next()) {
                 String name = rs1.getString("name");
                 String email = rs1.getString("username");
-                Boolean status = true;
+                boolean status = true;
                 if(isAdministrator(email)==-1){
                     status = false;
                 }
-                String[] user = {name,email,status.toString()};
+                String[] user = {name,email, Boolean.toString(status)};
                 wholeClass.add(user);
             }
 
@@ -310,7 +310,7 @@ public class Database {
         ResultSet rs1;
 
         try {
-            ps1 = conn.prepareStatement("SELECT * FROM UserInfo WHERE =?;");
+            ps1 = conn.prepareStatement("SELECT * FROM UserInfo;");
 
             rs1 = ps1.executeQuery();
 
@@ -318,14 +318,14 @@ public class Database {
                 String name = rs1.getString("name");
                 String email = rs1.getString("username");
                 //default is that it is an admin so status is true and classcode is true
-                Boolean status = true;
+                boolean status = true;
                 String ccode = "ADMIN";
                 if(isAdministrator(email)==-1){
                     status = false;
                     ccode = rs1.getString("classcode");
                 }
 
-                String[] user = {name,email,status.toString(),ccode};
+                String[] user = {name,email, Boolean.toString(status),ccode};
                 everyone.add(user);
             }
 

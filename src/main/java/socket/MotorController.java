@@ -101,6 +101,7 @@ public class MotorController implements MessageListener
                 connectors.get((MotorConnector.MotorConnectorType) session.getUserProperties().get("antenna")).sendData(m);
                 wrappedSend(session, gson.toJson(new Message("success")));
             }
+            break;
             case "calibrate_wrap": {
                 if(Boolean.parseBoolean((String) session.getUserProperties().get("isAdmin"))) {
                     Message m = new Message("calibrate_wrap");
