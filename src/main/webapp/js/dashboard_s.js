@@ -9,11 +9,12 @@ dashBoardUHF = false;
 document.getElementById("s_band_motor_controls").style.display = "none";
 
 //program control: show kill desktop button if admin
-var admin = sessionStorage.getItem("isAdmin");
-if (admin === "true") {
-    document.getElementById("shutdown").style.display = "block";
-} else {
+if (sessionStorage.getItem("isAdmin") !== "true") {
     document.getElementById("shutdown").style.display = "none";
+    document.getElementById("calibrate_wrap_check").style.display = "none";
+} else {
+    document.getElementById("shutdown").style.display = "block";
+    document.getElementById("calibrate_wrap_check").style.display = "block";
 }
 
 function sendData(clicked_id) {

@@ -1,9 +1,3 @@
-if (sessionStorage.getItem("isAdmin") === "true") {
-    document.getElementById("calibrate_wrap_check").style.display = "block";
-} else {
-    document.getElementById("calibrate_wrap_check").style.display = "none";
-}
-
 if (!dashBoardUHF) {
     /**
      * renable commented out code below

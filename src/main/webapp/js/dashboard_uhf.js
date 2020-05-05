@@ -12,8 +12,10 @@ document.getElementById("uhf_transmit_feature_toggle").style.display = "none";
 //program control: show kill desktop button if admin
 if (sessionStorage.getItem("isAdmin") !== "true") {
     document.getElementById("shutdown").style.display = "none";
+    document.getElementById("calibrate_wrap_check").style.display = "none";
 } else {
     document.getElementById("shutdown").style.display = "block";
+    document.getElementById("calibrate_wrap_check").style.display = "block";
 }
 
 var transmit = true;
